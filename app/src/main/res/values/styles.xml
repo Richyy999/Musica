@@ -1,5 +1,4 @@
 <resources>
-
     <style name="TemaClaro" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorTituloActivity">@color/tituloActivityClaro</item>
         <item name="colorTitulo">@color/tituloClaro</item>
