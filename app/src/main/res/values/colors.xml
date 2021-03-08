@@ -6,8 +6,14 @@
     <color name="tituloClaro">#000000</color>
     <color name="tituloOscuro">#F3F3F3</color>
 
+    <color name="tituloMenuClaro">#747575</color>
+    <color name="tituloMenuOscuro">#F3F3F3</color>
+
     <color name="subtituloClaro">#747575</color>
     <color name="subtituloOscuro">#747575</color>
+
+    <color name="subtituloFragmentClaro">#747575</color>
+    <color name="subtituloFragmentOscuro">#F3F3F3</color>
 
     <color name="nombreIconoClaro">#1168BF</color>
     <color name="nombreIconoOscuro">#F3F3F3</color>

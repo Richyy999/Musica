@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="colorTituloActivity" format="color" />
-
+    <attr name="colorTituloMenu" format="color" />
     <attr name="colorTitulo" format="color" />
+
     <attr name="colorSubtitulo" format="color" />
+    <attr name="colorSubtituloFragment" format="color" />
 
     <attr name="colorNombreIcono" format="color" />
     <attr name="colorSeparador" format="color" />

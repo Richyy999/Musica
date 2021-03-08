@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Música</string>
+    <string name="descIconoAjustes"><![CDATA[Icono de ajustes. Hecho por: https://www.flaticon.com/free-icon/settings_2099058?term=settings&page=1&position=4&page=1&position=4&related_id=2099058&origin=search]]></string>
+    <string name="descIconoBuscar"><![CDATA[Icono de búsqueda, hecho por: https://www.flaticon.com/free-icon/loupe_709592?term=search&page=1&position=5&page=1&position=5&related_id=709592&origin=search]]></string>
+    <string name="descIconoPlaylist">Icono de playlist</string>
+    <string name="listas_de_reproduccion">Listas de reproducción</string>
+    <string name="favoritos">Favoritos</string>
+    <string name="carpetas">Carpetas</string>
+    <string name="descIconoCola"><![CDATA[Icono de la cola, hecho por: https://www.flaticon.com/free-icon/list-text_507205?term=list&page=1&position=14&page=1&position=14&related_id=507205&origin=search]]></string>
+    <string name="descIconoCancionSiguiente">Icono de siguiente canción, hecho por: https://www.flaticon.com/free-icon/play-and-pause-button_64595</string>
+    <string name="descIconoPlayPauseFragment"><![CDATA[Icono de play, hecho por: https://www.flaticon.com/free-icon/play-and-pause-button_64595 Icono de pausa, hecho por: https://www.flaticon.com/free-icon/pause_37505?term=pause&page=1&position=31&page=1&position=31&related_id=37505&origin=search]]></string>
+    <string name="descIconoCancionAnteriorFragment">Icono de siguiente canción fragment invertido</string>
+    <string name="album_desconocido">Álbum desconocido</string>
 </resources>

@@ -4,15 +4,152 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="?attr/colorFondoApp"
+    android:paddingTop="24dp"
+    tools:context=".ui.activities.MainActivity">
+
+    <ImageView
+        android:id="@+id/btnAjustes"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/descIconoAjustes"
+        android:src="?attr/iconoAjustes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginTop="16dp" />
+
+    <EditText
+        android:id="@+id/txtBuscar"
+        style="@style/campoTexto"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAjustes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnAjustes"
+        app:layout_constraintTop_toTopOf="@+id/btnAjustes" />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/descIconoBuscar"
+        android:src="?attr/iconoBuscar"
+        app:layout_constraintBottom_toBottomOf="@id/txtBuscar"
+        app:layout_constraintEnd_toEndOf="@+id/txtBuscar"
+        app:layout_constraintTop_toTopOf="@+id/txtBuscar" />
+
+    <LinearLayout
+        android:id="@+id/layoutMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtBuscar">
+
+        <LinearLayout
+            android:id="@+id/btnCarpeta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/descIconoPlaylist"
+                android:src="?attr/iconoCarpeta" />
+
+            <TextView
+                style="@style/nombreIcono"
+                android:text="@string/carpetas" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnPlaylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/descIconoPlaylist"
+                android:src="?attr/iconoPlaylist" />
+
+            <TextView
+                style="@style/nombreIcono"
+                android:text="@string/listas_de_reproduccion" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnFavoritos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/descIconoPlaylist"
+                android:src="?attr/iconoFavoritosLleno" />
+
+            <TextView
+                style="@style/nombreIcono"
+                android:text="@string/favoritos" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/lblTituloMenu"
+        style="@style/tituloMenu"
+        android:text="@string/carpetas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutMenu" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="24dp"
+        android:background="?attr/colorSeparador"
+        app:layout_constraintBottom_toBottomOf="@+id/lblTituloMenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lblTituloMenu"
+        app:layout_constraintTop_toTopOf="@+id/lblTituloMenu" />
+
+    <fragment
+        android:id="@+id/fragmentCola"
+        android:name="es.rbp.musica.ui.fragments.FragmentCola"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout="@layout/fragment_cola" />
+
+    <RelativeLayout
+        android:id="@+id/contenedorFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentCola"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblTituloMenu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

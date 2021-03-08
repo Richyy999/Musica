@@ -1,8 +1,11 @@
 <resources>
-    <style name="TemaClaro" parent="Theme.AppCompat.Light.DarkActionBar">
+
+    <style name="TemaClaro" parent="Theme.AppCompat.NoActionBar">
         <item name="colorTituloActivity">@color/tituloActivityClaro</item>
         <item name="colorTitulo">@color/tituloClaro</item>
+        <item name="colorTituloMenu">@color/tituloMenuClaro</item>
         <item name="colorSubtitulo">@color/subtituloClaro</item>
+        <item name="colorSubtituloFragment">@color/subtituloFragmentClaro</item>
         <item name="colorNombreIcono">@color/nombreIconoClaro</item>
         <item name="colorSeparador">@color/separadorClaro</item>
         <item name="colorFondoCampoTexto">@color/fondoCampoTextoClaro</item>
@@ -60,10 +63,12 @@
         <item name="iconoOcultar">@drawable/icono_ocultar_claro</item>
     </style>
 
-    <style name="TemaOscuro" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="TemaOscuro" parent="Theme.AppCompat.NoActionBar">
         <item name="colorTituloActivity">@color/tituloActivityOscuro</item>
         <item name="colorTitulo">@color/tituloOscuro</item>
+        <item name="colorTituloMenu">@color/tituloMenuOscuro</item>
         <item name="colorSubtitulo">@color/subtituloOscuro</item>
+        <item name="colorSubtituloFragment">@color/subtituloFragmentOscuro</item>
         <item name="colorNombreIcono">@color/nombreIconoOscuro</item>
         <item name="colorSeparador">@color/separadorOscuro</item>
         <item name="colorFondoCampoTexto">@color/fondoCampoTextoOscuro</item>
@@ -119,5 +124,67 @@
         <item name="iconoLinkedin">@drawable/icono_linkedin_oscuro</item>
         <item name="iconoMostrar">@drawable/icono_mostrar_oscuro</item>
         <item name="iconoOcultar">@drawable/icono_ocultar_oscuro</item>
+    </style>
+
+    <style name="campoTexto">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:textColor">?attr/colorTextoCampoTexto</item>
+        <item name="android:layout_marginEnd">24dp</item>
+        <item name="android:background">@drawable/fondo_campo_texto</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="nombreIcono">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/colorNombreIcono</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="tituloMenu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textColor">?attr/colorTituloMenu</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="subtituloFragment">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:textColor">?attr/colorSubtituloFragment</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="botonesFragment">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_marginEnd">24dp</item>
+    </style>
+
+    <style name="tituloFragment">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:freezesText">true</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">?attr/colorTitulo</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>
