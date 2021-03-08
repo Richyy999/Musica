@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorTituloActivity" format="color" />
+
+    <attr name="colorTitulo" format="color" />
+    <attr name="colorSubtitulo" format="color" />
+
+    <attr name="colorNombreIcono" format="color" />
+    <attr name="colorSeparador" format="color" />
+    <attr name="colorFondoCampoTexto" format="color" />
+    <attr name="colorFondoApp" format="color" />
+
+    <attr name="colorProgresoTotal" format="color" />
+    <attr name="colorProgresoActual" format="color" />
+
+    <attr name="colorThumbSeekbar" format="color" />
+
+    <attr name="colorProgresoTotalAjustes" format="color" />
+    <attr name="colorProgresoActualAjustes" format="color" />
+
+    <attr name="colorTextoCampoTexto" format="color" />
+    <attr name="colorTextoHistorial" format="color" />
+
+    <attr name="colorFondoSwitch" format="color" />
+    <attr name="colorThumbSwitch" format="color" />
+
+    <attr name="colorFondoCancionAnadir" format="color" />
+    <attr name="colorFondoCancionAnadida" format="color" />
+
+    <attr name="colorFondoPlaylist" format="color" />
+    <attr name="colorFondoReproducirAleatorio" format="color" />
+
+    <attr name="colorFondoBotonPositivo" format="color" />
+    <attr name="colorTextoBotonPositivo" format="color" />
+
+    <attr name="colorFondoBotonNeutro" format="color" />
+    <attr name="colorTextoBotonNeutro" format="color" />
+
+    <attr name="colorTextoCancionActual" format="color" />
+    <attr name="colorFondoOpacityPane" format="color" />
+
+
+    <attr name="iconoCarpeta" format="reference" />
+    <attr name="iconoAjustes" format="reference" />
+    <attr name="iconoBuscar" format="reference" />
+    <attr name="iconoPlaylist" format="reference" />
+
+    <attr name="iconoFavoritosLleno" format="reference" />
+    <attr name="iconoFavoritosVacio" format="reference" />
+
+    <attr name="iconoCancionAnteriorFragment" format="reference" />
+    <attr name="iconoPausaFragment" format="reference" />
+    <attr name="iconoPlayFragment" format="reference" />
+    <attr name="iconoSiguienteCancionFragment" format="reference" />
+
+    <attr name="iconoCancionAnteriorActivity" format="reference" />
+    <attr name="iconoPausaActivity" format="reference" />
+    <attr name="iconoPlayActivity" format="reference" />
+    <attr name="iconoSiguienteCancionActivity" format="reference" />
+
+    <attr name="iconoCola" format="reference" />
+
+    <attr name="iconoFlechaIzquierdaPlaylist" format="reference" />
+    <attr name="iconoFlechaIzquierda" format="reference" />
+    <attr name="iconoFlechaAbajo" format="reference" />
+    <attr name="iconoFlechaDerecha" format="reference" />
+
+    <attr name="iconoAceptar" format="reference" />
+    <attr name="iconoGithub" format="reference" />
+    <attr name="iconoLinkedin" format="reference" />
+
+    <attr name="iconoMostrar" format="reference" />
+    <attr name="iconoOcultar" format="reference" />
+</resources>

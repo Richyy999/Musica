@@ -1,6 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="tituloActivityClaro">#1168BF</color>
+    <color name="tituloActivityOscuro">#F3F3F3</color>
+
+    <color name="tituloClaro">#000000</color>
+    <color name="tituloOscuro">#F3F3F3</color>
+
+    <color name="subtituloClaro">#747575</color>
+    <color name="subtituloOscuro">#747575</color>
+
+    <color name="nombreIconoClaro">#1168BF</color>
+    <color name="nombreIconoOscuro">#F3F3F3</color>
+
+    <color name="separadorClaro">#E1E1E1</color>
+    <color name="separadorOscuro">#E1E1E1</color>
+
+    <color name="fondoCampoTextoClaro">#C2EDFF</color>
+    <color name="fondoCampoTextoOscuro">#F3F3F3</color>
+
+    <color name="fondoAppClaro">#FFFFFF</color>
+    <color name="fondoAppOscuro">#464646</color>
+
+    <color name="progresoTotalClaro">#C2EDFF</color>
+    <color name="progresoTotalOscuro">#C2EDFF</color>
+
+    <color name="progresoActualClaro">#3F48CC</color>
+    <color name="progresoActualOscuro">#3F48CC</color>
+
+    <color name="thumbSeekbarClaro">#3F48CC</color>
+    <color name="thumbSeekbarOscuro">#3F48CC</color>
+
+    <color name="progresoTotalAjustesClaro">#DEDEDE</color>
+    <color name="progresoTotalAjustesOscuro">#DEDEDE</color>
+
+    <color name="progresoActualAjustesClaro">#0096FF</color>
+    <color name="progresoActualAjustesOscuro">#0096FF</color>
+
+    <color name="textoCampoTextoClaro">#1168BF</color>
+    <color name="textoCampoTextoOscuro">#1168BF</color>
+
+    <color name="textoHistorialClaro">#1168BF</color>
+    <color name="textoHistorialOscuro">#F3F3F3</color>
+
+    <color name="fondoSwitchClaro">#0096FF</color>
+    <color name="fondoSwitchOscuro">#0096FF</color>
+
+    <color name="thumbSwitchClaro">#F0F9FF</color>
+    <color name="thumbSwitchOscuro">#F0F9FF</color>
+
+    <color name="fondoCancionAnadirClaro">#EEEEEE</color>
+    <color name="fondoCancionAnadirOscuro">#888888</color>
+
+    <color name="fondoCancionAnadidaClaro">#3F48CC</color>
+    <color name="fondoCancionAnadidaOscuro">#0096FF</color>
+
+    <color name="fondoPlaylistClaro">#0099FF</color>
+    <color name="fondoPlaylistOscuro">#004E82</color>
+
+    <color name="fondoReproducirAleatorioClaro">#C2EDFF</color>
+    <color name="fondoReproducirAleatorioOscuro">#F3F3F3</color>
+
+    <color name="fondoBotonPositivoClaro">#0099FF</color>
+    <color name="fondoBotonPositivoOscuro">#004E82</color>
+
+    <color name="textoBotonPositivoClaro">#FFFFFF</color>
+    <color name="textoBotonPositivoOscuro">#F3F3F3</color>
+
+    <color name="fondoBotonNeutroClaro">#E3F6FD</color>
+    <color name="fondoBotonNeutroOscuro">#A7A7A7</color>
+
+    <color name="textoBotonNeutroClaro">#1168BF</color>
+    <color name="textoBotonNeutroOscuro">#F3F3F3</color>
+
+    <color name="textoCancionActualClaro">#1168BF</color>
+    <color name="textoCancionActualOscuro">#3BC5FF</color>
+
+    <color name="fondoOpacityPaneClaro">#45000000</color>
+    <color name="fondoOpacityPaneOscuro">#45000000</color>
 </resources>

@@ -1,10 +1,124 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
+    <style name="TemaClaro" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorTituloActivity">@color/tituloActivityClaro</item>
+        <item name="colorTitulo">@color/tituloClaro</item>
+        <item name="colorSubtitulo">@color/subtituloClaro</item>
+        <item name="colorNombreIcono">@color/nombreIconoClaro</item>
+        <item name="colorSeparador">@color/separadorClaro</item>
+        <item name="colorFondoCampoTexto">@color/fondoCampoTextoClaro</item>
+        <item name="colorFondoApp">@color/fondoAppClaro</item>
+        <item name="colorProgresoTotal">@color/progresoTotalClaro</item>
+        <item name="colorProgresoActual">@color/progresoActualClaro</item>
+        <item name="colorThumbSeekbar">@color/thumbSeekbarClaro</item>
+        <item name="colorProgresoTotalAjustes">@color/progresoTotalAjustesClaro</item>
+        <item name="colorProgresoActualAjustes">@color/progresoActualAjustesClaro</item>
+        <item name="colorTextoCampoTexto">@color/textoCampoTextoClaro</item>
+        <item name="colorTextoHistorial">@color/textoHistorialClaro</item>
+        <item name="colorFondoSwitch">@color/fondoSwitchClaro</item>
+        <item name="colorThumbSwitch">@color/thumbSwitchClaro</item>
+        <item name="colorFondoCancionAnadir">@color/fondoCancionAnadirClaro</item>
+        <item name="colorFondoCancionAnadida">@color/fondoCancionAnadidaClaro</item>
+        <item name="colorFondoPlaylist">@color/fondoPlaylistClaro</item>
+        <item name="colorFondoReproducirAleatorio">@color/fondoReproducirAleatorioClaro</item>
+        <item name="colorFondoBotonPositivo">@color/fondoBotonPositivoClaro</item>
+        <item name="colorTextoBotonPositivo">@color/textoBotonPositivoClaro</item>
+        <item name="colorFondoBotonNeutro">@color/fondoBotonNeutroClaro</item>
+        <item name="colorTextoBotonNeutro">@color/textoBotonNeutroClaro</item>
+        <item name="colorTextoCancionActual">@color/textoCancionActualClaro</item>
+        <item name="colorFondoOpacityPane">@color/fondoOpacityPaneClaro</item>
+
+        <item name="iconoCarpeta">@drawable/icono_carpeta_claro</item>
+        <item name="iconoAjustes">@drawable/icono_ajustes_claro</item>
+        <item name="iconoBuscar">@drawable/icono_buscar</item>
+        <item name="iconoPlaylist">@drawable/icono_playlist_claro</item>
+        <item name="iconoFavoritosVacio">@drawable/icono_favorito_vacio_claro</item>
+        <item name="iconoFavoritosLleno">@drawable/icono_favoritos_lleno_claro</item>
+        <item name="iconoCancionAnteriorFragment">@drawable/icono_cancion_anterior_fragment_claro
+        </item>
+        <item name="iconoPausaFragment">@drawable/icono_pausa_fragment_claro</item>
+        <item name="iconoPlayFragment">@drawable/icono_play_fragment_claro</item>
+        <item name="iconoSiguienteCancionFragment">
+            @drawable/icono_siguiente_cancion_fragment_claro
+        </item>
+        <item name="iconoCancionAnteriorActivity">@drawable/icono_cancion_anterior_activity_claro
+        </item>
+        <item name="iconoPausaActivity">@drawable/icono_pause_activity_claro</item>
+        <item name="iconoPlayActivity">@drawable/icono_play_activity_claro</item>
+        <item name="iconoSiguienteCancionActivity">
+            @drawable/icono_siguiente_cancion_activity_claro
+        </item>
+        <item name="iconoCola">@drawable/icono_mostrar_cola_claro</item>
+        <item name="iconoFlechaAbajo">@drawable/icono_flecha_abajo_claro</item>
+        <item name="iconoFlechaDerecha">@drawable/icono_flecha_derecha_claro</item>
+        <item name="iconoFlechaIzquierda">@drawable/icono_flecha_izquierda_claro</item>
+        <item name="iconoFlechaIzquierdaPlaylist">@drawable/icono_flecha_izquierda_playlist_claro
+        </item>
+        <item name="iconoAceptar">@drawable/icono_aceptar_claro</item>
+        <item name="iconoGithub">@drawable/icono_github_claro</item>
+        <item name="iconoLinkedin">@drawable/icono_linkedin_claro</item>
+        <item name="iconoMostrar">@drawable/icono_mostrar_claro</item>
+        <item name="iconoOcultar">@drawable/icono_ocultar_claro</item>
     </style>
 
+    <style name="TemaOscuro" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorTituloActivity">@color/tituloActivityOscuro</item>
+        <item name="colorTitulo">@color/tituloOscuro</item>
+        <item name="colorSubtitulo">@color/subtituloOscuro</item>
+        <item name="colorNombreIcono">@color/nombreIconoOscuro</item>
+        <item name="colorSeparador">@color/separadorOscuro</item>
+        <item name="colorFondoCampoTexto">@color/fondoCampoTextoOscuro</item>
+        <item name="colorFondoApp">@color/fondoAppOscuro</item>
+        <item name="colorProgresoTotal">@color/progresoTotalOscuro</item>
+        <item name="colorProgresoActual">@color/progresoActualOscuro</item>
+        <item name="colorThumbSeekbar">@color/thumbSeekbarOscuro</item>
+        <item name="colorProgresoTotalAjustes">@color/progresoTotalAjustesOscuro</item>
+        <item name="colorProgresoActualAjustes">@color/progresoActualAjustesOscuro</item>
+        <item name="colorTextoCampoTexto">@color/textoCampoTextoOscuro</item>
+        <item name="colorTextoHistorial">@color/textoHistorialOscuro</item>
+        <item name="colorFondoSwitch">@color/fondoSwitchOscuro</item>
+        <item name="colorThumbSwitch">@color/thumbSwitchOscuro</item>
+        <item name="colorFondoCancionAnadir">@color/fondoCancionAnadirOscuro</item>
+        <item name="colorFondoCancionAnadida">@color/fondoCancionAnadidaOscuro</item>
+        <item name="colorFondoPlaylist">@color/fondoPlaylistOscuro</item>
+        <item name="colorFondoReproducirAleatorio">@color/fondoReproducirAleatorioOscuro</item>
+        <item name="colorFondoBotonPositivo">@color/fondoBotonPositivoOscuro</item>
+        <item name="colorTextoBotonPositivo">@color/textoBotonPositivoOscuro</item>
+        <item name="colorFondoBotonNeutro">@color/fondoBotonNeutroOscuro</item>
+        <item name="colorTextoBotonNeutro">@color/textoBotonNeutroOscuro</item>
+        <item name="colorTextoCancionActual">@color/textoCancionActualOscuro</item>
+        <item name="colorFondoOpacityPane">@color/fondoOpacityPaneOscuro</item>
+
+        <item name="iconoCarpeta">@drawable/icono_carpeta_oscuro</item>
+        <item name="iconoAjustes">@drawable/icono_ajustes_oscuro</item>
+        <item name="iconoBuscar">@drawable/icono_buscar</item>
+        <item name="iconoPlaylist">@drawable/icono_playlist_oscuro</item>
+        <item name="iconoFavoritosVacio">@drawable/icono_favorito_vacio_oscuro</item>
+        <item name="iconoFavoritosLleno">@drawable/icono_favoritos_lleno_oscuro</item>
+        <item name="iconoCancionAnteriorFragment">@drawable/icono_cancion_anterior_fragment_oscuro
+        </item>
+        <item name="iconoPausaFragment">@drawable/icono_pausa_fragment_oscuro</item>
+        <item name="iconoPlayFragment">@drawable/icono_play_fragment_oscuro</item>
+        <item name="iconoSiguienteCancionFragment">
+            @drawable/icono_siguiente_cancion_fragment_oscuro
+        </item>
+        <item name="iconoCancionAnteriorActivity">@drawable/icono_cancion_anterior_activity_oscuro
+        </item>
+        <item name="iconoPausaActivity">@drawable/icono_pause_activity_oscuro</item>
+        <item name="iconoPlayActivity">@drawable/icono_play_activity_oscuro</item>
+        <item name="iconoSiguienteCancionActivity">
+            @drawable/icono_siguiente_cancion_activity_oscuro
+        </item>
+        <item name="iconoCola">@drawable/icono_mostrar_cola_oscuro</item>
+        <item name="iconoFlechaAbajo">@drawable/icono_flecha_abajo_oscuro</item>
+        <item name="iconoFlechaDerecha">@drawable/icono_flecha_derecha_claro</item>
+        <item name="iconoFlechaIzquierda">@drawable/icono_flecha_izquierda_oscuro</item>
+        <item name="iconoFlechaIzquierdaPlaylist">@drawable/icono_flecha_izquierda_playlist_claro
+        </item>
+        <item name="iconoAceptar">@drawable/icono_aceptar_oscuro</item>
+        <item name="iconoGithub">@drawable/icono_github_oscuro</item>
+        <item name="iconoLinkedin">@drawable/icono_linkedin_oscuro</item>
+        <item name="iconoMostrar">@drawable/icono_mostrar_oscuro</item>
+        <item name="iconoOcultar">@drawable/icono_ocultar_oscuro</item>
+    </style>
 </resources>
