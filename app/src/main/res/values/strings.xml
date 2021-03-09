@@ -11,4 +11,9 @@
     <string name="descIconoPlayPauseFragment"><![CDATA[Icono de play, hecho por: https://www.flaticon.com/free-icon/play-and-pause-button_64595 Icono de pausa, hecho por: https://www.flaticon.com/free-icon/pause_37505?term=pause&page=1&position=31&page=1&position=31&related_id=37505&origin=search]]></string>
     <string name="descIconoCancionAnteriorFragment">Icono de siguiente canción fragment invertido</string>
     <string name="album_desconocido">Álbum desconocido</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="descIconoCarpeta"><![CDATA[Icono de carpeta, hecho por: https://www.flaticon.com/free-icon/folder_992667?term=folder&related_id=992667]]></string>
+    <string name="descIconoOcultar"><![CDATA[Icono de ocultar, hecho por: https://www.flaticon.com/free-icon/visibility_633655?term=hide&page=1&position=2&page=1&position=2&related_id=633655&origin=search]]></string>
+    <string name="separadorVertical">|</string>
 </resources>

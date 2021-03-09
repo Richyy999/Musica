@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorFondoApp"
     android:paddingTop="24dp"
-    tools:context=".ui.activities.MainActivity">
+    tools:context=".vista.activities.MainActivity">
 
     <ImageView
         android:id="@+id/btnAjustes"
@@ -64,7 +64,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:contentDescription="@string/descIconoPlaylist"
+                android:contentDescription="@string/descIconoCarpeta"
                 android:src="?attr/iconoCarpeta" />
 
             <TextView
@@ -135,7 +135,7 @@
 
     <fragment
         android:id="@+id/fragmentCola"
-        android:name="es.rbp.musica.ui.fragments.FragmentCola"
+        android:name="es.rbp.musica.vista.fragments.FragmentCola"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

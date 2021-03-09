@@ -1,4 +1,4 @@
-package es.rbp.musica.ui.fragments;
+package es.rbp.musica.vista.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

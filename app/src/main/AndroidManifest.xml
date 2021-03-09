@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/TemaClaro">
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name=".vista.activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,5 +19,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
