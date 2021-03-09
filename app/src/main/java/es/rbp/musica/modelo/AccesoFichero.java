@@ -1,4 +1,4 @@
-package es.rbp.musica.modelo.entidad;
+package es.rbp.musica.modelo;
 
 import android.content.Context;
 import android.util.Log;

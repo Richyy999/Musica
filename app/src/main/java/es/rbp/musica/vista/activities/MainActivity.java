@@ -9,13 +9,12 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 
 import es.rbp.musica.R;
-import es.rbp.musica.modelo.entidad.Ajustes;
+import es.rbp.musica.modelo.Ajustes;
 
-import static es.rbp.musica.modelo.entidad.AccesoFichero.REQUEST_PERMISO_LECTURA;
+import static es.rbp.musica.modelo.AccesoFichero.REQUEST_PERMISO_LECTURA;
 
 /**
  * @author Ricardo Bordería Pi

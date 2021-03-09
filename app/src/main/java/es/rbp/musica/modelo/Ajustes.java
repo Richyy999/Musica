@@ -1,4 +1,4 @@
-package es.rbp.musica.modelo.entidad;
+package es.rbp.musica.modelo;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static es.rbp.musica.modelo.entidad.AccesoFichero.RUTA_FICHERO_AJUSTES;
+import static es.rbp.musica.modelo.AccesoFichero.RUTA_FICHERO_AJUSTES;
 
 public class Ajustes implements Serializable {
 
