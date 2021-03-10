@@ -83,4 +83,7 @@
 
     <color name="fondoOpacityPaneClaro">#45000000</color>
     <color name="fondoOpacityPaneOscuro">#45000000</color>
+
+    <color name="fondoSeccionAjustesPulsadoClaro">#EDEDED</color>
+    <color name="fondoSeccionAjustesPulsadoOscuro">#343434</color>
 </resources>

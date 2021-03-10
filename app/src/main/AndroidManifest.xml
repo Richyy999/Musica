@@ -4,6 +4,7 @@
     package="es.rbp.musica">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,9 @@
         android:theme="@style/TemaClaro"
         tools:targetApi="q">
         <activity
+            android:name=".vista.activities.AjustesActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".vista.activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -24,4 +28,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

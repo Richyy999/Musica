@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorFondoApp"
+    android:paddingTop="24dp"
+    tools:context=".vista.activities.AjustesActivity">
+
+    <ImageView
+        android:id="@+id/btnVolverAjustes"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/descIconoFlechaIzquierda"
+        android:src="?attr/iconoFlechaIzquierda"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        style="@style/tituloActivity"
+        android:text="@string/ajustes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblTituloFiltrar"
+        style="@style/tituloAjustes"
+        android:text="@string/filtrarArchivos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnVolverAjustes" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/seccionGrandeTamano"
+        style="@style/seccionGrandeAjustes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblTituloFiltrar">
+
+        <TextView
+            android:id="@+id/lblFiltroTamano"
+            style="@style/ajuste"
+            android:text="@string/porTamano"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lblSubtituloFiltrarTamano"
+            style="@style/subtituloAjustes"
+            android:text="@string/ocultarArchivosPorTamano"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lblFiltroTamano" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchFiltrarTamano"
+            style="@style/switchAjustes"
+            app:layout_constraintBottom_toBottomOf="@+id/lblSubtituloFiltrarTamano"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/lblFiltroTamano"
+            app:thumbTint="?attr/colorThumbSwitch"
+            app:trackTint="?attr/colorFondoSwitch" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/seccionTamano"
+            style="@style/seccionPequenaAjustes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblSubtituloFiltrarTamano">
+
+            <TextView
+                android:id="@+id/lblDescFiltroTamano"
+                style="@style/subtituloAjustes"
+                android:text="@string/ocultarArchivosMenoresA"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/lblMinTamano"
+                style="@style/subtituloAjustes"
+                android:text="@string/minFiltroTamano"
+                app:layout_constraintBottom_toBottomOf="@id/seekbarTamano"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/seekbarTamano" />
+
+            <TextView
+                android:id="@+id/lblMaxTamano"
+                style="@style/subtituloAjustes"
+                android:layout_marginEnd="24dp"
+                android:text="@string/maxFiltroTamano"
+                app:layout_constraintBottom_toBottomOf="@id/seekbarTamano"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/seekbarTamano" />
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/seekbarTamano"
+                style="@style/seekbarAjustes"
+                app:layout_constraintEnd_toStartOf="@+id/lblMaxTamano"
+                app:layout_constraintStart_toEndOf="@+id/lblMinTamano"
+                app:layout_constraintTop_toBottomOf="@+id/lblDescFiltroTamano" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/seccionGrandeDuracion"
+        style="@style/seccionGrandeAjustes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seccionGrandeTamano">
+
+        <TextView
+            android:id="@+id/lblFiltroDuracion"
+            style="@style/ajuste"
+            android:text="@string/porDuracion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lblSubtituloFiltrarDuracion"
+            style="@style/subtituloAjustes"
+            android:text="@string/ocultarArchivosPorDuracion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblFiltroDuracion" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchFiltrarDuracion"
+            style="@style/switchAjustes"
+            app:layout_constraintBottom_toBottomOf="@+id/lblSubtituloFiltrarDuracion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/lblFiltroDuracion"
+            app:thumbTint="?attr/colorThumbSwitch"
+            app:trackTint="?attr/colorFondoSwitch" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/seccionDuracion"
+            style="@style/seccionPequenaAjustes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblSubtituloFiltrarDuracion">
+
+            <TextView
+                android:id="@+id/lblDescFiltroDuracion"
+                style="@style/subtituloAjustes"
+                android:text="@string/ocultarArchivosQueDurenMenosDe"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/lblMinDuracion"
+                style="@style/subtituloAjustes"
+                android:text="@string/minFiltroDuracion"
+                app:layout_constraintBottom_toBottomOf="@id/seekbarDuracion"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/seekbarDuracion" />
+
+            <TextView
+                android:id="@+id/lblMaxDuracion"
+                style="@style/subtituloAjustes"
+                android:layout_marginEnd="24dp"
+                android:text="@string/maxFiltroDuracion"
+                app:layout_constraintBottom_toBottomOf="@id/seekbarDuracion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/seekbarDuracion" />
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/seekbarDuracion"
+                style="@style/seekbarAjustes"
+                app:layout_constraintEnd_toStartOf="@+id/lblMaxDuracion"
+                app:layout_constraintStart_toEndOf="@+id/lblMinDuracion"
+                app:layout_constraintTop_toBottomOf="@+id/lblDescFiltroDuracion" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btnFiltrarCarpetas"
+        style="@style/seccionGrandeAjustes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seccionGrandeDuracion">
+
+        <TextView
+            android:id="@+id/lblFiltroCarpeta"
+            style="@style/ajuste"
+            android:text="@string/porCarpeta"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lblSubtituloFiltrarCarpeta"
+            style="@style/subtituloAjustes"
+            android:text="@string/eligeQueCarpetasMostrar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblFiltroCarpeta" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="24dp"
+            android:contentDescription="@string/descIconoFlechaDerecha"
+            android:src="?attr/iconoFlechaDerecha"
+            app:layout_constraintBottom_toBottomOf="@+id/lblSubtituloFiltrarCarpeta"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/lblFiltroCarpeta" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/lblTituloAjustesAdicionales"
+        style="@style/tituloAjustes"
+        android:text="@string/ajustesAdicionales"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnFiltrarCarpetas" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/seccionGrandeModoOscuro"
+        style="@style/seccionGrandeAjustes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblTituloAjustesAdicionales">
+
+        <TextView
+            android:id="@+id/lblModoOscuro"
+            style="@style/ajuste"
+            android:text="@string/modoOscuro"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchModoOscuro"
+            style="@style/switchAjustes"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:thumbTint="?attr/colorThumbSwitch"
+            app:trackTint="?attr/colorFondoSwitch" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/lblTituloAcercaDe"
+        style="@style/tituloAjustes"
+        android:text="@string/acercaDe"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seccionGrandeModoOscuro" />
+
+    <TextView
+        android:id="@+id/lblVersion"
+        style="@style/ajuste"
+        android:layout_marginTop="8dp"
+        android:text="@string/version"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblTituloAcercaDe" />
+
+    <TextView
+        android:id="@+id/lblSubtituloVersion"
+        style="@style/subtituloAjustes"
+        android:text="@string/versionActual"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblVersion" />
+
+    <TextView
+        android:id="@+id/lblDesarrollado"
+        style="@style/ajuste"
+        android:layout_marginTop="16dp"
+        android:text="@string/desarrolladoPor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblSubtituloVersion" />
+
+    <TextView
+        style="@style/subtituloAjustes"
+        android:text="@string/autor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblDesarrollado" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

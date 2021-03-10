@@ -29,6 +29,7 @@
         <item name="colorTextoBotonNeutro">@color/textoBotonNeutroClaro</item>
         <item name="colorTextoCancionActual">@color/textoCancionActualClaro</item>
         <item name="colorFondoOpacityPane">@color/fondoOpacityPaneClaro</item>
+        <item name="colorFondoSeccionAjustesPulsado">@color/fondoSeccionAjustesPulsadoClaro</item>
 
         <item name="iconoCarpeta">@drawable/icono_carpeta_claro</item>
         <item name="iconoAjustes">@drawable/icono_ajustes_claro</item>
@@ -92,6 +93,7 @@
         <item name="colorTextoBotonNeutro">@color/textoBotonNeutroOscuro</item>
         <item name="colorTextoCancionActual">@color/textoCancionActualOscuro</item>
         <item name="colorFondoOpacityPane">@color/fondoOpacityPaneOscuro</item>
+        <item name="colorFondoSeccionAjustesPulsado">@color/fondoSeccionAjustesPulsadoOscuro</item>
 
         <item name="iconoCarpeta">@drawable/icono_carpeta_oscuro</item>
         <item name="iconoAjustes">@drawable/icono_ajustes_oscuro</item>
@@ -205,5 +207,67 @@
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:freezesText">true</item>
         <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="tituloActivity">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:textColor">?attr/colorTituloActivity</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="tituloAjustes">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textColor">?attr/colorTituloActivity</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ajuste">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:textColor">?attr/colorTitulo</item>
+    </style>
+
+    <style name="subtituloAjustes">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:textColor">?attr/colorSubtitulo</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="switchAjustes">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">24dp</item>
+    </style>
+
+    <style name="seekbarAjustes">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:indeterminate">false</item>
+        <item name="android:progressDrawable">@drawable/seekbar_ajustes</item>
+        <item name="android:splitTrack">false</item>
+    </style>
+
+    <style name="seccionGrandeAjustes">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="seccionPequenaAjustes" parent="seccionGrandeAjustes">
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
     </style>
 </resources>

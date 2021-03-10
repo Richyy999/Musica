@@ -11,6 +11,7 @@
     <attr name="colorSeparador" format="color" />
     <attr name="colorFondoCampoTexto" format="color" />
     <attr name="colorFondoApp" format="color" />
+    <attr name="colorFondoSeccionAjustesPulsado" format="color" />
 
     <attr name="colorProgresoTotal" format="color" />
     <attr name="colorProgresoActual" format="color" />

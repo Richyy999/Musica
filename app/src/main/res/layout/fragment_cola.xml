@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <SeekBar
+    <androidx.appcompat.widget.AppCompatSeekBar
         android:id="@+id/seekbarFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="4dp"
         android:indeterminate="false"
-        android:progressDrawable="@drawable/seekbar"
+        android:progressDrawable="@drawable/seekbar_fragment"
         android:splitTrack="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

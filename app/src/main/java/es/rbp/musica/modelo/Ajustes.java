@@ -3,15 +3,10 @@ package es.rbp.musica.modelo;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static es.rbp.musica.modelo.AccesoFichero.RUTA_FICHERO_AJUSTES;
 
 public class Ajustes implements Serializable {
 
@@ -19,21 +14,40 @@ public class Ajustes implements Serializable {
 
     public static final int SIN_FILTRO = -1;
 
+    public static final String PROPIEDAD_MODO_OSCURO = "modoOscuro";
+    public static final String PROPIEDAD_FILTRO_TAMANO = "tamano";
+    public static final String PROPIEDAD_FILTRO_DURACION = "duracion";
+
     private static final String TAG = "AJUSTES";
 
     private static Ajustes ajustes;
 
     private List<String> carpetasOcultas;
 
-    private boolean modoClaro;
+    private boolean modoOscuro;
 
-    private int filtroKB;
-    private int filtroSeg;
+    private int filtroTanamo;
+    private int filtroDuracion;
 
     /**
-     * Constructor por defecto de la clase
+     * Constructor por defecto de la clase. Para obtener una instancia de la clase, usar el método {@link Ajustes#getInstance(Context)}
      */
     private Ajustes() {
+    }
+
+    /**
+     * Constructor de la clase. Para obtener una instancia de la clase, usar el método {@link Ajustes#getInstance(Context)}
+     *
+     * @param carpetasOcultas lista con las carpetas ocultas
+     * @param modoOscuro      true si está en modo oscuro, false en caso contrario
+     * @param filtroTanamo    valor en KB del filtro por tamaño
+     * @param filtroDuracion  valor en segundos del filtro por duracion
+     */
+    public Ajustes(List<String> carpetasOcultas, boolean modoOscuro, int filtroTanamo, int filtroDuracion) {
+        this.carpetasOcultas = carpetasOcultas;
+        this.modoOscuro = modoOscuro;
+        this.filtroTanamo = filtroTanamo;
+        this.filtroDuracion = filtroDuracion;
     }
 
     /**
@@ -43,51 +57,38 @@ public class Ajustes implements Serializable {
      */
     private Ajustes(Context context) {
         AccesoFichero accesoFichero = AccesoFichero.getInstance(context);
-        File archivoAjustes = accesoFichero.leerFichero(RUTA_FICHERO_AJUSTES);
-        if (archivoAjustes.exists())
-            leerAjustes(archivoAjustes);
-        else
+        ajustes = accesoFichero.leerAjustes();
+        if (ajustes == null)
             crearAjustes(context);
     }
 
     /**
-     * Devuelve la instancia de la clase, si no existe, develve una nueva
+     * Devuelve la instancia de la clase, si no existe, develve una nueva.
+     * Usar este método para obtener una instancia de la clase
      *
      * @param context contexto de la aplicación
      * @return Instancia de la clase
      */
     public static Ajustes getInstance(Context context) {
         if (ajustes == null)
-            ajustes = new Ajustes(context);
+            new Ajustes(context);
+        Log.i(TAG, ajustes.toString());
         return ajustes;
-    }
-
-    /**
-     * Instancia la clase a partir de la instancia almacenada en el fichero
-     *
-     * @param archivoAjustes fichero en el que se almacena l ainstancia de la clase
-     */
-    private void leerAjustes(File archivoAjustes) {
-        try (FileInputStream fis = new FileInputStream(archivoAjustes);
-             ObjectInputStream ois = new ObjectInputStream(fis)) {
-            ajustes = (Ajustes) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            Log.e(TAG, e.toString());
-        }
     }
 
     /**
      * En el caso de que el archivo de ajustes no exista, crea una instancia con los valores por defecto y almacena dicha instancia
      */
     private void crearAjustes(Context context) {
+        Log.i(TAG, "Ajustes nuevos");
         ajustes = new Ajustes();
-        modoClaro = true;
+        ajustes.modoOscuro = false;
 
-        carpetasOcultas = new ArrayList<>();
-        carpetasOcultas.add("/storage/emulated/0/WhatsApp/Media/WhatsApp Audio");
+        ajustes.carpetasOcultas = new ArrayList<>();
+        ajustes.carpetasOcultas.add("/storage/emulated/0/WhatsApp/Media/WhatsApp Audio");
 
-        filtroKB = 512;
-        filtroSeg = 30;
+        ajustes.filtroTanamo = 512;
+        ajustes.filtroDuracion = 30;
 
         guardarAjustes(context);
     }
@@ -99,7 +100,11 @@ public class Ajustes implements Serializable {
      */
     public void guardarAjustes(Context context) {
         AccesoFichero accesoFichero = AccesoFichero.getInstance(context);
-        accesoFichero.guardarObjeto(this, RUTA_FICHERO_AJUSTES);
+        try {
+            accesoFichero.guardarAjustes(ajustes);
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
     }
 
     public List<String> getCarpetasOcultas() {
@@ -110,27 +115,36 @@ public class Ajustes implements Serializable {
         this.carpetasOcultas = carpetasOcultas;
     }
 
-    public boolean isModoClaro() {
-        return modoClaro;
+    public boolean isModoOscuro() {
+        return modoOscuro;
     }
 
-    public void setModoClaro(boolean modoClaro) {
-        this.modoClaro = modoClaro;
+    public void setModoOscuro(boolean modoOscuro) {
+        this.modoOscuro = modoOscuro;
     }
 
-    public int getFiltroKB() {
-        return filtroKB;
+    public int getFiltroTanamo() {
+        return filtroTanamo;
     }
 
-    public void setFiltroKB(int filtroKB) {
-        this.filtroKB = filtroKB;
+    public void setFiltroTanamo(int filtroTanamo) {
+        this.filtroTanamo = filtroTanamo;
     }
 
-    public int getFiltroSeg() {
-        return filtroSeg;
+    public int getFiltroDuracion() {
+        return filtroDuracion;
     }
 
-    public void setFiltroSeg(int filtroSeg) {
-        this.filtroSeg = filtroSeg;
+    public void setFiltroDuracion(int filtroDuracion) {
+        this.filtroDuracion = filtroDuracion;
+    }
+
+    @Override
+    public String toString() {
+        return "Ajustes{" +
+                "modoOscuro=" + modoOscuro +
+                ", filtroKB=" + filtroTanamo +
+                ", filtroSeg=" + filtroDuracion +
+                '}';
     }
 }
