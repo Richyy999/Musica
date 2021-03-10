@@ -14,6 +14,8 @@ import java.util.Properties;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_FILTRO_DURACION;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_FILTRO_TAMANO;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_MODO_OSCURO;
+import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_ULTIMO_FILTRO_DURACION;
+import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_ULTIMO_FILTRO_TAMANO;
 
 public class AccesoFichero {
 
@@ -22,7 +24,7 @@ public class AccesoFichero {
     private static final String RUTA_FICHERO_AJUSTES = "ajustes.properties";
     private static final String RUTA_CARPETAS_OCULTAS = "carpetasOcultas.txt";
 
-    private static final String TAG = "ACCESO_FICHARO";
+    private static final String TAG = "ACCESO FICHERO";
 
     private static AccesoFichero accesoFichero;
 
@@ -65,21 +67,32 @@ public class AccesoFichero {
             return null;
         }
         if (!properties.containsKey(PROPIEDAD_MODO_OSCURO) || !properties.containsKey(PROPIEDAD_FILTRO_TAMANO)
-                || !properties.containsKey(PROPIEDAD_FILTRO_DURACION)) {
+                || !properties.containsKey(PROPIEDAD_FILTRO_DURACION) || !properties.containsKey(PROPIEDAD_ULTIMO_FILTRO_TAMANO)
+                || !properties.containsKey(PROPIEDAD_ULTIMO_FILTRO_DURACION)) {
             Log.d(TAG, "Ajustes properties corrupto");
             return null;
         }
         boolean mosoOscuro = Boolean.parseBoolean(properties.getProperty(PROPIEDAD_MODO_OSCURO));
         int filtroTamano = Integer.parseInt(properties.getProperty(PROPIEDAD_FILTRO_TAMANO));
         int filtroDuracion = Integer.parseInt(properties.getProperty(PROPIEDAD_FILTRO_DURACION));
+        int ultimoFiltroTamano = Integer.parseInt(properties.getProperty(PROPIEDAD_ULTIMO_FILTRO_TAMANO));
+        int ultimoFiltroDuracion = Integer.parseInt(properties.getProperty(PROPIEDAD_ULTIMO_FILTRO_DURACION));
 
-        return new Ajustes(carpetasOcultas, mosoOscuro, filtroTamano, filtroDuracion);
+        return new Ajustes(carpetasOcultas, mosoOscuro, filtroTamano, filtroDuracion, ultimoFiltroTamano, ultimoFiltroDuracion);
     }
 
+    /**
+     * Almacena los valores de los ajustes en los ficheros
+     *
+     * @param ajustes instancia de la clase con los datos de los ajustes
+     * @throws IOException error al guardar los datos
+     */
     public void guardarAjustes(Ajustes ajustes) throws IOException {
         String modoOscuro = String.valueOf(ajustes.isModoOscuro());
-        String filtroTamano = String.valueOf(ajustes.getFiltroTanamo());
-        String filtroDuracion = String.valueOf(ajustes.getFiltroDuracion());
+        String filtroTamano = String.valueOf(ajustes.getFiltroTanamoActual());
+        String filtroDuracion = String.valueOf(ajustes.getFiltroDuracionActual());
+        String ultimoFiltroTamano = String.valueOf(ajustes.getUltimoFiltroTamano());
+        String ultimoFiltroDuracion = String.valueOf(ajustes.getUltimoFiltroDuracion());
 
         File ficheroProperties = new File(context.getFilesDir(), RUTA_FICHERO_AJUSTES);
         if (!ficheroProperties.exists())
@@ -90,6 +103,8 @@ public class AccesoFichero {
         properties.setProperty(PROPIEDAD_MODO_OSCURO, modoOscuro);
         properties.setProperty(PROPIEDAD_FILTRO_TAMANO, filtroTamano);
         properties.setProperty(PROPIEDAD_FILTRO_DURACION, filtroDuracion);
+        properties.setProperty(PROPIEDAD_ULTIMO_FILTRO_TAMANO, ultimoFiltroTamano);
+        properties.setProperty(PROPIEDAD_ULTIMO_FILTRO_DURACION, ultimoFiltroDuracion);
         properties.store(new FileOutputStream(ficheroProperties), "");
 
         File ficheroCarpetas = new File(context.getFilesDir(), RUTA_CARPETAS_OCULTAS);
@@ -103,5 +118,6 @@ public class AccesoFichero {
         FileOutputStream fos = new FileOutputStream(ficheroCarpetas);
         fos.write(carpetasOcultas.getBytes());
         fos.close();
+        Log.i(TAG, "Ajustes guardados");
     }
 }

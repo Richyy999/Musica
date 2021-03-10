@@ -244,7 +244,7 @@
     </style>
 
     <style name="switchAjustes">
-        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginEnd">24dp</item>
     </style>
@@ -259,6 +259,8 @@
     </style>
 
     <style name="seccionGrandeAjustes">
+        <item name="android:animateLayoutChanges">true</item>
+        <item name="android:background">@drawable/fondo_seccion_ajustes</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">8dp</item>

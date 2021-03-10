@@ -14,11 +14,21 @@ public class Ajustes implements Serializable {
 
     public static final int SIN_FILTRO = -1;
 
+    public static final int MAX_FILTRO_TAMANO = 2048;
+
+    public static final int MAX_FILTRO_DURACION = 300;
+
     public static final String PROPIEDAD_MODO_OSCURO = "modoOscuro";
+
     public static final String PROPIEDAD_FILTRO_TAMANO = "tamano";
+    public static final String PROPIEDAD_ULTIMO_FILTRO_TAMANO = "ultimoTamano";
     public static final String PROPIEDAD_FILTRO_DURACION = "duracion";
+    public static final String PROPIEDAD_ULTIMO_FILTRO_DURACION = "ultimoDuracion";
 
     private static final String TAG = "AJUSTES";
+
+    private static final int FILTRO_TAMANO_POR_DEFECTO = 512;
+    private static final int FILTRO_DURACION_POR_DEFECTO = 30;
 
     private static Ajustes ajustes;
 
@@ -26,8 +36,11 @@ public class Ajustes implements Serializable {
 
     private boolean modoOscuro;
 
-    private int filtroTanamo;
-    private int filtroDuracion;
+    private int filtroTanamoActual;
+    private int filtroDuracionActual;
+
+    private int ultimoFiltroTamano;
+    private int ultimoFiltroDuracion;
 
     /**
      * Constructor por defecto de la clase. Para obtener una instancia de la clase, usar el método {@link Ajustes#getInstance(Context)}
@@ -38,16 +51,19 @@ public class Ajustes implements Serializable {
     /**
      * Constructor de la clase. Para obtener una instancia de la clase, usar el método {@link Ajustes#getInstance(Context)}
      *
-     * @param carpetasOcultas lista con las carpetas ocultas
-     * @param modoOscuro      true si está en modo oscuro, false en caso contrario
-     * @param filtroTanamo    valor en KB del filtro por tamaño
-     * @param filtroDuracion  valor en segundos del filtro por duracion
+     * @param carpetasOcultas      lista con las carpetas ocultas
+     * @param modoOscuro           true si está en modo oscuro, false en caso contrario
+     * @param filtroTanamoActual   valor en KB del filtro por tamaño
+     * @param filtroDuracionActual valor en segundos del filtro por duracion
      */
-    public Ajustes(List<String> carpetasOcultas, boolean modoOscuro, int filtroTanamo, int filtroDuracion) {
+    public Ajustes(List<String> carpetasOcultas, boolean modoOscuro, int filtroTanamoActual, int filtroDuracionActual,
+                   int ultimoFiltroTamano, int ultimoFiltroDuracion) {
         this.carpetasOcultas = carpetasOcultas;
         this.modoOscuro = modoOscuro;
-        this.filtroTanamo = filtroTanamo;
-        this.filtroDuracion = filtroDuracion;
+        this.filtroTanamoActual = filtroTanamoActual;
+        this.filtroDuracionActual = filtroDuracionActual;
+        this.ultimoFiltroTamano = ultimoFiltroTamano;
+        this.ultimoFiltroDuracion = ultimoFiltroDuracion;
     }
 
     /**
@@ -87,8 +103,11 @@ public class Ajustes implements Serializable {
         ajustes.carpetasOcultas = new ArrayList<>();
         ajustes.carpetasOcultas.add("/storage/emulated/0/WhatsApp/Media/WhatsApp Audio");
 
-        ajustes.filtroTanamo = 512;
-        ajustes.filtroDuracion = 30;
+        ajustes.filtroTanamoActual = FILTRO_TAMANO_POR_DEFECTO;
+        ajustes.filtroDuracionActual = FILTRO_DURACION_POR_DEFECTO;
+
+        ajustes.ultimoFiltroTamano = FILTRO_TAMANO_POR_DEFECTO;
+        ajustes.ultimoFiltroDuracion = FILTRO_DURACION_POR_DEFECTO;
 
         guardarAjustes(context);
     }
@@ -107,6 +126,16 @@ public class Ajustes implements Serializable {
         }
     }
 
+    public void actualizarFiltroTamano(int nuevoValor) {
+        this.ultimoFiltroTamano = this.filtroTanamoActual;
+        this.filtroTanamoActual = nuevoValor;
+    }
+
+    public void actualizarFiltroDuracion(int nuevoValor) {
+        this.ultimoFiltroDuracion = this.filtroDuracionActual;
+        this.filtroDuracionActual = nuevoValor;
+    }
+
     public List<String> getCarpetasOcultas() {
         return carpetasOcultas;
     }
@@ -123,28 +152,47 @@ public class Ajustes implements Serializable {
         this.modoOscuro = modoOscuro;
     }
 
-    public int getFiltroTanamo() {
-        return filtroTanamo;
+    public int getFiltroTanamoActual() {
+        return filtroTanamoActual;
     }
 
-    public void setFiltroTanamo(int filtroTanamo) {
-        this.filtroTanamo = filtroTanamo;
+    public void setFiltroTanamoActual(int filtroTanamoActual) {
+        this.filtroTanamoActual = filtroTanamoActual;
     }
 
-    public int getFiltroDuracion() {
-        return filtroDuracion;
+    public int getFiltroDuracionActual() {
+        return filtroDuracionActual;
     }
 
-    public void setFiltroDuracion(int filtroDuracion) {
-        this.filtroDuracion = filtroDuracion;
+    public void setFiltroDuracionActual(int filtroDuracionActual) {
+        this.filtroDuracionActual = filtroDuracionActual;
+    }
+
+    public int getUltimoFiltroTamano() {
+        return ultimoFiltroTamano;
+    }
+
+    public void setUltimoFiltroTamano(int ultimoFiltroTamano) {
+        this.ultimoFiltroTamano = ultimoFiltroTamano;
+    }
+
+    public int getUltimoFiltroDuracion() {
+        return ultimoFiltroDuracion;
+    }
+
+    public void setUltimoFiltroDuracion(int ultimoFiltroDuracion) {
+        this.ultimoFiltroDuracion = ultimoFiltroDuracion;
     }
 
     @Override
     public String toString() {
         return "Ajustes{" +
-                "modoOscuro=" + modoOscuro +
-                ", filtroKB=" + filtroTanamo +
-                ", filtroSeg=" + filtroDuracion +
+                "carpetasOcultas=" + carpetasOcultas +
+                ", modoOscuro=" + modoOscuro +
+                ", filtroTanamoActual=" + filtroTanamoActual +
+                ", filtroDuracionActual=" + filtroDuracionActual +
+                ", ultimoFiltroTamano=" + ultimoFiltroTamano +
+                ", ultimoFiltroDuracion=" + ultimoFiltroDuracion +
                 '}';
     }
 }
