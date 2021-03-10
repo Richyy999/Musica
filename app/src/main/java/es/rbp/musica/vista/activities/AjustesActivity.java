@@ -27,8 +27,6 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
 
     private Ajustes ajustes;
 
-    private ImageView btnVolver;
-
     private AppCompatSeekBar seekbarTamano;
     private AppCompatSeekBar seekbarDuracion;
 
@@ -202,7 +200,7 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
         seccionGrandeCarpetas = findViewById(R.id.btnFiltrarCarpetas);
         seccionGrandeCarpetas.setOnClickListener(this);
 
-        btnVolver = findViewById(R.id.btnVolverAjustes);
+        ImageView btnVolver = findViewById(R.id.btnVolverAjustes);
         btnVolver.setOnClickListener(this);
     }
 
