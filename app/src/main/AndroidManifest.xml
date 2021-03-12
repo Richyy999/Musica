@@ -15,6 +15,9 @@
         android:theme="@style/TemaClaro"
         tools:targetApi="q">
         <activity
+            android:name=".vista.activities.AjustesActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".vista.activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -24,4 +27,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

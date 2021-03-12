@@ -16,4 +16,27 @@
     <string name="descIconoCarpeta"><![CDATA[Icono de carpeta, hecho por: https://www.flaticon.com/free-icon/folder_992667?term=folder&related_id=992667]]></string>
     <string name="descIconoOcultar"><![CDATA[Icono de ocultar, hecho por: https://www.flaticon.com/free-icon/visibility_633655?term=hide&page=1&position=2&page=1&position=2&related_id=633655&origin=search]]></string>
     <string name="separadorVertical">|</string>
+    <string name="descIconoFlechaIzquierda"><![CDATA[Icono de volver que apunta hacia la derecha, hecho por: https://www.flaticon.com/free-icon/left-arrow_860790?term=left%20arrow&page=1&position=7&page=1&position=7&related_id=860790&origin=style]]></string>
+    <string name="ajustes">Ajustes</string>
+    <string name="filtrarArchivos">FILTRAR ARCHIVOS</string>
+    <string name="porTamano">Por tamaño</string>
+    <string name="ocultarArchivosPorTamano">Ocultar archivos por tamaño</string>
+    <string name="ocultarArchivosMenoresA">"Ocultar archivos menores a "</string>
+    <string name="minFiltroTamano">0KB</string>
+    <string name="maxFiltroTamano">2MB</string>
+    <string name="porDuracion">Por duración</string>
+    <string name="ocultarArchivosPorDuracion">Ocultar archivos según su duración</string>
+    <string name="ocultarArchivosQueDurenMenosDe">"Ocultar archivos que duren menos de "</string>
+    <string name="minFiltroDuracion">0 seg</string>
+    <string name="maxFiltroDuracion">5 min</string>
+    <string name="porCarpeta">Por carpeta</string>
+    <string name="eligeQueCarpetasMostrar">Elige que carpetas mostrar</string>
+    <string name="descIconoFlechaDerecha">Icono de flecha Izquierda invertido</string>
+    <string name="ajustesAdicionales">AJUSTES ADICIONALES</string>
+    <string name="modoOscuro">Modo oscuro</string>
+    <string name="acercaDe">ACERCA DE</string>
+    <string name="version">Versión</string>
+    <string name="versionActual">Verión 0.1</string>
+    <string name="desarrolladoPor">Desarrollado por</string>
+    <string name="autor">Ricardo Bordería Pi</string>
 </resources>
