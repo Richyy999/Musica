@@ -1,12 +1,16 @@
 package es.rbp.musica.modelo;
 
 import android.content.Context;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.List;
+
+import es.rbp.musica.modelo.entidad.Cancion;
 
 public class AccesoFichero {
 
@@ -19,6 +23,8 @@ public class AccesoFichero {
     private static final String TAG = "ACCESO_FICHARO";
 
     private static AccesoFichero accesoFichero;
+
+    private List<Cancion> todasCanciones;
 
     private Context context;
 
@@ -56,5 +62,18 @@ public class AccesoFichero {
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
+    }
+
+    public List<Cancion> getTodasCanciones() {
+        if (todasCanciones == null)
+            leerCanciones();
+        return todasCanciones;
+    }
+
+    private void leerCanciones() {
+        String seleccion = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI + " != 0";
+        String[] proyeccion = {
+                MediaStore.Audio.Media.ARTIST
+        };
     }
 }
