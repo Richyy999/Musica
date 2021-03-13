@@ -94,6 +94,7 @@ public class AdaptadorCarpetas extends RecyclerView.Adapter<AdaptadorCarpetas.My
         Ajustes ajustes = Ajustes.getInstance(context);
         Carpeta carpetaEliminada = carpetas.get(indice);
         ajustes.anadirCarpetaOculta(carpetaEliminada.getRuta());
+        ajustes.guardarAjustes(context);
         carpetas.remove(indice);
         notifyItemRemoved(indice);
         notifyItemRangeChanged(indice, carpetas.size());
