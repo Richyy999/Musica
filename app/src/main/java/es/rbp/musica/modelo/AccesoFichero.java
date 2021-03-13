@@ -1,6 +1,7 @@
 package es.rbp.musica.modelo;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -8,12 +9,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import es.rbp.musica.modelo.entidad.Cancion;
+import es.rbp.musica.modelo.entidad.Carpeta;
+
 import java.nio.file.Files;
-import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_FILTRO_DURACION;
@@ -135,9 +139,40 @@ public class AccesoFichero {
     }
 
     private void leerCanciones() {
-        String seleccion = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI + " != 0";
+        String seleccion = MediaStore.Audio.Media.IS_MUSIC + " != 0";
         String[] proyeccion = {
-                MediaStore.Audio.Media.ARTIST
+                MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.DURATION,
+                MediaStore.Audio.Media.SIZE
         };
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, proyeccion, seleccion, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            todasCanciones = new ArrayList<>();
+            do {
+                todasCanciones.add(new Cancion(cursor.getString(0), cursor.getString(1), cursor.getString(2),
+                        cursor.getString(3), cursor.getString(4), cursor.getString(5)));
+            } while (cursor.moveToNext());
+            cursor.close();
+        } else
+            Log.i(TAG, "Sin música");
+    }
+
+    public List<Carpeta> getCarpetas(List<Cancion> canciones) {
+        List<Carpeta> todasCarpetas = new ArrayList<>();
+        Map<String, List<Cancion>> mapaCarpetas = new HashMap<>();
+        for (Cancion cancion : canciones) {
+            if (!mapaCarpetas.containsKey(cancion.getCarpetaPadre()))
+                mapaCarpetas.put(cancion.getCarpetaPadre(), new ArrayList<Cancion>());
+            mapaCarpetas.get(cancion.getCarpetaPadre()).add(cancion);
+        }
+
+        for (Map.Entry<String, List<Cancion>> carpetas : mapaCarpetas.entrySet()) {
+            todasCarpetas.add(new Carpeta(carpetas.getKey(), carpetas.getValue()));
+        }
+        return todasCarpetas;
     }
 }

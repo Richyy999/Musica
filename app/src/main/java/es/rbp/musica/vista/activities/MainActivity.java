@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.Intent;
@@ -12,9 +14,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.Ajustes;
+import es.rbp.musica.vista.fragments.FragmentCarpetas;
 
 import static es.rbp.musica.modelo.AccesoFichero.REQUEST_PERMISO_LECTURA;
 
@@ -22,6 +27,12 @@ import static es.rbp.musica.modelo.AccesoFichero.REQUEST_PERMISO_LECTURA;
  * @author Ricardo Bordería Pi
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String TAG = "Main Activity";
+
+    private FragmentCarpetas carpetas;
+
+    private TextView lblTituloFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,5 +85,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void cargarVista() {
         ImageView btnAjustes = findViewById(R.id.btnAjustes);
         btnAjustes.setOnClickListener(this);
+
+        lblTituloFragment = findViewById(R.id.lblTituloMenu);
+        cargarFragmentCarpetas();
+    }
+
+    private void cargarFragmentCarpetas() {
+        lblTituloFragment.setText(R.string.carpetas);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        if (carpetas == null)
+            carpetas = new FragmentCarpetas();
+
+        transaction.replace(R.id.contenedorFragment, carpetas);
+        transaction.commit();
     }
 }

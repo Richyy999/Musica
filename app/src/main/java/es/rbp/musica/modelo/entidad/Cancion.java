@@ -1,6 +1,14 @@
 package es.rbp.musica.modelo.entidad;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
+
+import java.io.File;
 import java.io.Serializable;
+
+import es.rbp.musica.R;
 
 public class Cancion implements Serializable {
 
@@ -9,40 +17,43 @@ public class Cancion implements Serializable {
     public static final String ALBUM_DESCONOCIDO = "Álbum desconocido";
     public static final String ARTISTA_DESCONOCIDO = "Artista desconocido";
 
-    private String nombreAlbum;
-    private String imagenAlbum;
+    private String album;
     private String nombre;
     private String artista;
     private String datos;
-    private String ruta;
 
-    public Cancion(String nombreAlbum, String imagenAlbum, String nombre, String artista, String datos, String ruta) {
-        this.nombreAlbum = nombreAlbum;
-        this.imagenAlbum = imagenAlbum;
+    private int duracion;
+    private int tamano;
+
+    public Cancion(String album, String nombre, String artista, String datos, String duracion, String tamano) {
+        this.album = album;
         this.nombre = nombre;
         this.artista = artista;
         this.datos = datos;
-        this.ruta = ruta;
+        this.duracion = Integer.parseInt(duracion);
+        this.tamano = Integer.parseInt(tamano);
+    }
+
+    public Bitmap getImagenAlbum(Context context) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(datos);
+        byte[] byts = retriever.getEmbeddedPicture();
+        if (byts != null)
+            return BitmapFactory.decodeByteArray(byts, 0, byts.length);
+        return BitmapFactory.decodeResource(context.getResources(), R.drawable.imagen_playlist);
     }
 
     public String getCarpetaPadre() {
-        return ruta.substring(0, ruta.lastIndexOf("/"));
+        File file = new File(datos);
+        return file.getParent();
     }
 
-    public String getNombreAlbum() {
-        return nombreAlbum;
+    public String getAlbum() {
+        return album;
     }
 
-    public void setNombreAlbum(String nombreAlbum) {
-        this.nombreAlbum = nombreAlbum;
-    }
-
-    public String getImagenAlbum() {
-        return imagenAlbum;
-    }
-
-    public void setImagenAlbum(String imagenAlbum) {
-        this.imagenAlbum = imagenAlbum;
+    public void setAlbum(String album) {
+        this.album = album;
     }
 
     public String getNombre() {
@@ -69,11 +80,27 @@ public class Cancion implements Serializable {
         this.datos = datos;
     }
 
-    public String getRuta() {
-        return ruta;
+    public int getDuracion() {
+        return duracion;
     }
 
-    public void setRuta(String ruta) {
-        this.ruta = ruta;
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    @Override
+    public String toString() {
+        return "Cancion{" +
+                "nombre='" + nombre + '\'' +
+                ", datos='" + datos + '\'' +
+                '}';
     }
 }

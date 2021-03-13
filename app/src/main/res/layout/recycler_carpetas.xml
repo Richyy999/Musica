@@ -51,7 +51,7 @@
         android:id="@+id/lblNumCanciones"
         style="@style/subtituloRecyclerView"
         android:layout_marginStart="8dp"
-        android:text="12 canciones"
+        android:text="@string/canciones"
         app:layout_constraintBottom_toBottomOf="@id/separador"
         app:layout_constraintStart_toEndOf="@+id/imgCarpeta" />
 

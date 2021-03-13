@@ -136,6 +136,10 @@ public class Ajustes implements Serializable {
         this.filtroDuracionActual = nuevoValor;
     }
 
+    public void anadirCarpetaOculta(String carpeta) {
+        this.carpetasOcultas.add(carpeta);
+    }
+
     public List<String> getCarpetasOcultas() {
         return carpetasOcultas;
     }
