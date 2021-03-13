@@ -40,7 +40,6 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="download"
         android:textColor="?attr/colorTitulo"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/imgOcultar"
@@ -68,7 +67,6 @@
         style="@style/subtituloRecyclerViewMarquee"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="8dp"
-        android:text="storage/emulated/0/download/"
         app:layout_constraintBottom_toBottomOf="@id/separador"
         app:layout_constraintEnd_toStartOf="@+id/imgOcultar"
         app:layout_constraintStart_toEndOf="@+id/lblSeparador" />
