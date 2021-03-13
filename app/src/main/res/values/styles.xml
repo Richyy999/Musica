@@ -143,7 +143,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">?attr/colorNombreIcono</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="tituloMenu">
@@ -152,7 +152,7 @@
         <item name="android:layout_marginStart">24dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:textColor">?attr/colorTituloMenu</item>
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="subtituloFragment">
@@ -163,7 +163,7 @@
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:ellipsize">marquee</item>
         <item name="android:textColor">?attr/colorSubtituloFragment</item>
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="botonesFragment">
@@ -186,14 +186,14 @@
         <item name="android:freezesText">true</item>
         <item name="android:singleLine">true</item>
         <item name="android:textColor">?attr/colorTitulo</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="subtituloRecyclerView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:textColor">?attr/colorSubtitulo</item>
     </style>
@@ -240,7 +240,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">24dp</item>
         <item name="android:textColor">?attr/colorSubtitulo</item>
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="switchAjustes">

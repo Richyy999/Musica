@@ -2,15 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="45dp"
     android:layout_marginStart="24dp"
     android:layout_marginEnd="24dp"
     android:background="?attr/colorFondoApp">
 
     <ImageView
         android:id="@+id/imgCarpeta"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:contentDescription="@string/descIconoCarpeta"
         android:src="?attr/iconoCarpeta"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -42,7 +42,7 @@
         android:singleLine="true"
         android:text="download"
         android:textColor="?attr/colorTitulo"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/imgOcultar"
         app:layout_constraintStart_toEndOf="@+id/imgCarpeta"
         app:layout_constraintTop_toTopOf="parent" />

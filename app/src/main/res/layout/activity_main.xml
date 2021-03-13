@@ -62,8 +62,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:contentDescription="@string/descIconoCarpeta"
                 android:src="?attr/iconoCarpeta" />
 
@@ -82,8 +82,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:contentDescription="@string/descIconoPlaylist"
                 android:src="?attr/iconoPlaylist" />
 
@@ -102,8 +102,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:contentDescription="@string/descIconoPlaylist"
                 android:src="?attr/iconoFavoritosLleno" />
 
