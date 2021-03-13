@@ -226,6 +226,7 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
     }
 
     private void abrirCarpetas() {
-
+        Intent intent = new Intent(this, FiltroCarpetasActivity.class);
+        startActivity(intent);
     }
 }

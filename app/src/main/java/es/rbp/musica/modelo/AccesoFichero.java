@@ -160,19 +160,4 @@ public class AccesoFichero {
         } else
             Log.i(TAG, "Sin música");
     }
-
-    public List<Carpeta> getCarpetas(List<Cancion> canciones) {
-        List<Carpeta> todasCarpetas = new ArrayList<>();
-        Map<String, List<Cancion>> mapaCarpetas = new HashMap<>();
-        for (Cancion cancion : canciones) {
-            if (!mapaCarpetas.containsKey(cancion.getCarpetaPadre()))
-                mapaCarpetas.put(cancion.getCarpetaPadre(), new ArrayList<Cancion>());
-            mapaCarpetas.get(cancion.getCarpetaPadre()).add(cancion);
-        }
-
-        for (Map.Entry<String, List<Cancion>> carpetas : mapaCarpetas.entrySet()) {
-            todasCarpetas.add(new Carpeta(carpetas.getKey(), carpetas.getValue()));
-        }
-        return todasCarpetas;
-    }
 }

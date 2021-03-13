@@ -21,6 +21,7 @@ import es.rbp.musica.modelo.entidad.Carpeta;
 import es.rbp.musica.vista.adaptadores.AdaptadorCarpetas;
 
 import static es.rbp.musica.modelo.AudioUtils.filtrarCanciones;
+import static es.rbp.musica.modelo.AudioUtils.getCarpetas;
 
 public class FragmentCarpetas extends Fragment implements AdaptadorCarpetas.OnCarpetaClicked {
 
@@ -32,7 +33,7 @@ public class FragmentCarpetas extends Fragment implements AdaptadorCarpetas.OnCa
         AccesoFichero accesoFichero = AccesoFichero.getInstance(getContext());
         ajustes = Ajustes.getInstance(getContext());
         List<Cancion> canciones = filtrarCanciones(accesoFichero.getTodasCanciones(), ajustes);
-        carpetas = accesoFichero.getCarpetas(canciones);
+        carpetas = getCarpetas(canciones);
         Collections.sort(carpetas);
     }
 

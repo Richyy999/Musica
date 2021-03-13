@@ -40,4 +40,5 @@
     <string name="autor">Ricardo Bordería Pi</string>
     <string name="canciones">canciones</string>
     <string name="unaCancion">1 canción</string>
+    <string name="descIconoAceptar"><![CDATA[Icono de aceptar, hecho por: https://www.flaticon.com/free-icon/checkmark_1828717?term=correct%20tick%20mark&page=1&position=11&page=1&position=11&related_id=1828717&origin=search]]></string>
 </resources>
