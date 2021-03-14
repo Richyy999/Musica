@@ -77,6 +77,7 @@ public class AdaptadorCarpetas extends RecyclerView.Adapter<AdaptadorCarpetas.My
 
         holder.lblNombreCarpeta.setText(carpeta.getNombre());
         holder.lblRuta.setText(carpeta.getRuta());
+        holder.lblRuta.setSelected(true);
         if (carpeta.getCanciones().size() == 1)
             holder.lblNumCaniones.setText(R.string.unaCancion);
         else {

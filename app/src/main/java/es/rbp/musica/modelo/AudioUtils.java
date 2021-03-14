@@ -1,5 +1,7 @@
 package es.rbp.musica.modelo;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,18 +12,23 @@ import es.rbp.musica.modelo.entidad.Carpeta;
 
 public class AudioUtils {
 
-    private static final String TAG = "Audio Utils";
+    private static final String TAG = "AUDIO UTILS";
 
     public static List<Cancion> filtrarCanciones(List<Cancion> canciones, Ajustes ajustes) {
         List<Cancion> cancionesFiltradas = new ArrayList<>();
         for (Cancion cancion : canciones) {
-            if (ajustes.getFiltroTanamoActual() == Ajustes.SIN_FILTRO || cancion.getTamano() < ajustes.getFiltroTanamoActual())
-                continue;
-            if (ajustes.getFiltroDuracionActual() == Ajustes.SIN_FILTRO || cancion.getDuracion() < ajustes.getFiltroDuracionActual())
-                continue;
-            if (!ajustes.getCarpetasOcultas().contains(cancion.getCarpetaPadre()))
+            boolean pasaFiltros = true;
+            if (ajustes.getFiltroTanamoActual() != Ajustes.SIN_FILTRO && cancion.getTamano() < ajustes.getFiltroTanamoActual())
+                pasaFiltros = false;
+            if (ajustes.getFiltroDuracionActual() != Ajustes.SIN_FILTRO && cancion.getDuracion() < ajustes.getFiltroDuracionActual())
+                pasaFiltros = false;
+            if (ajustes.getCarpetasOcultas().contains(cancion.getCarpetaPadre()))
+                pasaFiltros = false;
+
+            if (pasaFiltros)
                 cancionesFiltradas.add(cancion);
         }
+        Log.i(TAG, "Canciones filtradas");
         return cancionesFiltradas;
     }
 

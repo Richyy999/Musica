@@ -26,6 +26,7 @@ public class Ajustes implements Serializable {
     public static final String PROPIEDAD_ULTIMO_FILTRO_DURACION = "ultimoDuracion";
 
     private static final String TAG = "AJUSTES";
+    private static final String CARPETAS_OCULTAS_POR_DEFECTO = "/storage/emulated/0/WhatsApp/Media/WhatsApp Audio";
 
     private static final int FILTRO_TAMANO_POR_DEFECTO = 512;
     private static final int FILTRO_DURACION_POR_DEFECTO = 30;
@@ -101,7 +102,7 @@ public class Ajustes implements Serializable {
         ajustes.modoOscuro = false;
 
         ajustes.carpetasOcultas = new ArrayList<>();
-        ajustes.carpetasOcultas.add("/storage/emulated/0/WhatsApp/Media/WhatsApp Audio");
+        ajustes.carpetasOcultas.add(CARPETAS_OCULTAS_POR_DEFECTO);
 
         ajustes.filtroTanamoActual = FILTRO_TAMANO_POR_DEFECTO;
         ajustes.filtroDuracionActual = FILTRO_DURACION_POR_DEFECTO;
@@ -138,6 +139,10 @@ public class Ajustes implements Serializable {
 
     public void anadirCarpetaOculta(String carpeta) {
         this.carpetasOcultas.add(carpeta);
+    }
+
+    public void restablecerAjustes(Context context) {
+        crearAjustes(context);
     }
 
     public List<String> getCarpetasOcultas() {

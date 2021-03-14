@@ -34,9 +34,11 @@
     <attr name="colorFondoReproducirAleatorio" format="color" />
 
     <attr name="colorFondoBotonPositivo" format="color" />
+    <attr name="colorFondoBotonPositivoPulsado" format="color" />
     <attr name="colorTextoBotonPositivo" format="color" />
 
     <attr name="colorFondoBotonNeutro" format="color" />
+    <attr name="colorFondoBotonNeutroPulsado" format="color" />
     <attr name="colorTextoBotonNeutro" format="color" />
 
     <attr name="colorTextoCancionActual" format="color" />

@@ -41,4 +41,9 @@
     <string name="canciones">canciones</string>
     <string name="unaCancion">1 canción</string>
     <string name="descIconoAceptar"><![CDATA[Icono de aceptar, hecho por: https://www.flaticon.com/free-icon/checkmark_1828717?term=correct%20tick%20mark&page=1&position=11&page=1&position=11&related_id=1828717&origin=search]]></string>
+    <string name="restablecerAjustes">Restablecer ajustes</string>
+    <string name="subtituloRestablecer">Restablecer los ajustes a los valores por defecto</string>
+    <string name="mensajeDialogRestablecerAjustes">¿Desea restablecer los ajustes a sus valores de fábrica?</string>
+    <string name="ok">OK</string>
+    <string name="cancelar">Cancelar</string>
 </resources>

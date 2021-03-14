@@ -81,7 +81,7 @@ public class Cancion implements Serializable {
     }
 
     public int getDuracion() {
-        return duracion;
+        return duracion / 1000;
     }
 
     public void setDuracion(int duracion) {
@@ -89,7 +89,7 @@ public class Cancion implements Serializable {
     }
 
     public int getTamano() {
-        return tamano;
+        return tamano / 1024;
     }
 
     public void setTamano(int tamano) {

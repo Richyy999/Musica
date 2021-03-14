@@ -17,13 +17,14 @@ import android.widget.TextView;
 
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.Ajustes;
+import es.rbp.musica.vista.snackbar.SnackbarAlerta;
 
 import static es.rbp.musica.modelo.Ajustes.MAX_FILTRO_DURACION;
 import static es.rbp.musica.modelo.Ajustes.MAX_FILTRO_TAMANO;
 import static es.rbp.musica.modelo.Ajustes.SIN_FILTRO;
 
 public class AjustesActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener,
-        SeekBar.OnSeekBarChangeListener {
+        SeekBar.OnSeekBarChangeListener, SnackbarAlerta.Accion {
 
     private Ajustes ajustes;
 
@@ -44,6 +45,7 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
     private ConstraintLayout seccionGrandeDuracion;
     private ConstraintLayout seccionGrandeModoOscuro;
     private ConstraintLayout seccionGrandeCarpetas;
+    private ConstraintLayout seccionGrandeRestablecer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,8 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
             abrirCarpetas();
         else if (v.getId() == seccionGrandeModoOscuro.getId())
             switchModoOscuro.setChecked(!switchModoOscuro.isChecked());
+        else if (v.getId() == seccionGrandeRestablecer.getId())
+            mostrarDialog();
     }
 
     @Override
@@ -130,6 +134,15 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
     public void onBackPressed() {
         super.onBackPressed();
         volver();
+    }
+
+    @Override
+    public void realizarAccion() {
+        ajustes.restablecerAjustes(this);
+
+        Intent intent = new Intent(this, AjustesActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void volver() {
@@ -200,6 +213,9 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
         seccionGrandeCarpetas = findViewById(R.id.btnFiltrarCarpetas);
         seccionGrandeCarpetas.setOnClickListener(this);
 
+        seccionGrandeRestablecer = findViewById(R.id.seccionGrandeRestablecer);
+        seccionGrandeRestablecer.setOnClickListener(this);
+
         ImageView btnVolver = findViewById(R.id.btnVolverAjustes);
         btnVolver.setOnClickListener(this);
     }
@@ -228,5 +244,9 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
     private void abrirCarpetas() {
         Intent intent = new Intent(this, FiltroCarpetasActivity.class);
         startActivity(intent);
+    }
+
+    private void mostrarDialog() {
+        new SnackbarAlerta(this, findViewById(android.R.id.content), this, R.string.restablecerAjustes, R.string.mensajeDialogRestablecerAjustes);
     }
 }

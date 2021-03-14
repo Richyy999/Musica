@@ -24,8 +24,10 @@
         <item name="colorFondoPlaylist">@color/fondoPlaylistClaro</item>
         <item name="colorFondoReproducirAleatorio">@color/fondoReproducirAleatorioClaro</item>
         <item name="colorFondoBotonPositivo">@color/fondoBotonPositivoClaro</item>
+        <item name="colorFondoBotonPositivoPulsado">@color/fondoBotonPositivoPulsadoClaro</item>
         <item name="colorTextoBotonPositivo">@color/textoBotonPositivoClaro</item>
         <item name="colorFondoBotonNeutro">@color/fondoBotonNeutroClaro</item>
+        <item name="colorFondoBotonNeutroPulsado">@color/fondoBotonNeutroPulsadoClaro</item>
         <item name="colorTextoBotonNeutro">@color/textoBotonNeutroClaro</item>
         <item name="colorTextoCancionActual">@color/textoCancionActualClaro</item>
         <item name="colorFondoOpacityPane">@color/fondoOpacityPaneClaro</item>
@@ -88,8 +90,10 @@
         <item name="colorFondoPlaylist">@color/fondoPlaylistOscuro</item>
         <item name="colorFondoReproducirAleatorio">@color/fondoReproducirAleatorioOscuro</item>
         <item name="colorFondoBotonPositivo">@color/fondoBotonPositivoOscuro</item>
+        <item name="colorFondoBotonPositivoPulsado">@color/fondoBotonPositivoPulsadoOscuro</item>
         <item name="colorTextoBotonPositivo">@color/textoBotonPositivoOscuro</item>
         <item name="colorFondoBotonNeutro">@color/fondoBotonNeutroOscuro</item>
+        <item name="colorFondoBotonNeutroPulsado">@color/fondoBotonNeutroPulsadoOscuro</item>
         <item name="colorTextoBotonNeutro">@color/textoBotonNeutroOscuro</item>
         <item name="colorTextoCancionActual">@color/textoCancionActualOscuro</item>
         <item name="colorFondoOpacityPane">@color/fondoOpacityPaneOscuro</item>
@@ -162,6 +166,12 @@
         <item name="android:layout_marginEnd">8dp</item>
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:freezesText">true</item>
+        <item name="android:singleLine">true</item>
         <item name="android:textColor">?attr/colorSubtituloFragment</item>
         <item name="android:textSize">12sp</item>
     </style>
@@ -271,5 +281,24 @@
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
+    </style>
+
+    <style name="botonNeutro">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_margin">24dp</item>
+        <item name="android:background">@drawable/fondo_boton_neutro</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">?attr/colorTextoBotonNeutro</item>
+    </style>
+
+    <style name="botonPositivo">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_margin">24dp</item>
+        <item name="android:background">@drawable/fondo_boton_positivo</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">?attr/colorTextoBotonPositivo</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

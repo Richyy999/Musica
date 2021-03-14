@@ -69,11 +69,17 @@
     <color name="fondoBotonPositivoClaro">#0099FF</color>
     <color name="fondoBotonPositivoOscuro">#004E82</color>
 
+    <color name="fondoBotonPositivoPulsadoClaro">#51B9FF</color>
+    <color name="fondoBotonPositivoPulsadoOscuro">#00365A</color>
+
     <color name="textoBotonPositivoClaro">#FFFFFF</color>
     <color name="textoBotonPositivoOscuro">#F3F3F3</color>
 
     <color name="fondoBotonNeutroClaro">#E3F6FD</color>
     <color name="fondoBotonNeutroOscuro">#A7A7A7</color>
+
+    <color name="fondoBotonNeutroPulsadoClaro">#BBEDFF</color>
+    <color name="fondoBotonNeutroPulsadoOscuro">#6A6A6A</color>
 
     <color name="textoBotonNeutroClaro">#1168BF</color>
     <color name="textoBotonNeutroOscuro">#F3F3F3</color>
