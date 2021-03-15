@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="45dp"
     android:layout_marginStart="24dp"
+    android:layout_marginTop="8dp"
     android:layout_marginEnd="24dp"
     android:background="?attr/colorFondoApp">
 
@@ -31,6 +32,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:text="Cancion"
         android:textColor="?attr/colorTitulo"
         app:layout_constraintEnd_toStartOf="@+id/btnMenuPuntos"
@@ -43,27 +50,8 @@
         android:layout_marginStart="16dp"
         android:text="Artista desconocido"
         app:layout_constraintBottom_toTopOf="@+id/separadorRecyclerCancion"
-        app:layout_constraintEnd_toStartOf="@+id/separadorHorizontalRecyclerviewCancion"
+        app:layout_constraintEnd_toStartOf="@+id/btnMenuPuntos"
         app:layout_constraintStart_toEndOf="@+id/lblNumCancion" />
-
-    <TextView
-        android:id="@+id/separadorHorizontalRecyclerviewCancion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="4dp"
-        android:text="@string/separadorVertical"
-        android:textColor="?attr/colorSubtitulo"
-        app:layout_constraintBottom_toTopOf="@+id/separadorRecyclerCancion"
-        app:layout_constraintStart_toEndOf="@+id/lblArtista" />
-
-    <TextView
-        android:id="@+id/lblAlbum"
-        style="@style/subtituloRecyclerView"
-        android:layout_marginStart="4dp"
-        android:text="Album desconocido"
-        app:layout_constraintBottom_toTopOf="@+id/separadorRecyclerCancion"
-        app:layout_constraintStart_toEndOf="@+id/separadorHorizontalRecyclerviewCancion" />
 
     <View
         android:id="@+id/separadorRecyclerCancion"

@@ -22,6 +22,7 @@ import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_FILTRO_TAMANO;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_MODO_OSCURO;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_ULTIMO_FILTRO_DURACION;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_ULTIMO_FILTRO_TAMANO;
+import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_UTILIZAR_NOMBRE_DE_ARCHIVO;
 
 public class AccesoFichero {
 
@@ -79,17 +80,18 @@ public class AccesoFichero {
         }
         if (!properties.containsKey(PROPIEDAD_MODO_OSCURO) || !properties.containsKey(PROPIEDAD_FILTRO_TAMANO)
                 || !properties.containsKey(PROPIEDAD_FILTRO_DURACION) || !properties.containsKey(PROPIEDAD_ULTIMO_FILTRO_TAMANO)
-                || !properties.containsKey(PROPIEDAD_ULTIMO_FILTRO_DURACION)) {
+                || !properties.containsKey(PROPIEDAD_ULTIMO_FILTRO_DURACION) || !properties.containsKey(PROPIEDAD_UTILIZAR_NOMBRE_DE_ARCHIVO)) {
             Log.d(TAG, "Ajustes properties corrupto");
             return null;
         }
-        boolean mosoOscuro = Boolean.parseBoolean(properties.getProperty(PROPIEDAD_MODO_OSCURO));
+        boolean modoOscuro = Boolean.parseBoolean(properties.getProperty(PROPIEDAD_MODO_OSCURO));
+        boolean utilizarNombreDeArchivo = Boolean.parseBoolean(properties.getProperty(PROPIEDAD_UTILIZAR_NOMBRE_DE_ARCHIVO));
         int filtroTamano = Integer.parseInt(properties.getProperty(PROPIEDAD_FILTRO_TAMANO));
         int filtroDuracion = Integer.parseInt(properties.getProperty(PROPIEDAD_FILTRO_DURACION));
         int ultimoFiltroTamano = Integer.parseInt(properties.getProperty(PROPIEDAD_ULTIMO_FILTRO_TAMANO));
         int ultimoFiltroDuracion = Integer.parseInt(properties.getProperty(PROPIEDAD_ULTIMO_FILTRO_DURACION));
 
-        return new Ajustes(carpetasOcultas, mosoOscuro, filtroTamano, filtroDuracion, ultimoFiltroTamano, ultimoFiltroDuracion);
+        return new Ajustes(carpetasOcultas, modoOscuro, utilizarNombreDeArchivo, filtroTamano, filtroDuracion, ultimoFiltroTamano, ultimoFiltroDuracion);
     }
 
     /**
@@ -100,6 +102,7 @@ public class AccesoFichero {
      */
     public void guardarAjustes(Ajustes ajustes) throws IOException {
         String modoOscuro = String.valueOf(ajustes.isModoOscuro());
+        String utilizarNombreDelArchivo = String.valueOf(ajustes.isUtilizarNombreDeArchivo());
         String filtroTamano = String.valueOf(ajustes.getFiltroTanamoActual());
         String filtroDuracion = String.valueOf(ajustes.getFiltroDuracionActual());
         String ultimoFiltroTamano = String.valueOf(ajustes.getUltimoFiltroTamano());
@@ -112,6 +115,7 @@ public class AccesoFichero {
         Properties properties = new Properties();
         properties.load(new FileInputStream(ficheroProperties));
         properties.setProperty(PROPIEDAD_MODO_OSCURO, modoOscuro);
+        properties.setProperty(PROPIEDAD_UTILIZAR_NOMBRE_DE_ARCHIVO, utilizarNombreDelArchivo);
         properties.setProperty(PROPIEDAD_FILTRO_TAMANO, filtroTamano);
         properties.setProperty(PROPIEDAD_FILTRO_DURACION, filtroDuracion);
         properties.setProperty(PROPIEDAD_ULTIMO_FILTRO_TAMANO, ultimoFiltroTamano);

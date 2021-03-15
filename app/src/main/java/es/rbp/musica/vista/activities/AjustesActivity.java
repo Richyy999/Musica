@@ -34,6 +34,7 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
     private SwitchCompat switchModoOscuro;
     private SwitchCompat switchFiltrarTamano;
     private SwitchCompat switchFiltrarDuracion;
+    private SwitchCompat switchUtilizarNombreDeArchivo;
 
     private TextView lblfiltroTamano;
     private TextView lblfiltroDuracion;
@@ -46,6 +47,7 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
     private ConstraintLayout seccionGrandeModoOscuro;
     private ConstraintLayout seccionGrandeCarpetas;
     private ConstraintLayout seccionGrandeRestablecer;
+    private ConstraintLayout seccionGrandeUtilizarNombreDeArchivo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +93,8 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
                 seekbarDuracion.setProgress(ajustes.getFiltroDuracionActual());
                 actualizarTextView();
             }
-        }
+        } else if (buttonView.getId() == switchUtilizarNombreDeArchivo.getId())
+            ajustes.setUtilizarNombreDeArchivo(isChecked);
     }
 
     @Override
@@ -108,6 +111,8 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
             switchModoOscuro.setChecked(!switchModoOscuro.isChecked());
         else if (v.getId() == seccionGrandeRestablecer.getId())
             mostrarDialog();
+        else if (v.getId() == seccionGrandeUtilizarNombreDeArchivo.getId())
+            switchUtilizarNombreDeArchivo.setChecked(!switchUtilizarNombreDeArchivo.isChecked());
     }
 
     @Override
@@ -175,6 +180,10 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
         switchFiltrarDuracion.setChecked(ajustes.getFiltroDuracionActual() != SIN_FILTRO);
         switchFiltrarDuracion.setOnCheckedChangeListener(this);
 
+        switchUtilizarNombreDeArchivo = findViewById(R.id.switchNombreArchivo);
+        switchUtilizarNombreDeArchivo.setChecked(ajustes.isUtilizarNombreDeArchivo());
+        switchUtilizarNombreDeArchivo.setOnCheckedChangeListener(this);
+
         seekbarTamano = findViewById(R.id.seekbarTamano);
         seekbarTamano.setMax(MAX_FILTRO_TAMANO);
         seekbarTamano.setProgress(ajustes.getFiltroTanamoActual());
@@ -215,6 +224,9 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
 
         seccionGrandeRestablecer = findViewById(R.id.seccionGrandeRestablecer);
         seccionGrandeRestablecer.setOnClickListener(this);
+
+        seccionGrandeUtilizarNombreDeArchivo = findViewById(R.id.seccionGrandeNombreArchivos);
+        seccionGrandeUtilizarNombreDeArchivo.setOnClickListener(this);
 
         ImageView btnVolver = findViewById(R.id.btnVolverAjustes);
         btnVolver.setOnClickListener(this);

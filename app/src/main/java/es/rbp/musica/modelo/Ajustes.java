@@ -24,6 +24,7 @@ public class Ajustes implements Serializable {
     public static final String PROPIEDAD_ULTIMO_FILTRO_TAMANO = "ultimoTamano";
     public static final String PROPIEDAD_FILTRO_DURACION = "duracion";
     public static final String PROPIEDAD_ULTIMO_FILTRO_DURACION = "ultimoDuracion";
+    public static final String PROPIEDAD_UTILIZAR_NOMBRE_DE_ARCHIVO = "utilizarNombreDeArchivo";
 
     private static final String TAG = "AJUSTES";
     private static final String CARPETAS_OCULTAS_POR_DEFECTO = "/storage/emulated/0/WhatsApp/Media/WhatsApp Audio";
@@ -31,11 +32,14 @@ public class Ajustes implements Serializable {
     private static final int FILTRO_TAMANO_POR_DEFECTO = 512;
     private static final int FILTRO_DURACION_POR_DEFECTO = 30;
 
+    private static final boolean UTILIZAR_NOMBRE_DE_ARCHIVO_POR_DEFECTO = false;
+
     private static Ajustes ajustes;
 
     private List<String> carpetasOcultas;
 
     private boolean modoOscuro;
+    private boolean utilizarNombreDeArchivo;
 
     private int filtroTanamoActual;
     private int filtroDuracionActual;
@@ -52,15 +56,19 @@ public class Ajustes implements Serializable {
     /**
      * Constructor de la clase. Para obtener una instancia de la clase, usar el método {@link Ajustes#getInstance(Context)}
      *
-     * @param carpetasOcultas      lista con las carpetas ocultas
-     * @param modoOscuro           true si está en modo oscuro, false en caso contrario
-     * @param filtroTanamoActual   valor en KB del filtro por tamaño
-     * @param filtroDuracionActual valor en segundos del filtro por duracion
+     * @param carpetasOcultas         lista con las carpetas ocultas
+     * @param modoOscuro              true si está en modo oscuro, false en caso contrario
+     * @param utilizarNombreDeArchivo true si se desea utilizar el nombre del archivo como nombre de la canción, false en caso contrario
+     * @param filtroTanamoActual      valor en KB del filtro por tamaño
+     * @param filtroDuracionActual    valor en segundos del filtro por duracion
+     * @param ultimoFiltroTamano      último valor de {@link Ajustes#filtroTanamoActual}
+     * @param ultimoFiltroDuracion    último valor de {@link Ajustes#filtroDuracionActual}
      */
-    public Ajustes(List<String> carpetasOcultas, boolean modoOscuro, int filtroTanamoActual, int filtroDuracionActual,
+    public Ajustes(List<String> carpetasOcultas, boolean modoOscuro, boolean utilizarNombreDeArchivo, int filtroTanamoActual, int filtroDuracionActual,
                    int ultimoFiltroTamano, int ultimoFiltroDuracion) {
         this.carpetasOcultas = carpetasOcultas;
         this.modoOscuro = modoOscuro;
+        this.utilizarNombreDeArchivo = utilizarNombreDeArchivo;
         this.filtroTanamoActual = filtroTanamoActual;
         this.filtroDuracionActual = filtroDuracionActual;
         this.ultimoFiltroTamano = ultimoFiltroTamano;
@@ -100,6 +108,7 @@ public class Ajustes implements Serializable {
         Log.i(TAG, "Ajustes nuevos");
         ajustes = new Ajustes();
         ajustes.modoOscuro = false;
+        ajustes.utilizarNombreDeArchivo = UTILIZAR_NOMBRE_DE_ARCHIVO_POR_DEFECTO;
 
         ajustes.carpetasOcultas = new ArrayList<>();
         ajustes.carpetasOcultas.add(CARPETAS_OCULTAS_POR_DEFECTO);
@@ -151,6 +160,8 @@ public class Ajustes implements Serializable {
         this.carpetasOcultas = new ArrayList<>();
         this.carpetasOcultas.add(CARPETAS_OCULTAS_POR_DEFECTO);
 
+        this.utilizarNombreDeArchivo = UTILIZAR_NOMBRE_DE_ARCHIVO_POR_DEFECTO;
+
         guardarAjustes(context);
     }
 
@@ -170,36 +181,28 @@ public class Ajustes implements Serializable {
         this.modoOscuro = modoOscuro;
     }
 
-    public int getFiltroTanamoActual() {
-        return filtroTanamoActual;
+    public boolean isUtilizarNombreDeArchivo() {
+        return utilizarNombreDeArchivo;
     }
 
-    public void setFiltroTanamoActual(int filtroTanamoActual) {
-        this.filtroTanamoActual = filtroTanamoActual;
+    public void setUtilizarNombreDeArchivo(boolean utilizarNombreDeArchivo) {
+        this.utilizarNombreDeArchivo = utilizarNombreDeArchivo;
+    }
+
+    public int getFiltroTanamoActual() {
+        return filtroTanamoActual;
     }
 
     public int getFiltroDuracionActual() {
         return filtroDuracionActual;
     }
 
-    public void setFiltroDuracionActual(int filtroDuracionActual) {
-        this.filtroDuracionActual = filtroDuracionActual;
-    }
-
     public int getUltimoFiltroTamano() {
         return ultimoFiltroTamano;
     }
 
-    public void setUltimoFiltroTamano(int ultimoFiltroTamano) {
-        this.ultimoFiltroTamano = ultimoFiltroTamano;
-    }
-
     public int getUltimoFiltroDuracion() {
         return ultimoFiltroDuracion;
-    }
-
-    public void setUltimoFiltroDuracion(int ultimoFiltroDuracion) {
-        this.ultimoFiltroDuracion = ultimoFiltroDuracion;
     }
 
     @Override

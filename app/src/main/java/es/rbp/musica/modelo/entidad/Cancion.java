@@ -9,11 +9,13 @@ import java.io.File;
 import java.io.Serializable;
 
 import es.rbp.musica.R;
+import es.rbp.musica.modelo.Ajustes;
 
-public class Cancion implements Serializable {
+public class Cancion implements Serializable, Comparable<Cancion> {
 
     public static final long serialVersionUID = 1L;
 
+    public static final String UNKNOWN = "<unknown>";
     public static final String ALBUM_DESCONOCIDO = "Álbum desconocido";
     public static final String ARTISTA_DESCONOCIDO = "Artista desconocido";
 
@@ -46,6 +48,10 @@ public class Cancion implements Serializable {
     public String getCarpetaPadre() {
         File file = new File(datos);
         return file.getParent();
+    }
+
+    public String getNombreArchivo() {
+        return datos.substring(datos.lastIndexOf("/") + 1, datos.lastIndexOf("."));
     }
 
     public String getAlbum() {
@@ -102,5 +108,14 @@ public class Cancion implements Serializable {
                 "nombre='" + nombre + '\'' +
                 ", datos='" + datos + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Cancion o) {
+        Ajustes ajustes = Ajustes.getInstance(null);
+        if (ajustes.isUtilizarNombreDeArchivo())
+            return getNombreArchivo().compareTo(o.getNombreArchivo());
+        else
+            return getNombre().compareTo(o.getNombre());
     }
 }

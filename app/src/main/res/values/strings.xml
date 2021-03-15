@@ -47,4 +47,6 @@
     <string name="ok">OK</string>
     <string name="cancelar">Cancelar</string>
     <string name="descIconoMenuPuntos">Icono de menú de puntos</string>
+    <string name="utilizarNombreDelArchivo">Utilizar nombre del archivo</string>
+    <string name="subtituloUtilizarNombre">Utilizar el nombre del archivo como título de la canción</string>
 </resources>
