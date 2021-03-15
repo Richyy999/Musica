@@ -33,6 +33,7 @@
         <item name="colorFondoOpacityPane">@color/fondoOpacityPaneClaro</item>
         <item name="colorFondoSeccionAjustesPulsado">@color/fondoSeccionAjustesPulsadoClaro</item>
 
+        <item name="iconoMenuPuntos">@drawable/icono_menu_puntos_claro</item>
         <item name="iconoCarpeta">@drawable/icono_carpeta_claro</item>
         <item name="iconoAjustes">@drawable/icono_ajustes_claro</item>
         <item name="iconoBuscar">@drawable/icono_buscar</item>
@@ -99,6 +100,7 @@
         <item name="colorFondoOpacityPane">@color/fondoOpacityPaneOscuro</item>
         <item name="colorFondoSeccionAjustesPulsado">@color/fondoSeccionAjustesPulsadoOscuro</item>
 
+        <item name="iconoMenuPuntos">@drawable/icono_menu_puntos_oscuro</item>
         <item name="iconoCarpeta">@drawable/icono_carpeta_oscuro</item>
         <item name="iconoAjustes">@drawable/icono_ajustes_oscuro</item>
         <item name="iconoBuscar">@drawable/icono_buscar</item>

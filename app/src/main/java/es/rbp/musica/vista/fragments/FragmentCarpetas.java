@@ -18,6 +18,7 @@ import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
 import es.rbp.musica.modelo.entidad.Carpeta;
+import es.rbp.musica.vista.activities.MainActivity;
 import es.rbp.musica.vista.adaptadores.AdaptadorCarpetas;
 
 import static es.rbp.musica.modelo.AudioUtils.filtrarCanciones;
@@ -49,6 +50,8 @@ public class FragmentCarpetas extends Fragment implements AdaptadorCarpetas.OnCa
 
     @Override
     public void onClick(int indice) {
-
+        MainActivity mainActivity = (MainActivity) getActivity();
+        Carpeta carpeta = carpetas.get(indice);
+        mainActivity.cargarFavoritos(carpeta);
     }
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="24dp"
+    android:background="?attr/colorFondoApp">
+
+    <TextView
+        android:id="@+id/lblNumCancion"
+        style="@style/subtituloRecyclerView"
+        android:text="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnMenuPuntos"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/descIconoMenuPuntos"
+        android:src="?attr/iconoMenuPuntos"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblNombreCancionRecycler"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Cancion"
+        android:textColor="?attr/colorTitulo"
+        app:layout_constraintEnd_toStartOf="@+id/btnMenuPuntos"
+        app:layout_constraintStart_toEndOf="@+id/lblNumCancion"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblArtista"
+        style="@style/subtituloRecyclerView"
+        android:layout_marginStart="16dp"
+        android:text="Artista desconocido"
+        app:layout_constraintBottom_toTopOf="@+id/separadorRecyclerCancion"
+        app:layout_constraintEnd_toStartOf="@+id/separadorHorizontalRecyclerviewCancion"
+        app:layout_constraintStart_toEndOf="@+id/lblNumCancion" />
+
+    <TextView
+        android:id="@+id/separadorHorizontalRecyclerviewCancion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="4dp"
+        android:text="@string/separadorVertical"
+        android:textColor="?attr/colorSubtitulo"
+        app:layout_constraintBottom_toTopOf="@+id/separadorRecyclerCancion"
+        app:layout_constraintStart_toEndOf="@+id/lblArtista" />
+
+    <TextView
+        android:id="@+id/lblAlbum"
+        style="@style/subtituloRecyclerView"
+        android:layout_marginStart="4dp"
+        android:text="Album desconocido"
+        app:layout_constraintBottom_toTopOf="@+id/separadorRecyclerCancion"
+        app:layout_constraintStart_toEndOf="@+id/separadorHorizontalRecyclerviewCancion" />
+
+    <View
+        android:id="@+id/separadorRecyclerCancion"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="?attr/colorSeparador"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/lblArtista" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,7 +44,7 @@
     <attr name="colorTextoCancionActual" format="color" />
     <attr name="colorFondoOpacityPane" format="color" />
 
-
+    <attr name="iconoMenuPuntos" format="reference" />
     <attr name="iconoCarpeta" format="reference" />
     <attr name="iconoAjustes" format="reference" />
     <attr name="iconoBuscar" format="reference" />

@@ -10,14 +10,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import es.rbp.musica.modelo.entidad.Cancion;
-import es.rbp.musica.modelo.entidad.Carpeta;
 
 import java.nio.file.Files;
-import java.util.Map;
 import java.util.Properties;
 
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_FILTRO_DURACION;
@@ -32,12 +29,15 @@ public class AccesoFichero {
 
     private static final String RUTA_FICHERO_AJUSTES = "ajustes.properties";
     private static final String RUTA_CARPETAS_OCULTAS = "carpetasOcultas.txt";
+    private static final String RUTA_FAVORITOS = "favoritos.txt";
 
     private static final String TAG = "ACCESO FICHERO";
 
     private static AccesoFichero accesoFichero;
 
     private List<Cancion> todasCanciones;
+
+    private List<String> favoritos;
 
     private Context context;
 
@@ -153,11 +153,41 @@ public class AccesoFichero {
         if (cursor != null && cursor.moveToFirst()) {
             todasCanciones = new ArrayList<>();
             do {
-                todasCanciones.add(new Cancion(cursor.getString(0), cursor.getString(1), cursor.getString(2),
-                        cursor.getString(3), cursor.getString(4), cursor.getString(5)));
+                if (new File(cursor.getString(3)).exists())
+                    todasCanciones.add(new Cancion(cursor.getString(0), cursor.getString(1), cursor.getString(2),
+                            cursor.getString(3), cursor.getString(4), cursor.getString(5)));
             } while (cursor.moveToNext());
             cursor.close();
         } else
             Log.i(TAG, "Sin música");
+    }
+
+    public List<Cancion> getFavoritos() {
+        if (this.favoritos == null)
+            leerFavoritos();
+
+        if (todasCanciones == null)
+            leerCanciones();
+
+        List<Cancion> favoritos = new ArrayList<>();
+        for (Cancion cancion : todasCanciones) {
+            if (this.favoritos.contains(cancion.getDatos()))
+                favoritos.add(cancion);
+        }
+
+        return favoritos;
+    }
+
+    private void leerFavoritos() {
+        favoritos = new ArrayList<>();
+        try {
+            File archivo = new File(context.getFilesDir(), RUTA_FAVORITOS);
+            if (!archivo.exists())
+                archivo.createNewFile();
+
+            favoritos = Files.readAllLines(archivo.toPath());
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
     }
 }

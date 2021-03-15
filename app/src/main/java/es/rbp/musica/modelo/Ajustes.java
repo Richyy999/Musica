@@ -142,7 +142,16 @@ public class Ajustes implements Serializable {
     }
 
     public void restablecerAjustes(Context context) {
-        crearAjustes(context);
+        this.filtroTanamoActual = FILTRO_TAMANO_POR_DEFECTO;
+        this.ultimoFiltroTamano = FILTRO_TAMANO_POR_DEFECTO;
+
+        this.filtroDuracionActual = FILTRO_DURACION_POR_DEFECTO;
+        this.ultimoFiltroDuracion = FILTRO_DURACION_POR_DEFECTO;
+
+        this.carpetasOcultas = new ArrayList<>();
+        this.carpetasOcultas.add(CARPETAS_OCULTAS_POR_DEFECTO);
+
+        guardarAjustes(context);
     }
 
     public List<String> getCarpetasOcultas() {

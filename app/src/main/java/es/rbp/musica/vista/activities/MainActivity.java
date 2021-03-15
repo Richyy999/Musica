@@ -14,12 +14,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.Ajustes;
+import es.rbp.musica.modelo.entidad.Cancion;
+import es.rbp.musica.modelo.entidad.Carpeta;
 import es.rbp.musica.vista.fragments.FragmentCarpetas;
+import es.rbp.musica.vista.fragments.FragmentFavoritos;
 
 import static es.rbp.musica.modelo.AccesoFichero.REQUEST_PERMISO_LECTURA;
 
@@ -31,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "Main Activity";
 
     private FragmentCarpetas carpetas;
+
+    private LinearLayout btnCarpetas;
 
     private TextView lblTituloFragment;
 
@@ -61,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnAjustes:
                 abrirAjustes();
                 break;
+            case R.id.btnCarpeta:
+                cargarFragmentCarpetas();
         }
     }
 
@@ -86,6 +96,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ImageView btnAjustes = findViewById(R.id.btnAjustes);
         btnAjustes.setOnClickListener(this);
 
+        btnCarpetas = findViewById(R.id.btnCarpeta);
+        btnCarpetas.setOnClickListener(this);
+
         lblTituloFragment = findViewById(R.id.lblTituloMenu);
         cargarFragmentCarpetas();
     }
@@ -99,6 +112,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             carpetas = new FragmentCarpetas();
 
         transaction.replace(R.id.contenedorFragment, carpetas);
+        transaction.commit();
+    }
+
+    public void cargarFavoritos(Carpeta carpeta) {
+        lblTituloFragment.setText(carpeta.getNombre());
+        FragmentFavoritos fragment = new FragmentFavoritos(carpeta.getCanciones());
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        transaction.replace(R.id.contenedorFragment, fragment);
         transaction.commit();
     }
 }
