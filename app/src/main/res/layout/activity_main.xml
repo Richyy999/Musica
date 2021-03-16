@@ -104,7 +104,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:contentDescription="@string/descIconoPlaylist"
+                android:contentDescription="@string/descIconoFavoritosLLeno"
                 android:src="?attr/iconoFavoritosLleno" />
 
             <TextView

@@ -51,7 +51,7 @@ public class Cancion implements Serializable, Comparable<Cancion> {
     }
 
     public String getNombreArchivo() {
-        return datos.substring(datos.lastIndexOf("/") + 1, datos.lastIndexOf("."));
+        return datos.substring(datos.lastIndexOf("/") + 1, datos.lastIndexOf(".")).trim();
     }
 
     public String getAlbum() {
@@ -116,6 +116,6 @@ public class Cancion implements Serializable, Comparable<Cancion> {
         if (ajustes.isUtilizarNombreDeArchivo())
             return getNombreArchivo().compareTo(o.getNombreArchivo());
         else
-            return getNombre().compareTo(o.getNombre());
+            return getNombre().toLowerCase().compareTo(o.getNombre().toLowerCase());
     }
 }

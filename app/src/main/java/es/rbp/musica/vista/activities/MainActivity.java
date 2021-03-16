@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -15,14 +16,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.util.List;
 
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.Ajustes;
-import es.rbp.musica.modelo.entidad.Cancion;
 import es.rbp.musica.modelo.entidad.Carpeta;
 import es.rbp.musica.vista.fragments.FragmentCarpetas;
 import es.rbp.musica.vista.fragments.FragmentFavoritos;
@@ -34,13 +31,11 @@ import static es.rbp.musica.modelo.AccesoFichero.REQUEST_PERMISO_LECTURA;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "Main Activity";
-
-    private FragmentCarpetas carpetas;
-
-    private LinearLayout btnCarpetas;
+    private Fragment carpetas;
 
     private TextView lblTituloFragment;
+
+    private boolean carpetaAbierta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +47,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             cargarAjustes();
         setContentView(R.layout.activity_main);
         cargarVista();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (carpetaAbierta)
+            cargarFragmentCarpetas();
+        else
+            super.onBackPressed();
     }
 
     @Override
@@ -71,6 +74,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btnCarpeta:
                 cargarFragmentCarpetas();
+                break;
+            case R.id.btnFavoritos:
+                cargarFavoritos();
+                break;
         }
     }
 
@@ -96,8 +103,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ImageView btnAjustes = findViewById(R.id.btnAjustes);
         btnAjustes.setOnClickListener(this);
 
-        btnCarpetas = findViewById(R.id.btnCarpeta);
+        LinearLayout btnCarpetas = findViewById(R.id.btnCarpeta);
         btnCarpetas.setOnClickListener(this);
+
+        LinearLayout btnFavoritos = findViewById(R.id.btnFavoritos);
+        btnFavoritos.setOnClickListener(this);
 
         lblTituloFragment = findViewById(R.id.lblTituloMenu);
         cargarFragmentCarpetas();
@@ -113,16 +123,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         transaction.replace(R.id.contenedorFragment, carpetas);
         transaction.commit();
+
+        carpetaAbierta = false;
     }
 
     public void cargarFavoritos(Carpeta carpeta) {
         lblTituloFragment.setText(carpeta.getNombre());
-        FragmentFavoritos fragment = new FragmentFavoritos(carpeta.getCanciones());
+        Fragment fragment = new FragmentFavoritos(carpeta.getCanciones());
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         transaction.replace(R.id.contenedorFragment, fragment);
         transaction.commit();
+
+        carpetaAbierta = true;
+    }
+
+    public void cargarFavoritos() {
+        lblTituloFragment.setText(R.string.favoritos);
+
+        Fragment fragment = new FragmentFavoritos();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        transaction.replace(R.id.contenedorFragment, fragment);
+        transaction.commit();
+
+        carpetaAbierta = false;
     }
 }

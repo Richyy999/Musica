@@ -7,13 +7,39 @@
     android:background="?attr/colorFondoApp"
     tools:context=".vista.fragments.FragmentFavoritos">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewFavoritos"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ImageView
+        android:id="@+id/imgSinFavoritos"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/descIconoFavoritosLLeno"
+        android:src="?attr/iconoFavoritosLleno"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16sp"
+        android:text="@string/noHayFavoritos"
+        android:textColor="?attr/colorTituloActivity"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgSinFavoritos" />
+
+    <in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
+        android:id="@+id/recyclerViewFavoritos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorFondoApp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:setIndexTextSize="12" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -310,4 +310,12 @@
         <item name="android:textColor">?attr/colorTextoBotonPositivo</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="letraFiltro">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textColor">?attr/colorSubtitulo</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

@@ -4,22 +4,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
 
-public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.MyHolder> {
+public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.MyHolder> implements SectionIndexer {
 
     private static final String TAG = "ADAPTADOR CANCION";
 
-    public class MyHolder extends RecyclerView.ViewHolder {
+    public static class MyHolder extends RecyclerView.ViewHolder {
 
         private TextView lblNombreCancion, lblArtista, lblNumCancion;
 
@@ -37,8 +39,11 @@ public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.
 
     private List<Cancion> canciones;
 
+    private List<Integer> sectionPosition;
+
     public AdaptadorCanciones(List<Cancion> canciones) {
         this.canciones = canciones;
+        this.sectionPosition = new ArrayList<>();
     }
 
     @NonNull
@@ -77,5 +82,36 @@ public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.
     @Override
     public int getItemCount() {
         return canciones.size();
+    }
+
+    @Override
+    public Object[] getSections() {
+        Ajustes ajustes = Ajustes.getInstance(null);
+        List<String> sections = new ArrayList<>();
+        for (int i = 0; i < canciones.size(); i++) {
+            String section;
+            if (ajustes.isUtilizarNombreDeArchivo())
+                section = Character.toString(canciones.get(i).getNombreArchivo().charAt(0));
+            else
+                section = Character.toString(canciones.get(i).getNombre().charAt(0));
+
+            section = section.toUpperCase();
+
+            if (!sections.contains(section)) {
+                sections.add(section);
+                sectionPosition.add(i);
+            }
+        }
+        return sections.toArray(new String[0]);
+    }
+
+    @Override
+    public int getPositionForSection(int sectionIndex) {
+        return this.sectionPosition.get(sectionIndex);
+    }
+
+    @Override
+    public int getSectionForPosition(int position) {
+        return 0;
     }
 }
