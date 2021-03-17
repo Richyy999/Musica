@@ -23,6 +23,7 @@ import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Carpeta;
 import es.rbp.musica.vista.fragments.FragmentCarpetas;
 import es.rbp.musica.vista.fragments.FragmentFavoritos;
+import es.rbp.musica.vista.fragments.FragmentPlaylist;
 
 import static es.rbp.musica.modelo.AccesoFichero.REQUEST_PERMISO_LECTURA;
 
@@ -78,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnFavoritos:
                 cargarFavoritos();
                 break;
+            case R.id.btnPlaylist:
+                cargarPlaylists();
+                break;
         }
     }
 
@@ -108,6 +112,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         LinearLayout btnFavoritos = findViewById(R.id.btnFavoritos);
         btnFavoritos.setOnClickListener(this);
+
+        LinearLayout btnPlaylist = findViewById(R.id.btnPlaylist);
+        btnPlaylist.setOnClickListener(this);
 
         lblTituloFragment = findViewById(R.id.lblTituloMenu);
         cargarFragmentCarpetas();
@@ -144,6 +151,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lblTituloFragment.setText(R.string.favoritos);
 
         Fragment fragment = new FragmentFavoritos();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        transaction.replace(R.id.contenedorFragment, fragment);
+        transaction.commit();
+
+        carpetaAbierta = false;
+    }
+
+    private void cargarPlaylists() {
+        lblTituloFragment.setText(R.string.playlist);
+
+        Fragment fragment = new FragmentPlaylist();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

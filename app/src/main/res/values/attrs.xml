@@ -76,4 +76,6 @@
 
     <attr name="iconoMostrar" format="reference" />
     <attr name="iconoOcultar" format="reference" />
+
+    <attr name="iconoCrearPlaylist" format="reference" />
 </resources>

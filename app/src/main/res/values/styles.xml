@@ -65,6 +65,7 @@
         <item name="iconoLinkedin">@drawable/icono_linkedin_claro</item>
         <item name="iconoMostrar">@drawable/icono_mostrar_claro</item>
         <item name="iconoOcultar">@drawable/icono_ocultar_claro</item>
+        <item name="iconoCrearPlaylist">@drawable/icono_anadir_claro</item>
     </style>
 
     <style name="TemaOscuro" parent="Theme.AppCompat.NoActionBar">
@@ -132,6 +133,7 @@
         <item name="iconoLinkedin">@drawable/icono_linkedin_oscuro</item>
         <item name="iconoMostrar">@drawable/icono_mostrar_oscuro</item>
         <item name="iconoOcultar">@drawable/icono_ocultar_oscuro</item>
+        <item name="iconoCrearPlaylist">@drawable/icono_anadir_blanco</item>
     </style>
 
     <style name="campoTexto">

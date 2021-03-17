@@ -5,14 +5,20 @@ import android.database.Cursor;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import es.rbp.musica.modelo.entidad.Cancion;
+import es.rbp.musica.modelo.entidad.Playlist;
 
 import java.nio.file.Files;
 import java.util.Properties;
@@ -31,10 +37,13 @@ public class AccesoFichero {
     private static final String RUTA_FICHERO_AJUSTES = "ajustes.properties";
     private static final String RUTA_CARPETAS_OCULTAS = "carpetasOcultas.txt";
     private static final String RUTA_FAVORITOS = "favoritos.txt";
+    private static final String RUTA_PLAYLISTS = "playlists.json";
 
     private static final String TAG = "ACCESO FICHERO";
 
     private static AccesoFichero accesoFichero;
+
+    private List<Playlist> playlists;
 
     private List<Cancion> todasCanciones;
 
@@ -136,12 +145,20 @@ public class AccesoFichero {
         Log.i(TAG, "Ajustes guardados");
     }
 
+    /**
+     * Devuelve todas las canciones del dispositivo. Si no las ha cargado antes, las lee
+     *
+     * @return todas las canciones del dispositivo sin filtrar
+     */
     public List<Cancion> getTodasCanciones() {
         if (todasCanciones == null)
             leerCanciones();
         return todasCanciones;
     }
 
+    /**
+     * Lee las todas las canciones del dispositivo
+     */
     private void leerCanciones() {
         String seleccion = MediaStore.Audio.Media.IS_MUSIC + " != 0";
         String[] proyeccion = {
@@ -166,6 +183,11 @@ public class AccesoFichero {
             Log.i(TAG, "Sin música");
     }
 
+    /**
+     * Filtra las todas las canciones del dispositvo y devuelve las canciones que estén en el fichero de favoritos
+     *
+     * @return las canciones que están en el fichero de favoritos
+     */
     public List<Cancion> getFavoritos() {
         if (this.favoritos == null)
             leerFavoritos();
@@ -182,6 +204,9 @@ public class AccesoFichero {
         return favoritos;
     }
 
+    /**
+     * Lee el fichero con los favoritos
+     */
     private void leerFavoritos() {
         favoritos = new ArrayList<>();
         try {
@@ -190,6 +215,34 @@ public class AccesoFichero {
                 archivo.createNewFile();
 
             favoritos = Files.readAllLines(archivo.toPath());
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
+    public List<Playlist> getPlaylists() {
+        if (playlists == null)
+            leerPlaylists();
+
+        return playlists;
+    }
+
+    private void leerPlaylists() {
+        Gson gson = new Gson();
+        File fichero = new File(context.getFilesDir(), RUTA_PLAYLISTS);
+        StringBuilder jsonBuilder = new StringBuilder();
+        try {
+            InputStreamReader isr = new InputStreamReader(new FileInputStream(fichero));
+            BufferedReader br = new BufferedReader(isr);
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                jsonBuilder.append(linea);
+            }
+            String json = jsonBuilder.toString();
+            if (!json.isEmpty())
+                playlists = Arrays.asList(gson.fromJson(json, Playlist[].class));
+            else
+                playlists = new ArrayList<>();
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
