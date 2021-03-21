@@ -239,10 +239,25 @@ public class AccesoFichero {
                 jsonBuilder.append(linea);
             }
             String json = jsonBuilder.toString();
-            if (!json.isEmpty())
-                playlists = Arrays.asList(gson.fromJson(json, Playlist[].class));
-            else
-                playlists = new ArrayList<>();
+            playlists = new ArrayList<>();
+            playlists.addAll(Arrays.asList(gson.fromJson(json, Playlist[].class)));
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
+    public void guardarPlaylists(List<Playlist> playlists) {
+        Gson gson = new Gson();
+        Playlist[] arrayPlaylist = new Playlist[playlists.size()];
+        for (int i = 0; i < arrayPlaylist.length; i++) {
+            arrayPlaylist[i] = playlists.get(i);
+        }
+
+        String json = gson.toJson(arrayPlaylist, Playlist[].class);
+        File ficheroPlaylists = new File(context.getFilesDir(), RUTA_PLAYLISTS);
+        try (FileOutputStream fos = new FileOutputStream(ficheroPlaylists)) {
+            fos.write(json.getBytes());
+            Log.i(TAG, "Playlists grardadas");
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }

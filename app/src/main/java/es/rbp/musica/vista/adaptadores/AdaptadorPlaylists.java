@@ -1,10 +1,13 @@
 package es.rbp.musica.vista.adaptadores;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,9 +22,11 @@ import es.rbp.musica.modelo.entidad.Playlist;
 
 public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.MyHolder> {
 
-    public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private OnPlaylistClick onPlaylistClick;
+
+        private LinearLayout contenedor;
 
         private TextView lblNombre, lblNumCanciones;
 
@@ -32,6 +37,8 @@ public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.
             itemView.setOnClickListener(this);
 
             this.onPlaylistClick = onPlaylistClick;
+
+            this.contenedor = itemView.findViewById(R.id.contenedorPlaylist);
 
             this.lblNombre = itemView.findViewById(R.id.lblNombrePlaylist);
             this.lblNumCanciones = itemView.findViewById(R.id.lblNumCancionesPlaylist);
@@ -68,7 +75,19 @@ public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.
     public void onBindViewHolder(@NonNull AdaptadorPlaylists.MyHolder holder, int position) {
         Playlist playlist = playlists.get(position);
 
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(context.getResources().getDimensionPixelOffset(R.dimen.widthRecyclerPlaylist),
+                FrameLayout.LayoutParams.WRAP_CONTENT);
+
+        if (position % 2 == 0) {
+            params.gravity = Gravity.END;
+        } else
+            params.gravity = Gravity.START;
+
+        holder.contenedor.setLayoutParams(params);
+
         holder.lblNombre.setText(playlist.getNombre());
+        holder.lblNombre.setSelected(true);
+
         String texto;
         if (playlist.getCanciones().size() == 1)
             texto = context.getString(R.string.unaCancion);

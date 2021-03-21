@@ -9,28 +9,69 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.entidad.Playlist;
+import es.rbp.musica.vista.adaptadores.AdaptadorPlaylists;
+import es.rbp.musica.vista.snackbar.SnackbarCrearPlaylist;
 
-public class FragmentPlaylist extends Fragment {
+public class FragmentPlaylist extends Fragment implements SnackbarCrearPlaylist.Accion, AdaptadorPlaylists.OnPlaylistClick, View.OnClickListener {
 
     private List<Playlist> playlists;
 
-    public FragmentPlaylist() {
-        AccesoFichero accesoFichero = AccesoFichero.getInstance(getContext());
-        playlists = accesoFichero.getPlaylists();
-    }
+    private AdaptadorPlaylists adaptador;
 
+    private AccesoFichero accesoFichero;
+
+    public FragmentPlaylist() {
+        accesoFichero = AccesoFichero.getInstance(getContext());
+        playlists = accesoFichero.getPlaylists();
+
+        if (playlists == null)
+            playlists = new ArrayList<>();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_playlist, container, false);
+
         RecyclerView recyclerView = v.findViewById(R.id.recyclerViewPlaylist);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        adaptador = new AdaptadorPlaylists(playlists, this, getContext());
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setAdapter(adaptador);
+
+        if (playlists.size() == 0)
+            recyclerView.setVisibility(View.INVISIBLE);
+
+        ImageView btnAnadirPlailist = v.findViewById(R.id.btnCrearPlaylist);
+        btnAnadirPlailist.setOnClickListener(this);
         return v;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btnCrearPlaylist)
+            new SnackbarCrearPlaylist(this, getActivity()).show();
+    }
+
+    @Override
+    public void crearPlaylist(String nombrePlaylist) {
+        Playlist nuevaPlaylist = new Playlist(nombrePlaylist);
+        playlists.add(nuevaPlaylist);
+        accesoFichero.guardarPlaylists(playlists);
+
+        adaptador.notifyItemInserted(playlists.size() - 1);
+        adaptador.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPlaylistClick(int indice) {
+
     }
 }

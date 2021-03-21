@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Música</string>
+    <string name="app_name">Tu Música</string>
     <string name="descIconoAjustes"><![CDATA[Icono de ajustes. Hecho por: https://www.flaticon.com/free-icon/settings_2099058?term=settings&page=1&position=4&page=1&position=4&related_id=2099058&origin=search]]></string>
     <string name="descIconoBuscar"><![CDATA[Icono de búsqueda, hecho por: https://www.flaticon.com/free-icon/loupe_709592?term=search&page=1&position=5&page=1&position=5&related_id=709592&origin=search]]></string>
     <string name="descIconoPlaylist">Icono de playlist</string>
@@ -54,4 +54,6 @@
     <string name="descImagenPlaylist">Imagen por defecto de las playlist</string>
     <string name="descIconoCrearPlaylist"><![CDATA[Icono de añadir de color azul, hecho por: https://www.flaticon.com/free-icon/add_875068?term=add&page=1&position=23&page=1&position=23&related_id=875068&origin=search]]></string>
     <string name="playlist">Playlists</string>
+    <string name="nombreDeLaPlaylist">Nombre de la playlist</string>
+    <string name="noHayPlaylists">No hay playlists</string>
 </resources>
