@@ -32,6 +32,7 @@
 
     <attr name="colorFondoPlaylist" format="color" />
     <attr name="colorFondoReproducirAleatorio" format="color" />
+    <attr name="colorFondoReproducirAleatorioPulsado" format="color" />
 
     <attr name="colorFondoBotonPositivo" format="color" />
     <attr name="colorFondoBotonPositivoPulsado" format="color" />
@@ -44,11 +45,16 @@
     <attr name="colorTextoCancionActual" format="color" />
     <attr name="colorFondoOpacityPane" format="color" />
 
+    <attr name="colorTituloPlaylist" format="color" />
+
     <attr name="iconoMenuPuntos" format="reference" />
     <attr name="iconoCarpeta" format="reference" />
     <attr name="iconoAjustes" format="reference" />
     <attr name="iconoBuscar" format="reference" />
     <attr name="iconoPlaylist" format="reference" />
+    <attr name="iconoAnadirPlaylist" format="reference" />
+    <attr name="iconoEliminarPlaylist" format="reference" />
+    <attr name="iconoEliminar" format="reference" />
 
     <attr name="iconoFavoritosLleno" format="reference" />
     <attr name="iconoFavoritosVacio" format="reference" />

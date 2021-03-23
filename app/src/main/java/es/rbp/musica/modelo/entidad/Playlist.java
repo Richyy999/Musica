@@ -8,6 +8,10 @@ public class Playlist implements Serializable {
 
     public static final long serialVersionUID = 3L;
 
+    public static final String EXTRA_PLAYLIST = "indicePlaylis";
+
+    public static final int INDICE_POR_DEFECTO = 0;
+
     private List<String> canciones;
 
     private String nombre;

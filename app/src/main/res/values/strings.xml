@@ -56,4 +56,9 @@
     <string name="playlist">Playlists</string>
     <string name="nombreDeLaPlaylist">Nombre de la playlist</string>
     <string name="noHayPlaylists">No hay playlists</string>
+    <string name="eliminarPlaylist">Eliminar playlist</string>
+    <string name="descIconoEliminar"><![CDATA[Icono de eliminar, hecho por: https://www.flaticon.com/free-icon/delete_833262?term=delete&page=1&position=43&page=1&position=43&related_id=833262&origin=search]]></string>
+    <string name="anadirCanciones">Añadir canciones</string>
+    <string name="reproduccionAleatoria">Reproducción aleatoria</string>
+    <string name="eliminarCanciones">Eliminar canciones</string>
 </resources>

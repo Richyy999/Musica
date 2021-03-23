@@ -32,6 +32,16 @@ public class AudioUtils {
         return cancionesFiltradas;
     }
 
+    public static List<Cancion> filtrarCancionesPorNombres(List<Cancion> canciones, List<String> nombres) {
+        List<Cancion> cancionesFiltradas = new ArrayList<>();
+        for (Cancion cancion : canciones) {
+            if (nombres.contains(cancion.getDatos()))
+                cancionesFiltradas.add(cancion);
+        }
+
+        return cancionesFiltradas;
+    }
+
     public static List<Carpeta> getCarpetas(List<Cancion> canciones) {
         List<Carpeta> todasCarpetas = new ArrayList<>();
         Map<String, List<Cancion>> mapaCarpetas = new HashMap<>();

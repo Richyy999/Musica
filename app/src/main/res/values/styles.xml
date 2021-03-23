@@ -23,6 +23,7 @@
         <item name="colorFondoCancionAnadida">@color/fondoCancionAnadidaClaro</item>
         <item name="colorFondoPlaylist">@color/fondoPlaylistClaro</item>
         <item name="colorFondoReproducirAleatorio">@color/fondoReproducirAleatorioClaro</item>
+        <item name="colorFondoReproducirAleatorioPulsado">@color/fondoReproducirPulsadoClaro</item>
         <item name="colorFondoBotonPositivo">@color/fondoBotonPositivoClaro</item>
         <item name="colorFondoBotonPositivoPulsado">@color/fondoBotonPositivoPulsadoClaro</item>
         <item name="colorTextoBotonPositivo">@color/textoBotonPositivoClaro</item>
@@ -32,7 +33,11 @@
         <item name="colorTextoCancionActual">@color/textoCancionActualClaro</item>
         <item name="colorFondoOpacityPane">@color/fondoOpacityPaneClaro</item>
         <item name="colorFondoSeccionAjustesPulsado">@color/fondoSeccionAjustesPulsadoClaro</item>
+        <item name="colorTituloPlaylist">@color/tituloPlaylistClaro</item>
 
+        <item name="iconoAnadirPlaylist">@drawable/icono_anadir_playlist_claro</item>
+        <item name="iconoEliminar">@drawable/icono_eliminar_claro</item>
+        <item name="iconoEliminarPlaylist">@drawable/icono_eliminar_blanco</item>
         <item name="iconoMenuPuntos">@drawable/icono_menu_puntos_claro</item>
         <item name="iconoCarpeta">@drawable/icono_carpeta_claro</item>
         <item name="iconoAjustes">@drawable/icono_ajustes_claro</item>
@@ -91,6 +96,7 @@
         <item name="colorFondoCancionAnadida">@color/fondoCancionAnadidaOscuro</item>
         <item name="colorFondoPlaylist">@color/fondoPlaylistOscuro</item>
         <item name="colorFondoReproducirAleatorio">@color/fondoReproducirAleatorioOscuro</item>
+        <item name="colorFondoReproducirAleatorioPulsado">@color/fondoReproducirPulsadoOscuro</item>
         <item name="colorFondoBotonPositivo">@color/fondoBotonPositivoOscuro</item>
         <item name="colorFondoBotonPositivoPulsado">@color/fondoBotonPositivoPulsadoOscuro</item>
         <item name="colorTextoBotonPositivo">@color/textoBotonPositivoOscuro</item>
@@ -100,7 +106,11 @@
         <item name="colorTextoCancionActual">@color/textoCancionActualOscuro</item>
         <item name="colorFondoOpacityPane">@color/fondoOpacityPaneOscuro</item>
         <item name="colorFondoSeccionAjustesPulsado">@color/fondoSeccionAjustesPulsadoOscuro</item>
+        <item name="colorTituloPlaylist">@color/tituloPlaylistOscuro</item>
 
+        <item name="iconoAnadirPlaylist">@drawable/icono_anadir_playlist_oscuro</item>
+        <item name="iconoEliminar">@drawable/icono_eliminar_oscuro</item>
+        <item name="iconoEliminarPlaylist">@drawable/icono_eliminar_oscuro</item>
         <item name="iconoMenuPuntos">@drawable/icono_menu_puntos_oscuro</item>
         <item name="iconoCarpeta">@drawable/icono_carpeta_oscuro</item>
         <item name="iconoAjustes">@drawable/icono_ajustes_oscuro</item>
@@ -133,7 +143,7 @@
         <item name="iconoLinkedin">@drawable/icono_linkedin_oscuro</item>
         <item name="iconoMostrar">@drawable/icono_mostrar_oscuro</item>
         <item name="iconoOcultar">@drawable/icono_ocultar_oscuro</item>
-        <item name="iconoCrearPlaylist">@drawable/icono_anadir_blanco</item>
+        <item name="iconoCrearPlaylist">@drawable/icono_anadir_oscuro</item>
     </style>
 
     <style name="campoTexto">
@@ -319,5 +329,27 @@
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:textColor">?attr/colorSubtitulo</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="tituloPlaylist" parent="tituloActivity">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/colorTituloPlaylist</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:freezesText">true</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="textoBotonPlaylist">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/colorTituloPlaylist</item>
+        <item name="android:textSize">10sp</item>
     </style>
 </resources>

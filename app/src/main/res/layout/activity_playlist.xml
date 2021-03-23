@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorFondoPlaylist"
+    android:paddingTop="24dp"
+    tools:context=".vista.activities.PlaylistActivity">
+
+    <ImageView
+        android:id="@+id/btnAtrasPlaylist"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/descIconoFlechaIzquierda"
+        android:src="@drawable/icono_flecha_izquierda_playlist_claro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imgPlaylist"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/imagen_playlist"
+        app:layout_constraintStart_toEndOf="@+id/btnAtrasPlaylist"
+        app:layout_constraintTop_toTopOf="@+id/btnAtrasPlaylist"
+        app:riv_corner_radius="8dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgPlaylist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imgPlaylist"
+        app:layout_constraintTop_toTopOf="@id/imgPlaylist">
+
+        <TextView
+            android:id="@+id/lblNombrePlaylist"
+            style="@style/tituloPlaylist"
+            android:layout_marginTop="8dp"
+            android:text="Playlist 1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lblNumCancionesPlaylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5 Canciones"
+            android:textColor="?attr/colorTituloPlaylist"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblNombrePlaylist" />
+
+        <LinearLayout
+            android:id="@+id/btnEliminarPlaylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/descIconoEliminar"
+                android:src="?attr/iconoEliminarPlaylist" />
+
+            <TextView
+                style="@style/textoBotonPlaylist"
+                android:text="@string/eliminarPlaylist" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnAnadirCancionPlaylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnEliminarPlaylist">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/descIconoEliminar"
+                android:src="?attr/iconoAnadirPlaylist" />
+
+            <TextView
+                style="@style/textoBotonPlaylist"
+                android:text="@string/anadirCanciones" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/fondo_snackbar"
+        android:paddingTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentColaPlaylist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgPlaylist">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btnReproducirPlaylistAleatorio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/fondo_boton_reproducir_playlist_aleatorio"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnEliminarCancionPlaylist"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnEliminarCancionPlaylist"
+            app:layout_constraintVertical_bias="0.5">
+
+            <ImageView
+                android:id="@+id/imgReproducirPlaylistAleatorio"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/icono_play_azul_claro"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/reproduccionAleatoria"
+                android:textColor="@color/textoBotonReproducirPlaylistAleatorio"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imgReproducirPlaylistAleatorio"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/btnEliminarCancionPlaylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="?attr/iconoEliminar" />
+
+            <TextView
+                style="@style/nombreIcono"
+                android:text="@string/eliminarCanciones"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
+            android:id="@+id/recyclerViewCancionesPlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:background="?attr/colorFondoApp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnEliminarCancionPlaylist" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <fragment
+        android:id="@+id/fragmentColaPlaylist"
+        android:name="es.rbp.musica.vista.fragments.FragmentCola"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout="@layout/fragment_cola" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

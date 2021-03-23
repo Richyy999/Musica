@@ -64,7 +64,9 @@
     <color name="fondoPlaylistOscuro">#004E82</color>
 
     <color name="fondoReproducirAleatorioClaro">#C2EDFF</color>
+    <color name="fondoReproducirPulsadoClaro">#8EDEFF</color>
     <color name="fondoReproducirAleatorioOscuro">#F3F3F3</color>
+    <color name="fondoReproducirPulsadoOscuro">#CFE1FF</color>
 
     <color name="fondoBotonPositivoClaro">#0099FF</color>
     <color name="fondoBotonPositivoOscuro">#004E82</color>
@@ -74,6 +76,9 @@
 
     <color name="textoBotonPositivoClaro">#FFFFFF</color>
     <color name="textoBotonPositivoOscuro">#F3F3F3</color>
+
+    <color name="tituloPlaylistClaro">#FFFFFF</color>
+    <color name="tituloPlaylistOscuro">#F3F3F3</color>
 
     <color name="fondoBotonNeutroClaro">#E3F6FD</color>
     <color name="fondoBotonNeutroOscuro">#A7A7A7</color>
@@ -92,4 +97,6 @@
 
     <color name="fondoSeccionAjustesPulsadoClaro">#EDEDED</color>
     <color name="fondoSeccionAjustesPulsadoOscuro">#343434</color>
+
+    <color name="textoBotonReproducirPlaylistAleatorio">#3F48CC</color>
 </resources>

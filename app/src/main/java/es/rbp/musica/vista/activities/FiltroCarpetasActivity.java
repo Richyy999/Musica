@@ -48,7 +48,6 @@ public class FiltroCarpetasActivity extends AppCompatActivity implements Adaptad
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         cargarAjustes();
         setContentView(R.layout.activity_filtro_carpetas);
-        ajustes = Ajustes.getInstance(this);
         cargarVista();
     }
 
@@ -75,7 +74,7 @@ public class FiltroCarpetasActivity extends AppCompatActivity implements Adaptad
     }
 
     private void cargarAjustes() {
-        Ajustes ajustes = Ajustes.getInstance(this);
+        ajustes = Ajustes.getInstance(this);
         if (ajustes.isModoOscuro()) {
             setTheme(R.style.TemaOscuro);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);

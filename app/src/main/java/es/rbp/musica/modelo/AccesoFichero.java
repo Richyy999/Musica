@@ -262,4 +262,16 @@ public class AccesoFichero {
             Log.e(TAG, e.toString());
         }
     }
+
+    public Playlist buscarPlaylistPorIndice(int indice) {
+        if (playlists == null)
+            leerPlaylists();
+
+        try {
+            return playlists.get(indice);
+        } catch (IndexOutOfBoundsException e) {
+            Log.e(TAG, "Indice de playlist inválido");
+            return null;
+        }
+    }
 }

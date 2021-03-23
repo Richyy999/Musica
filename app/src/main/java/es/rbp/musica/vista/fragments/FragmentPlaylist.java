@@ -1,5 +1,6 @@
 package es.rbp.musica.vista.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,8 +18,11 @@ import java.util.List;
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.entidad.Playlist;
+import es.rbp.musica.vista.activities.PlaylistActivity;
 import es.rbp.musica.vista.adaptadores.AdaptadorPlaylists;
 import es.rbp.musica.vista.snackbar.SnackbarCrearPlaylist;
+
+import static es.rbp.musica.modelo.entidad.Playlist.EXTRA_PLAYLIST;
 
 public class FragmentPlaylist extends Fragment implements SnackbarCrearPlaylist.Accion, AdaptadorPlaylists.OnPlaylistClick, View.OnClickListener {
 
@@ -72,6 +76,8 @@ public class FragmentPlaylist extends Fragment implements SnackbarCrearPlaylist.
 
     @Override
     public void onPlaylistClick(int indice) {
-
+        Intent intent = new Intent(getContext(), PlaylistActivity.class);
+        intent.putExtra(EXTRA_PLAYLIST, indice);
+        startActivity(intent);
     }
 }
