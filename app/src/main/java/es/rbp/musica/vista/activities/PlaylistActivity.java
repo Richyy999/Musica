@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,7 +28,7 @@ import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorNombres;
 import static es.rbp.musica.modelo.entidad.Playlist.EXTRA_PLAYLIST;
 import static es.rbp.musica.modelo.entidad.Playlist.INDICE_POR_DEFECTO;
 
-public class PlaylistActivity extends AppCompatActivity {
+public class PlaylistActivity extends AppCompatActivity implements View.OnClickListener {
 
     private List<Cancion> canciones;
 
@@ -39,6 +40,8 @@ public class PlaylistActivity extends AppCompatActivity {
 
     private AdaptadorCanciones adaptador;
 
+    private int indicePlaylist;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,16 @@ public class PlaylistActivity extends AppCompatActivity {
         cargarAjustes();
         setContentView(R.layout.activity_playlist);
         cargarVista();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnEliminarPlaylist:
+                accesoFichero.eliminarPlaylist(indicePlaylist);
+                finish();
+                break;
+        }
     }
 
     private void cargarAjustes() {
@@ -61,7 +74,7 @@ public class PlaylistActivity extends AppCompatActivity {
 
     private void cargarVista() {
         accesoFichero = AccesoFichero.getInstance(this);
-        int indicePlaylist = getIntent().getIntExtra(EXTRA_PLAYLIST, INDICE_POR_DEFECTO);
+        indicePlaylist = getIntent().getIntExtra(EXTRA_PLAYLIST, INDICE_POR_DEFECTO);
         playlist = accesoFichero.buscarPlaylistPorIndice(indicePlaylist);
 
         TextView lblNombrePlaylist = findViewById(R.id.lblNombrePlaylist);
@@ -82,6 +95,9 @@ public class PlaylistActivity extends AppCompatActivity {
             Glide.with(this).load(R.drawable.imagen_playlist).into(imgPlaylist);
         else
             Glide.with(this).load(rutaImagen).into(imgPlaylist);
+
+        LinearLayout btnEliminarPlaylist = findViewById(R.id.btnEliminarPlaylist);
+        btnEliminarPlaylist.setOnClickListener(this);
 
         canciones = filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), playlist.getCanciones());
         Collections.sort(canciones);

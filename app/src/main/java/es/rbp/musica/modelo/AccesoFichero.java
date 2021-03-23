@@ -274,4 +274,12 @@ public class AccesoFichero {
             return null;
         }
     }
+
+    public void eliminarPlaylist(int indice) {
+        if (playlists == null)
+            leerPlaylists();
+
+        playlists.remove(indice);
+        guardarPlaylists(playlists);
+    }
 }

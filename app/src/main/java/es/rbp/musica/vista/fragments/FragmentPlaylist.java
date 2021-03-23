@@ -32,6 +32,8 @@ public class FragmentPlaylist extends Fragment implements SnackbarCrearPlaylist.
 
     private AccesoFichero accesoFichero;
 
+    private View root;
+
     public FragmentPlaylist() {
         accesoFichero = AccesoFichero.getInstance(getContext());
         playlists = accesoFichero.getPlaylists();
@@ -42,9 +44,14 @@ public class FragmentPlaylist extends Fragment implements SnackbarCrearPlaylist.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_playlist, container, false);
+        root = inflater.inflate(R.layout.fragment_playlist, container, false);
+        return root;
+    }
 
-        RecyclerView recyclerView = v.findViewById(R.id.recyclerViewPlaylist);
+    @Override
+    public void onResume() {
+        super.onResume();
+        RecyclerView recyclerView = root.findViewById(R.id.recyclerViewPlaylist);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         adaptador = new AdaptadorPlaylists(playlists, this, getContext());
         recyclerView.setHasFixedSize(false);
@@ -53,9 +60,8 @@ public class FragmentPlaylist extends Fragment implements SnackbarCrearPlaylist.
         if (playlists.size() == 0)
             recyclerView.setVisibility(View.INVISIBLE);
 
-        ImageView btnAnadirPlailist = v.findViewById(R.id.btnCrearPlaylist);
+        ImageView btnAnadirPlailist = root.findViewById(R.id.btnCrearPlaylist);
         btnAnadirPlailist.setOnClickListener(this);
-        return v;
     }
 
     @Override
