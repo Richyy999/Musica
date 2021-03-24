@@ -21,14 +21,26 @@
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/imgPlaylist"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
         android:layout_marginTop="12dp"
         android:src="@drawable/imagen_playlist"
         app:layout_constraintStart_toEndOf="@+id/btnAtrasPlaylist"
-        app:layout_constraintTop_toTopOf="@+id/btnAtrasPlaylist"
+        app:layout_constraintTop_toBottomOf="@+id/lblNombrePlaylist"
         app:riv_corner_radius="8dp" />
+
+    <TextView
+        android:id="@+id/lblNombrePlaylist"
+        style="@style/tituloPlaylist"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:gravity="center_horizontal"
+        android:text="Playlist 1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toEndOf="@+id/btnAtrasPlaylist"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -42,21 +54,14 @@
         app:layout_constraintTop_toTopOf="@id/imgPlaylist">
 
         <TextView
-            android:id="@+id/lblNombrePlaylist"
-            style="@style/tituloPlaylist"
-            android:layout_marginTop="8dp"
-            android:text="Playlist 1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/lblNumCancionesPlaylist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="5 Canciones"
             android:textColor="?attr/colorTituloPlaylist"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lblNombrePlaylist" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/btnEliminarPlaylist"
@@ -83,7 +88,7 @@
             android:id="@+id/btnAnadirCancionPlaylist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="24dp"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"

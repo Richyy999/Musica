@@ -30,6 +30,8 @@ public class FragmentPlaylist extends Fragment implements SnackbarCrearPlaylist.
 
     private AdaptadorPlaylists adaptador;
 
+    private RecyclerView recyclerView;
+
     private AccesoFichero accesoFichero;
 
     private View root;
@@ -51,7 +53,7 @@ public class FragmentPlaylist extends Fragment implements SnackbarCrearPlaylist.
     @Override
     public void onResume() {
         super.onResume();
-        RecyclerView recyclerView = root.findViewById(R.id.recyclerViewPlaylist);
+        recyclerView = root.findViewById(R.id.recyclerViewPlaylist);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         adaptador = new AdaptadorPlaylists(playlists, this, getContext());
         recyclerView.setHasFixedSize(false);
@@ -78,6 +80,8 @@ public class FragmentPlaylist extends Fragment implements SnackbarCrearPlaylist.
 
         adaptador.notifyItemInserted(playlists.size() - 1);
         adaptador.notifyDataSetChanged();
+
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override

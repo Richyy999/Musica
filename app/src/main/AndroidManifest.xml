@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/TemaClaro"
         tools:targetApi="q">
-        <activity android:name=".vista.activities.PlaylistActivity"></activity>
+        <activity
+            android:name=".vista.activities.PlaylistActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.activities.FiltroCarpetasActivity"
             android:screenOrientation="portrait" />
