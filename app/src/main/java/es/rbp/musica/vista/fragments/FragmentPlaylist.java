@@ -3,6 +3,9 @@ package es.rbp.musica.vista.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -85,9 +88,13 @@ public class FragmentPlaylist extends Fragment implements SnackbarCrearPlaylist.
     }
 
     @Override
-    public void onPlaylistClick(int indice) {
+    public void onPlaylistClick(int indice, AdaptadorPlaylists.MyHolder holder) {
         Intent intent = new Intent(getContext(), PlaylistActivity.class);
         intent.putExtra(EXTRA_PLAYLIST, indice);
-        startActivity(intent);
+        Pair<View, String> parImagen = Pair.create((View) holder.imgPlaylist, ViewCompat.getTransitionName(holder.imgPlaylist));
+        Pair<View, String> parNombre = Pair.create((View) holder.lblNombre, ViewCompat.getTransitionName(holder.lblNombre));
+        Pair<View, String> parNumCanciones = Pair.create((View) holder.lblNumCanciones, ViewCompat.getTransitionName(holder.lblNumCanciones));
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), parImagen, parNombre, parNumCanciones);
+        startActivity(intent, options.toBundle());
     }
 }

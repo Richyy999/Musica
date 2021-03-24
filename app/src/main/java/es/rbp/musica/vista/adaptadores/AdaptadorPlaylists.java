@@ -28,9 +28,9 @@ public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.
 
         private LinearLayout contenedor;
 
-        private TextView lblNombre, lblNumCanciones;
+        public TextView lblNombre, lblNumCanciones;
 
-        private ImageView imgPlaylist;
+        public ImageView imgPlaylist;
 
         public MyHolder(@NonNull View itemView, OnPlaylistClick onPlaylistClick) {
             super(itemView);
@@ -48,7 +48,7 @@ public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.
 
         @Override
         public void onClick(View v) {
-            onPlaylistClick.onPlaylistClick(getAdapterPosition());
+            onPlaylistClick.onPlaylistClick(getAdapterPosition(), this);
         }
     }
 
@@ -110,6 +110,6 @@ public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.
 
     public interface OnPlaylistClick {
 
-        void onPlaylistClick(int indice);
+        void onPlaylistClick(int indice, MyHolder holder);
     }
 }

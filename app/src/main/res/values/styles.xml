@@ -1,6 +1,8 @@
 <resources>
 
     <style name="TemaClaro" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowContentTransitions">true</item>
+
         <item name="colorTituloActivity">@color/tituloActivityClaro</item>
         <item name="colorTitulo">@color/tituloClaro</item>
         <item name="colorTituloMenu">@color/tituloMenuClaro</item>
@@ -74,6 +76,8 @@
     </style>
 
     <style name="TemaOscuro" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowContentTransitions">true</item>
+
         <item name="colorTituloActivity">@color/tituloActivityOscuro</item>
         <item name="colorTitulo">@color/tituloOscuro</item>
         <item name="colorTituloMenu">@color/tituloMenuOscuro</item>

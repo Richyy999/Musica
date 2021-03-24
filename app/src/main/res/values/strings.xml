@@ -61,4 +61,7 @@
     <string name="anadirCanciones">Añadir canciones</string>
     <string name="reproduccionAleatoria">Reproducción aleatoria</string>
     <string name="eliminarCanciones">Eliminar canciones</string>
+    <string name="elementoImagenPlaylist">imagenPlaylist</string>
+    <string name="elementoNombrePlaylist">nombrePlaylist</string>
+    <string name="elementoNumCancionesPlaylist">numCancionesPlaylist</string>
 </resources>
