@@ -15,6 +15,9 @@
         android:theme="@style/TemaClaro"
         tools:targetApi="q">
         <activity
+            android:name=".vista.activities.AnadirCancionesActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".vista.activities.PlaylistActivity"
             android:screenOrientation="portrait" />
         <activity
