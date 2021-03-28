@@ -6,8 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -19,17 +23,24 @@ import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
 import es.rbp.musica.vista.adaptadores.AdaptadorAnadirCancion;
-import es.rbp.musica.vista.adaptadores.AdaptadorCanciones;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 
 import static es.rbp.musica.modelo.AudioUtils.filtrarCanciones;
+import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorQuery;
+import static es.rbp.musica.modelo.AudioUtils.seleccionarCanciones;
 
-public class AnadirCancionesActivity extends AppCompatActivity implements AdaptadorAnadirCancion.OnCancionClick, View.OnClickListener {
+public class AnadirCancionesActivity extends AppCompatActivity implements AdaptadorAnadirCancion.OnCancionClick, View.OnClickListener, TextWatcher {
 
     public static final String EXTRA_CANCIONES_ANADIDAS = "extraCancionesAnadidas";
 
+    private static final String TAG = "AÑADIR CANCIÓN";
+
     private List<Cancion> todasCanciones;
     private List<Cancion> cancionesSeleccionadas;
+
+    private AdaptadorAnadirCancion adaptador;
+
+    private AccesoFichero accesoFichero;
 
     private Ajustes ajustes;
 
@@ -51,6 +62,23 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
     }
 
     @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        String query = s.toString().trim();
+        todasCanciones = filtrarCancionesPorQuery(accesoFichero.getTodasCanciones(), query, ajustes);
+        cargarRecyclerView();
+    }
+
+    @Override
     public void onCancionClick(int indice) {
         Cancion cancion = todasCanciones.get(indice);
 
@@ -58,10 +86,18 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
             cancionesSeleccionadas.remove(cancion);
         else
             cancionesSeleccionadas.add(cancion);
+
+        cancion.setSeleccionada(cancionesSeleccionadas.contains(cancion));
+
+        Log.d(TAG, "Cancion Pulsada: " + cancion.getDatos() + " Seleccionada: " + cancion.isSeleccionada());
+
+        adaptador.notifyDataSetChanged();
     }
 
     private void salir() {
         setResult(RESULT_CANCELED);
+
+        seleccionarCanciones(accesoFichero.getTodasCanciones(), false);
 
         finish();
     }
@@ -77,11 +113,13 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
         intent.putExtra(EXTRA_CANCIONES_ANADIDAS, canciones);
         setResult(RESULT_OK, intent);
 
+        seleccionarCanciones(accesoFichero.getTodasCanciones(), false);
+
         finish();
     }
 
     private void cargarVista() {
-        AccesoFichero accesoFichero = AccesoFichero.getInstance(this);
+        accesoFichero = AccesoFichero.getInstance(this);
         ajustes = Ajustes.getInstance(this);
 
         todasCanciones = filtrarCanciones(accesoFichero.getTodasCanciones(), ajustes);
@@ -94,12 +132,16 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
         ImageView btnAceptar = findViewById(R.id.btnAceptarAnadirCanciones);
         btnAceptar.setOnClickListener(this);
 
+        EditText txtFiltrar = findViewById(R.id.txtFiltrarAnadirCancion);
+        txtFiltrar.addTextChangedListener(this);
+
         cargarRecyclerView();
     }
 
     private void cargarRecyclerView() {
         Collections.sort(todasCanciones);
         IndexFastScrollRecyclerView recyclerView = findViewById(R.id.recyclerViewAnadirCanciones);
+        recyclerView.setHasFixedSize(false);
         if (ajustes.isModoOscuro()) {
             recyclerView.setIndexBarTextColor(R.color.subtituloOscuro);
             recyclerView.setIndexBarColor(R.color.fondoAppOscuro);
@@ -113,9 +155,11 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
 
         if (todasCanciones.size() < 100)
             recyclerView.setIndexBarVisibility(false);
+        else
+            recyclerView.setIndexBarVisibility(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        AdaptadorAnadirCancion adaptador = new AdaptadorAnadirCancion(todasCanciones, this);
+        adaptador = new AdaptadorAnadirCancion(todasCanciones, this);
         recyclerView.setAdapter(adaptador);
         if (todasCanciones.size() == 0)
             recyclerView.setVisibility(View.INVISIBLE);

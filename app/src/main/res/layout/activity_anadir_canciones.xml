@@ -38,6 +38,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/txtFiltrarAnadirCancion"
+        style="@style/campoTextoConIcono"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAceptarAnadirCanciones" />
+
+    <ImageView
+        android:id="@+id/imgBuscarAnadirCancion"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/descIconoBuscar"
+        android:src="?attr/iconoBuscar"
+        app:layout_constraintBottom_toBottomOf="@+id/txtFiltrarAnadirCancion"
+        app:layout_constraintEnd_toEndOf="@+id/txtFiltrarAnadirCancion"
+        app:layout_constraintTop_toTopOf="@+id/txtFiltrarAnadirCancion" />
+
     <in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
         android:id="@+id/recyclerViewAnadirCanciones"
         android:layout_width="match_parent"
@@ -46,6 +65,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblTituloAnadirCancion" />
+        app:layout_constraintTop_toBottomOf="@+id/txtFiltrarAnadirCancion" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,7 +42,6 @@ public class AdaptadorAnadirCancion extends RecyclerView.Adapter<AdaptadorAnadir
         @Override
         public void onClick(View v) {
             onCancionClick.onCancionClick(getAdapterPosition());
-            circulo.setSelected(!circulo.isSelected());
         }
     }
 
@@ -89,6 +88,11 @@ public class AdaptadorAnadirCancion extends RecyclerView.Adapter<AdaptadorAnadir
         String textoArtistas = artista + " | " + album;
         holder.lblArtistaAlbum.setText(textoArtistas);
         holder.lblArtistaAlbum.setSelected(true);
+
+        if (cancion.isSeleccionada())
+            holder.circulo.setBackgroundResource(R.drawable.fondo_cancion_seleccionada);
+        else
+            holder.circulo.setBackgroundResource(R.drawable.fondo_seleccionar_cancion);
     }
 
     @Override
