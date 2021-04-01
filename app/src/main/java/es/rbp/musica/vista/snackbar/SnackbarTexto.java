@@ -10,21 +10,24 @@ import android.widget.TextView;
 
 import es.rbp.musica.R;
 
-public class SnackbarCrearPlaylist extends Dialog implements View.OnClickListener {
+public class SnackbarTexto extends Dialog implements View.OnClickListener {
 
     private EditText txtNombrePlaylist;
 
     private Accion accion;
 
-    public SnackbarCrearPlaylist(Accion accion, Activity activity) {
+    private int idTexto;
+
+    public SnackbarTexto(Accion accion, Activity activity, int idTexto) {
         super(activity);
         this.accion = accion;
+        this.idTexto = idTexto;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.snackbar_crear_playlist);
+        setContentView(R.layout.snackbar_texto);
         getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setBackgroundDrawable(null);
@@ -34,6 +37,9 @@ public class SnackbarCrearPlaylist extends Dialog implements View.OnClickListene
 
         View contenedor = findViewById(R.id.contenedorSnackbarCrearPlaylist);
         contenedor.setOnClickListener(this);
+
+        TextView lblTitulo = findViewById(R.id.lblTituloSnackbarTexto);
+        lblTitulo.setText(idTexto);
 
         TextView btnAceptar = findViewById(R.id.btnOkSnackbarCrearPlaylist);
         btnAceptar.setOnClickListener(this);

@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="tituloActivityClaro">#1168BF</color>
-    <color name="tituloActivityOscuro">#F3F3F3</color>
+    <color name="tituloActivityOscuro">#D0D0D0</color>
 
     <color name="tituloClaro">#000000</color>
-    <color name="tituloOscuro">#F3F3F3</color>
+    <color name="tituloOscuro">#D0D0D0</color>
 
     <color name="tituloMenuClaro">#747575</color>
-    <color name="tituloMenuOscuro">#F3F3F3</color>
+    <color name="tituloMenuOscuro">#D0D0D0</color>
 
     <color name="subtituloClaro">#747575</color>
     <color name="subtituloOscuro">#747575</color>
 
     <color name="subtituloFragmentClaro">#747575</color>
-    <color name="subtituloFragmentOscuro">#F3F3F3</color>
+    <color name="subtituloFragmentOscuro">#D0D0D0</color>
 
     <color name="nombreIconoClaro">#1168BF</color>
-    <color name="nombreIconoOscuro">#F3F3F3</color>
+    <color name="nombreIconoOscuro">#D0D0D0</color>
 
     <color name="separadorClaro">#E1E1E1</color>
-    <color name="separadorOscuro">#E1E1E1</color>
+    <color name="separadorOscuro">#747575</color>
 
     <color name="fondoCampoTextoClaro">#C2EDFF</color>
-    <color name="fondoCampoTextoOscuro">#F3F3F3</color>
+    <color name="fondoCampoTextoOscuro">#D0D0D0</color>
 
     <color name="fondoAppClaro">#FFFFFF</color>
     <color name="fondoAppOscuro">#232323</color>
@@ -46,7 +46,7 @@
     <color name="textoCampoTextoOscuro">#1168BF</color>
 
     <color name="textoHistorialClaro">#1168BF</color>
-    <color name="textoHistorialOscuro">#F3F3F3</color>
+    <color name="textoHistorialOscuro">#D0D0D0</color>
 
     <color name="fondoSwitchClaro">#0096FF</color>
     <color name="fondoSwitchOscuro">#0096FF</color>
@@ -65,7 +65,7 @@
 
     <color name="fondoReproducirAleatorioClaro">#C2EDFF</color>
     <color name="fondoReproducirPulsadoClaro">#8EDEFF</color>
-    <color name="fondoReproducirAleatorioOscuro">#F3F3F3</color>
+    <color name="fondoReproducirAleatorioOscuro">#D0D0D0</color>
     <color name="fondoReproducirPulsadoOscuro">#CFE1FF</color>
 
     <color name="fondoBotonPositivoClaro">#0099FF</color>
@@ -75,10 +75,10 @@
     <color name="fondoBotonPositivoPulsadoOscuro">#00365A</color>
 
     <color name="textoBotonPositivoClaro">#FFFFFF</color>
-    <color name="textoBotonPositivoOscuro">#F3F3F3</color>
+    <color name="textoBotonPositivoOscuro">#D0D0D0</color>
 
     <color name="tituloPlaylistClaro">#FFFFFF</color>
-    <color name="tituloPlaylistOscuro">#F3F3F3</color>
+    <color name="tituloPlaylistOscuro">#D0D0D0</color>
 
     <color name="fondoBotonNeutroClaro">#E3F6FD</color>
     <color name="fondoBotonNeutroOscuro">#A7A7A7</color>
@@ -87,7 +87,7 @@
     <color name="fondoBotonNeutroPulsadoOscuro">#6A6A6A</color>
 
     <color name="textoBotonNeutroClaro">#1168BF</color>
-    <color name="textoBotonNeutroOscuro">#F3F3F3</color>
+    <color name="textoBotonNeutroOscuro">#D0D0D0</color>
 
     <color name="textoCancionActualClaro">#1168BF</color>
     <color name="textoCancionActualOscuro">#3BC5FF</color>
