@@ -59,17 +59,22 @@ public class AudioUtils {
     }
 
     public static List<Cancion> filtrarCancionesPorQuery(List<Cancion> canciones, String query, Ajustes ajustes) {
-        if (query.isEmpty())
-            return canciones;
-
         List<Cancion> cancionesFiltradas = new ArrayList<>();
+
+        if (query.equals("")) {
+            cancionesFiltradas.addAll(canciones);
+            return cancionesFiltradas;
+        }
+
         for (Cancion cancion : canciones) {
             if (ajustes.isUtilizarNombreDeArchivo()) {
-                if (cancion.getAlbum().toLowerCase().contains(query.toLowerCase()) || cancion.getArtista().toLowerCase().contains(query.toLowerCase())
+                if ((!cancion.getAlbum().equals(Cancion.ALBUM_DESCONOCIDO) && cancion.getAlbum().toLowerCase().contains(query.toLowerCase()))
+                        || (!cancion.getArtista().equals(Cancion.ARTISTA_DESCONOCIDO) && cancion.getArtista().toLowerCase().contains(query.toLowerCase()))
                         || cancion.getNombreArchivo().toLowerCase().contains(query.toLowerCase()))
                     cancionesFiltradas.add(cancion);
             } else {
-                if (cancion.getAlbum().toLowerCase().contains(query.toLowerCase()) || cancion.getArtista().toLowerCase().contains(query.toLowerCase())
+                if ((!cancion.getAlbum().equals(Cancion.ALBUM_DESCONOCIDO) && cancion.getAlbum().toLowerCase().contains(query.toLowerCase()))
+                        || (!cancion.getArtista().equals(Cancion.ARTISTA_DESCONOCIDO) && cancion.getArtista().toLowerCase().contains(query.toLowerCase()))
                         || cancion.getNombre().toLowerCase().contains(query.toLowerCase()))
                     cancionesFiltradas.add(cancion);
             }

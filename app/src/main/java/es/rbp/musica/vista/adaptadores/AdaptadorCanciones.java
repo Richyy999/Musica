@@ -66,12 +66,12 @@ public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.
         holder.lblNumCancion.setText(String.valueOf(position + 1));
 
         String artista = cancion.getArtista();
-        if (artista.equals(Cancion.UNKNOWN))
-            artista = Cancion.ARTISTA_DESCONOCIDO;
+//        if (artista.equals(Cancion.UNKNOWN))
+//            artista = Cancion.ARTISTA_DESCONOCIDO;
 
         String album = cancion.getAlbum();
-        if (album.equals(cancion.getCarpetaPadre().substring(cancion.getCarpetaPadre().lastIndexOf("/") + 1)))
-            album = Cancion.ALBUM_DESCONOCIDO;
+//        if (album.equals(cancion.getCarpetaPadre().substring(cancion.getCarpetaPadre().lastIndexOf("/") + 1)))
+//            album = Cancion.ALBUM_DESCONOCIDO;
 
         Log.d(TAG, "Album real:" + cancion.getAlbum() + ".Carpeta:" + cancion.getCarpetaPadre() + ".Album:" + album + ".");
 

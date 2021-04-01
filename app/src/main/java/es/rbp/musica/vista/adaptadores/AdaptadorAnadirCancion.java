@@ -78,12 +78,12 @@ public class AdaptadorAnadirCancion extends RecyclerView.Adapter<AdaptadorAnadir
         holder.lblNombreCancion.setSelected(true);
 
         String artista = cancion.getArtista();
-        if (artista.equals(Cancion.UNKNOWN))
-            artista = Cancion.ARTISTA_DESCONOCIDO;
+//        if (artista.equals(Cancion.UNKNOWN))
+//            artista = Cancion.ARTISTA_DESCONOCIDO;
 
         String album = cancion.getAlbum();
-        if (album.equals(cancion.getCarpetaPadre().substring(cancion.getCarpetaPadre().lastIndexOf("/") + 1)))
-            album = Cancion.ALBUM_DESCONOCIDO;
+//        if (album.equals(cancion.getCarpetaPadre().substring(cancion.getCarpetaPadre().lastIndexOf("/") + 1)))
+//            album = Cancion.ALBUM_DESCONOCIDO;
 
         String textoArtistas = artista + " | " + album;
         holder.lblArtistaAlbum.setText(textoArtistas);

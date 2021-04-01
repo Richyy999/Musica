@@ -72,12 +72,12 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnCrearPlaylist)
-            new SnackbarTexto(this, getActivity(), R.string.nombreDeLaPlaylist).show();
+            new SnackbarTexto(this, getActivity(), R.string.nombreDeLaPlaylist, R.string.introduceNombrePlaylist).show();
     }
 
     @Override
-    public void crearPlaylist(String nombrePlaylist) {
-        Playlist nuevaPlaylist = new Playlist(nombrePlaylist);
+    public void realizarAccion(String texto) {
+        Playlist nuevaPlaylist = new Playlist(texto);
         playlists.add(nuevaPlaylist);
         accesoFichero.guardarPlaylists(playlists);
 

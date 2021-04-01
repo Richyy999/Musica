@@ -35,7 +35,8 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
 
     private static final String TAG = "AÑADIR CANCIÓN";
 
-    private List<Cancion> todasCanciones;
+    private List<Cancion> todasCancionesFiltradas;
+    private List<Cancion> cancionesFiltradas;
     private List<Cancion> cancionesSeleccionadas;
 
     private AdaptadorAnadirCancion adaptador;
@@ -74,13 +75,13 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
     @Override
     public void afterTextChanged(Editable s) {
         String query = s.toString().trim();
-        todasCanciones = filtrarCancionesPorQuery(accesoFichero.getTodasCanciones(), query, ajustes);
+        cancionesFiltradas = filtrarCancionesPorQuery(todasCancionesFiltradas, query, ajustes);
         cargarRecyclerView();
     }
 
     @Override
     public void onCancionClick(int indice) {
-        Cancion cancion = todasCanciones.get(indice);
+        Cancion cancion = cancionesFiltradas.get(indice);
 
         if (cancionesSeleccionadas.contains(cancion))
             cancionesSeleccionadas.remove(cancion);
@@ -97,7 +98,7 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
     private void salir() {
         setResult(RESULT_CANCELED);
 
-        seleccionarCanciones(accesoFichero.getTodasCanciones(), false);
+        seleccionarCanciones(todasCancionesFiltradas, false);
 
         finish();
     }
@@ -113,7 +114,7 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
         intent.putExtra(EXTRA_CANCIONES_ANADIDAS, canciones);
         setResult(RESULT_OK, intent);
 
-        seleccionarCanciones(accesoFichero.getTodasCanciones(), false);
+        seleccionarCanciones(todasCancionesFiltradas, false);
 
         finish();
     }
@@ -122,7 +123,9 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
         accesoFichero = AccesoFichero.getInstance(this);
         ajustes = Ajustes.getInstance(this);
 
-        todasCanciones = filtrarCanciones(accesoFichero.getTodasCanciones(), ajustes);
+        todasCancionesFiltradas = filtrarCanciones(accesoFichero.getTodasCanciones(), ajustes);
+
+        cancionesFiltradas = filtrarCanciones(todasCancionesFiltradas, ajustes);
 
         cancionesSeleccionadas = new ArrayList<>();
 
@@ -139,7 +142,7 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
     }
 
     private void cargarRecyclerView() {
-        Collections.sort(todasCanciones);
+        Collections.sort(cancionesFiltradas);
         IndexFastScrollRecyclerView recyclerView = findViewById(R.id.recyclerViewAnadirCanciones);
         recyclerView.setHasFixedSize(false);
         if (ajustes.isModoOscuro()) {
@@ -153,16 +156,14 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
         recyclerView.setIndexTextSize(10);
         recyclerView.setIndexBarStrokeVisibility(false);
 
-        if (todasCanciones.size() < 100)
+        if (cancionesFiltradas.size() < 100)
             recyclerView.setIndexBarVisibility(false);
         else
             recyclerView.setIndexBarVisibility(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adaptador = new AdaptadorAnadirCancion(todasCanciones, this);
+        adaptador = new AdaptadorAnadirCancion(cancionesFiltradas, this);
         recyclerView.setAdapter(adaptador);
-        if (todasCanciones.size() == 0)
-            recyclerView.setVisibility(View.INVISIBLE);
     }
 
     private void cargarAjustes() {

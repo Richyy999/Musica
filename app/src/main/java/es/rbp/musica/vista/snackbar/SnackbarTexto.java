@@ -7,21 +7,24 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import es.rbp.musica.R;
 
 public class SnackbarTexto extends Dialog implements View.OnClickListener {
 
-    private EditText txtNombrePlaylist;
+    private EditText txtSnackbarTexto;
 
     private Accion accion;
 
     private int idTexto;
+    private int idAviso;
 
-    public SnackbarTexto(Accion accion, Activity activity, int idTexto) {
+    public SnackbarTexto(Accion accion, Activity activity, int idTexto, int idAviso) {
         super(activity);
         this.accion = accion;
         this.idTexto = idTexto;
+        this.idAviso = idAviso;
     }
 
     @Override
@@ -47,19 +50,24 @@ public class SnackbarTexto extends Dialog implements View.OnClickListener {
         TextView btnCancelar = findViewById(R.id.btnCancelarSnackbarCrearPlaylist);
         btnCancelar.setOnClickListener(this);
 
-        this.txtNombrePlaylist = findViewById(R.id.txtNombrePlaylist);
+        this.txtSnackbarTexto = findViewById(R.id.txtNombrePlaylist);
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btnOkSnackbarCrearPlaylist)
-            accion.crearPlaylist(txtNombrePlaylist.getText().toString());
-
-        if (v.getId() != R.id.contenedorSnackbarCrearPlaylist)
+        if (v.getId() == R.id.btnOkSnackbarCrearPlaylist) {
+            String texto = txtSnackbarTexto.getText().toString().trim();
+            if (texto.equals(""))
+                Toast.makeText(getContext(), idAviso, Toast.LENGTH_SHORT).show();
+            else {
+                accion.realizarAccion(texto);
+                dismiss();
+            }
+        } else if (v.getId() != R.id.contenedorSnackbarCrearPlaylist)
             dismiss();
     }
 
     public interface Accion {
-        void crearPlaylist(String nombrePlaylist);
+        void realizarAccion(String texto);
     }
 }

@@ -174,9 +174,18 @@ public class AccesoFichero {
         if (cursor != null && cursor.moveToFirst()) {
             todasCanciones = new ArrayList<>();
             do {
-                if (new File(cursor.getString(3)).exists())
-                    todasCanciones.add(new Cancion(cursor.getString(0), cursor.getString(1), cursor.getString(2),
-                            cursor.getString(3), cursor.getString(4), cursor.getString(5)));
+                if (new File(cursor.getString(3)).exists()) {
+                    Cancion cancion = new Cancion(cursor.getString(0), cursor.getString(1), cursor.getString(2),
+                            cursor.getString(3), cursor.getString(4), cursor.getString(5));
+
+                    if (cancion.getArtista().equals(Cancion.UNKNOWN))
+                        cancion.setArtista(Cancion.ARTISTA_DESCONOCIDO);
+
+                    if (cancion.getAlbum().equals(cancion.getCarpetaPadre().substring(cancion.getCarpetaPadre().lastIndexOf("/") + 1)))
+                        cancion.setAlbum(Cancion.ALBUM_DESCONOCIDO);
+
+                    todasCanciones.add(cancion);
+                }
             } while (cursor.moveToNext());
             cursor.close();
         } else
