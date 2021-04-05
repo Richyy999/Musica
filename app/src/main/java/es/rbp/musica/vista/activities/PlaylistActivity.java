@@ -55,7 +55,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnEliminarPlaylist:
-                accesoFichero.eliminarPlaylist(indicePlaylist);
+                accesoFichero.eliminarPlaylist(playlist);
                 finish();
                 break;
         }

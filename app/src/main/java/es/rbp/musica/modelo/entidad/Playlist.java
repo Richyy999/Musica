@@ -16,12 +16,14 @@ public class Playlist implements Serializable {
 
     private String nombre;
     private String rutaImagen;
+    private String nombreFichero;
 
     public Playlist() {
     }
 
-    public Playlist(String nombre) {
+    public Playlist(String nombre, String nombreFichero) {
         this.nombre = nombre;
+        this.nombreFichero = nombreFichero;
         this.canciones = new ArrayList<>();
     }
 
@@ -47,5 +49,13 @@ public class Playlist implements Serializable {
 
     public void setRutaImagen(String rutaImagen) {
         this.rutaImagen = rutaImagen;
+    }
+
+    public String getNombreFichero() {
+        return nombreFichero;
+    }
+
+    public void setNombreFichero(String nombreFichero) {
+        this.nombreFichero = nombreFichero;
     }
 }

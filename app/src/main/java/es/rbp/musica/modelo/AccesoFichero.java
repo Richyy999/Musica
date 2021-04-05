@@ -10,7 +10,9 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -34,10 +36,13 @@ public class AccesoFichero {
 
     public static final int REQUEST_PERMISO_LECTURA = 1;
 
+    private static final String CARPETA_PLAYLISTS = "playlists";
+
+    private static final String CARPETA_IMAGEN_PLAYLIST = CARPETA_PLAYLISTS + "/img";
+
     private static final String RUTA_FICHERO_AJUSTES = "ajustes.properties";
     private static final String RUTA_CARPETAS_OCULTAS = "carpetasOcultas.txt";
     private static final String RUTA_FAVORITOS = "favoritos.txt";
-    private static final String RUTA_PLAYLISTS = "playlists.json";
 
     private static final String TAG = "ACCESO FICHERO";
 
@@ -229,35 +234,30 @@ public class AccesoFichero {
 
     private void leerPlaylists() {
         Gson gson = new Gson();
-        File fichero = new File(context.getFilesDir(), RUTA_PLAYLISTS);
-        StringBuilder jsonBuilder = new StringBuilder();
-        try {
-            InputStreamReader isr = new InputStreamReader(new FileInputStream(fichero));
-            BufferedReader br = new BufferedReader(isr);
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                jsonBuilder.append(linea);
+        playlists = new ArrayList<>();
+        File carpetaPlaylist = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
+        File[] ficheros = carpetaPlaylist.listFiles();
+        for (File fichero : ficheros) {
+            if (!fichero.isDirectory()) {
+                try (FileReader fileReader = new FileReader(fichero)) {
+                    Playlist playlist = gson.fromJson(fileReader, Playlist.class);
+                    playlists.add(playlist);
+                } catch (IOException e) {
+                    Log.e(TAG, e.toString());
+                }
             }
-            String json = jsonBuilder.toString();
-            playlists = new ArrayList<>();
-            playlists.addAll(Arrays.asList(gson.fromJson(json, Playlist[].class)));
-        } catch (IOException e) {
-            Log.e(TAG, e.toString());
         }
     }
 
-    public void guardarPlaylists(List<Playlist> playlists) {
+    public void guardarPlaylists(Playlist playlist) {
         Gson gson = new Gson();
-        Playlist[] arrayPlaylist = new Playlist[playlists.size()];
-        for (int i = 0; i < arrayPlaylist.length; i++) {
-            arrayPlaylist[i] = playlists.get(i);
-        }
+        File carpetaPlaylists = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
+        File ficheroPlaylist = new File(carpetaPlaylists, playlist.getNombreFichero());
 
-        String json = gson.toJson(arrayPlaylist, Playlist[].class);
-        File ficheroPlaylists = new File(context.getFilesDir(), RUTA_PLAYLISTS);
-        try (FileOutputStream fos = new FileOutputStream(ficheroPlaylists)) {
+        String json = gson.toJson(ficheroPlaylist, Playlist.class);
+        try (FileOutputStream fos = new FileOutputStream(ficheroPlaylist)) {
             fos.write(json.getBytes());
-            Log.i(TAG, "Playlists grardadas");
+            fos.flush();
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
@@ -275,11 +275,10 @@ public class AccesoFichero {
         }
     }
 
-    public void eliminarPlaylist(int indice) {
-        if (playlists == null)
-            leerPlaylists();
+    public void eliminarPlaylist(Playlist playlist) {
+        File carpetaPlaylist = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
+        File ficheroPlaylist = new File(carpetaPlaylist, playlist.getNombreFichero());
 
-        playlists.remove(indice);
-        guardarPlaylists(playlists);
+        ficheroPlaylist.delete();
     }
 }
