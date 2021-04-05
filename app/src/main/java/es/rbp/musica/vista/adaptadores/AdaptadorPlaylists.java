@@ -1,6 +1,8 @@
 package es.rbp.musica.vista.adaptadores;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.io.File;
 import java.util.List;
 
 import es.rbp.musica.R;
+import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.entidad.Playlist;
 
 public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.MyHolder> {
@@ -58,10 +62,13 @@ public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.
 
     private Context context;
 
+    private AccesoFichero accesoFichero;
+
     public AdaptadorPlaylists(List<Playlist> playlists, OnPlaylistClick onPlaylistClick, Context context) {
         this.playlists = playlists;
         this.onPlaylistClick = onPlaylistClick;
         this.context = context;
+        this.accesoFichero = AccesoFichero.getInstance(this.context);
     }
 
     @NonNull
@@ -96,11 +103,11 @@ public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.
 
         holder.lblNumCanciones.setText(texto);
 
-        String rutaImagen = playlist.getRutaImagen();
-        if (rutaImagen == null)
+        File imagenPlaylist = accesoFichero.getImagenPlaylist(playlist);
+        if (imagenPlaylist == null)
             Glide.with(context).load(R.drawable.imagen_playlist).into(holder.imgPlaylist);
         else
-            Glide.with(context).load(rutaImagen).into(holder.imgPlaylist);
+            Glide.with(context).load(BitmapFactory.decodeFile(imagenPlaylist.getPath())).into(holder.imgPlaylist);
     }
 
     @Override

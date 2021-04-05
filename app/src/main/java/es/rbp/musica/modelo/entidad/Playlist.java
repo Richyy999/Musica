@@ -12,12 +12,9 @@ public class Playlist implements Serializable {
 
     public static final int INDICE_POR_DEFECTO = 0;
 
-    private static final String EXTENSION = ".json";
-
     private List<String> canciones;
 
     private String nombre;
-    private String rutaImagen;
     private String nombreFichero;
 
     public Playlist() {
@@ -25,7 +22,7 @@ public class Playlist implements Serializable {
 
     public Playlist(String nombre, String nombreFichero) {
         this.nombre = nombre;
-        this.nombreFichero = nombreFichero + EXTENSION;
+        this.nombreFichero = nombreFichero;
         this.canciones = new ArrayList<>();
     }
 
@@ -43,14 +40,6 @@ public class Playlist implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getRutaImagen() {
-        return rutaImagen;
-    }
-
-    public void setRutaImagen(String rutaImagen) {
-        this.rutaImagen = rutaImagen;
     }
 
     public String getNombreFichero() {

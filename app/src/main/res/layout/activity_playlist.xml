@@ -24,6 +24,8 @@
         android:layout_width="112dp"
         android:layout_height="112dp"
         android:layout_marginTop="12dp"
+        android:scaleType="centerCrop"
+        android:soundEffectsEnabled="false"
         android:src="@drawable/imagen_playlist"
         android:transitionName="@string/elementoImagenPlaylist"
         app:layout_constraintStart_toEndOf="@+id/btnAtrasPlaylist"
@@ -35,11 +37,11 @@
         style="@style/tituloPlaylist"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="56dp"
         android:gravity="center_horizontal"
+        android:soundEffectsEnabled="false"
         android:transitionName="@string/elementoNombrePlaylist"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toEndOf="@+id/btnAtrasPlaylist"
         app:layout_constraintTop_toTopOf="parent" />
 

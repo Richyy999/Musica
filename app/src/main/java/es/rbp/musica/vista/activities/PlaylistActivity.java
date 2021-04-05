@@ -6,7 +6,11 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +43,8 @@ import static es.rbp.musica.vista.activities.AnadirCancionesActivity.EXTRA_CANCI
 public class PlaylistActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, SnackbarTexto.Accion {
 
     public static final int CODIGO_REQUEST_PLAYLIST = 10;
+
+    public static final int CODIGO_REQUEST_CAMBIAR_IMAGEN = 11;
 
     private static final String TAG = "ACTIVITY PLAYLIST";
 
@@ -85,6 +92,10 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     public boolean onLongClick(View v) {
         if (v.getId() == R.id.lblNombrePlaylist)
             cambiarNombrePlaylist();
+        else if (v.getId() == R.id.imgPlaylist)
+            elegirImagen();
+        Vibrator vibrador = getSystemService(Vibrator.class);
+        vibrador.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
         return false;
     }
 
@@ -92,7 +103,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     public void realizarAccion(String texto) {
         playlist.setNombre(texto);
 
-        accesoFichero.guardarPlaylists(playlist);
+        accesoFichero.guardarPlaylist(playlist);
 
         actualizarNombrePlaylist();
     }
@@ -110,10 +121,17 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
                 }
                 canciones.addAll(filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), listaNombreCanciones));
                 playlist.getCanciones().addAll(listaNombreCanciones);
-                accesoFichero.guardarPlaylists(playlist);
+                accesoFichero.guardarPlaylist(playlist);
                 actualizarRecyclerView();
             } else {
                 Log.i(TAG, "No se han añadido canciones");
+            }
+        } else if (requestCode == CODIGO_REQUEST_CAMBIAR_IMAGEN) {
+            if (resultCode == RESULT_OK && data != null) {
+                Uri uriImagen = data.getData();
+                accesoFichero.guardarImagenPlaylist(playlist, uriImagen);
+
+                actualizarImagenPlaylist();
             }
         }
     }
@@ -121,6 +139,13 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onBackPressed() {
         finishAfterTransition();
+    }
+
+    private void elegirImagen() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Elige una imagen"), CODIGO_REQUEST_CAMBIAR_IMAGEN);
     }
 
     private void cambiarNombrePlaylist() {
@@ -147,13 +172,6 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         int indicePlaylist = getIntent().getIntExtra(EXTRA_PLAYLIST, INDICE_POR_DEFECTO);
         playlist = accesoFichero.buscarPlaylistPorIndice(indicePlaylist);
 
-        ImageView imgPlaylist = findViewById(R.id.imgPlaylist);
-        String rutaImagen = playlist.getRutaImagen();
-        if (rutaImagen == null)
-            Glide.with(this).load(R.drawable.imagen_playlist).into(imgPlaylist);
-        else
-            Glide.with(this).load(rutaImagen).into(imgPlaylist);
-
         ImageView btnAtras = findViewById(R.id.btnAtrasPlaylist);
         btnAtras.setOnClickListener(this);
 
@@ -168,6 +186,8 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         actualizarRecyclerView();
 
         actualizarNombrePlaylist();
+
+        actualizarImagenPlaylist();
     }
 
     private void actualizarRecyclerView() {
@@ -206,5 +226,17 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         lblNombrePlaylist.setOnClickListener(this);
         lblNombrePlaylist.setOnLongClickListener(this);
         lblNombrePlaylist.setSelected(true);
+    }
+
+    private void actualizarImagenPlaylist() {
+        ImageView imgPlaylist = findViewById(R.id.imgPlaylist);
+        imgPlaylist.setOnClickListener(this);
+        imgPlaylist.setOnLongClickListener(this);
+
+        File imagenPlaylist = accesoFichero.getImagenPlaylist(playlist);
+        if (imagenPlaylist == null)
+            Glide.with(this).load(R.drawable.imagen_playlist).into(imgPlaylist);
+        else
+            Glide.with(this).load(BitmapFactory.decodeFile(imagenPlaylist.getPath())).into(imgPlaylist);
     }
 }

@@ -2,21 +2,19 @@ package es.rbp.musica.modelo;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import es.rbp.musica.modelo.entidad.Cancion;
@@ -38,11 +36,13 @@ public class AccesoFichero {
 
     private static final String CARPETA_PLAYLISTS = "playlists/";
 
-    private static final String CARPETA_IMAGEN_PLAYLIST = CARPETA_PLAYLISTS + "img/";
+    private static final String CARPETA_IMAGENES_PLAYLIST = CARPETA_PLAYLISTS + "img/";
 
     private static final String RUTA_FICHERO_AJUSTES = "ajustes.properties";
     private static final String RUTA_CARPETAS_OCULTAS = "carpetasOcultas.txt";
     private static final String RUTA_FAVORITOS = "favoritos.txt";
+
+    private static final String EXTENSION_PLAYLISTS = ".obj";
 
     private static final String TAG = "ACCESO FICHERO";
 
@@ -242,7 +242,6 @@ public class AccesoFichero {
     }
 
     private void leerPlaylists() {
-        Gson gson = new Gson();
         playlists = new ArrayList<>();
         File carpetaPlaylist = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
         if (!carpetaPlaylist.exists()) {
@@ -252,16 +251,19 @@ public class AccesoFichero {
             Log.i(TAG, "Carpeta playlist existe");
 
         Log.d(TAG, "Carpeta playlist es directorio: " + carpetaPlaylist.isDirectory());
+        Log.i(TAG, "Número de playlists: " + carpetaPlaylist.length());
 
         File[] ficheros = carpetaPlaylist.listFiles();
 
         if (ficheros != null) {
             for (File fichero : ficheros) {
                 if (!fichero.isDirectory()) {
-                    try (FileReader fileReader = new FileReader(fichero)) {
-                        Playlist playlist = gson.fromJson(fileReader, Playlist.class);
+                    Log.d(TAG, "Nombre fichero playlist: " + fichero.getAbsolutePath());
+                    try (FileInputStream fis = new FileInputStream(fichero);
+                         ObjectInputStream ois = new ObjectInputStream(fis)) {
+                        Playlist playlist = (Playlist) ois.readObject();
                         playlists.add(playlist);
-                    } catch (IOException e) {
+                    } catch (IOException | ClassNotFoundException e) {
                         Log.e(TAG, e.toString());
                     }
                 }
@@ -270,34 +272,56 @@ public class AccesoFichero {
             Log.i(TAG, "Ficheros playlist = null");
     }
 
-    public void guardarPlaylists(Playlist playlist) {
-        Gson gson = new Gson();
-        File carpetaPlaylists = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
-        File ficheroPlaylist = new File(carpetaPlaylists, playlist.getNombreFichero());
-        if (!ficheroPlaylist.exists()) {
-            try {
-                if (ficheroPlaylist.createNewFile())
-                    Log.d(TAG, "Fichero playlist creado");
-                else
-                    Log.d(TAG, "Fichero playlist no creado");
-            } catch (IOException e) {
-                Log.d(TAG, "Catch crear fichero");
-                Log.e(TAG, e.toString());
-            }
-        } else {
-            Log.d(TAG, "Fichero playlist existe");
-        }
+    public void guardarPlaylist(Playlist playlist) {
+        File carpetaPlaylist = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
+        File ficheroPlaylist = new File(carpetaPlaylist, playlist.getNombreFichero() + EXTENSION_PLAYLISTS);
 
-        Log.d(TAG, "Fichero playlist: " + ficheroPlaylist.getAbsolutePath());
-
-        String json = gson.toJson(playlist, Playlist.class);
-        try (FileOutputStream fos = new FileOutputStream(ficheroPlaylist)) {
-            fos.write(json.getBytes());
-            fos.flush();
-            Log.i(TAG, "Guardado: " + playlist.toString());
+        try (FileOutputStream fos = new FileOutputStream(ficheroPlaylist);
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(playlist);
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
+    }
+
+    public void guardarImagenPlaylist(Playlist playlist, Uri uri) {
+        File carpetaImagenes = new File(context.getFilesDir().getAbsolutePath() + "/" + CARPETA_IMAGENES_PLAYLIST);
+        if (!carpetaImagenes.exists())
+            carpetaImagenes.mkdir();
+
+        File ficherioImagen = new File(carpetaImagenes, playlist.getNombreFichero());
+
+        Log.d(TAG, "Ruta fichero imagen guardada: " + ficherioImagen.getAbsolutePath());
+
+        try (InputStream is = context.getContentResolver().openInputStream(uri);
+             OutputStream fos = new FileOutputStream(ficherioImagen)) {
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+            fos.flush();
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
+    public File getImagenPlaylist(Playlist playlist) {
+        File carpetaImagenes = new File(context.getFilesDir().getAbsolutePath() + "/" + CARPETA_IMAGENES_PLAYLIST);
+        if (!carpetaImagenes.exists())
+            return null;
+
+        File[] imagenes = carpetaImagenes.listFiles();
+        Log.i(TAG, "Número de imágenes: " + imagenes.length);
+
+        File ficherioImagen = new File(carpetaImagenes, playlist.getNombreFichero());
+        if (!ficherioImagen.exists())
+            return null;
+
+        Log.d(TAG, "Ruta fichero imagen: " + ficherioImagen.getAbsolutePath());
+
+        return ficherioImagen;
+
     }
 
     public Playlist buscarPlaylistPorIndice(int indice) {
