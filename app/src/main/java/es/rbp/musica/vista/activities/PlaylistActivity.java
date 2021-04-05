@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -26,6 +27,7 @@ import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
 import es.rbp.musica.modelo.entidad.Playlist;
 import es.rbp.musica.vista.adaptadores.AdaptadorCanciones;
+import es.rbp.musica.vista.snackbar.SnackbarTexto;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 
 import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorNombres;
@@ -33,7 +35,7 @@ import static es.rbp.musica.modelo.entidad.Playlist.EXTRA_PLAYLIST;
 import static es.rbp.musica.modelo.entidad.Playlist.INDICE_POR_DEFECTO;
 import static es.rbp.musica.vista.activities.AnadirCancionesActivity.EXTRA_CANCIONES_ANADIDAS;
 
-public class PlaylistActivity extends AppCompatActivity implements View.OnClickListener {
+public class PlaylistActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, SnackbarTexto.Accion {
 
     public static final int CODIGO_REQUEST_PLAYLIST = 10;
 
@@ -70,7 +72,29 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btnAtrasPlaylist:
                 finishAfterTransition();
                 break;
+            case R.id.imgPlaylist:
+                mostrarToast(R.string.mantenParaCambiarImagen);
+                break;
+            case R.id.lblNombrePlaylist:
+                mostrarToast(R.string.mantenerParaCambiarNombre);
+                break;
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (v.getId() == R.id.lblNombrePlaylist)
+            cambiarNombrePlaylist();
+        return false;
+    }
+
+    @Override
+    public void realizarAccion(String texto) {
+        playlist.setNombre(texto);
+
+        accesoFichero.guardarPlaylists(playlist);
+
+        actualizarNombrePlaylist();
     }
 
     @Override
@@ -99,6 +123,14 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         finishAfterTransition();
     }
 
+    private void cambiarNombrePlaylist() {
+        new SnackbarTexto(this, this, R.string.nombreDeLaPlaylist, R.string.introduceNombrePlaylist).show();
+    }
+
+    private void mostrarToast(int idTexto) {
+        Toast.makeText(this, idTexto, Toast.LENGTH_SHORT).show();
+    }
+
     private void cargarAjustes() {
         ajustes = Ajustes.getInstance(this);
         if (ajustes.isModoOscuro()) {
@@ -114,10 +146,6 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         accesoFichero = AccesoFichero.getInstance(this);
         int indicePlaylist = getIntent().getIntExtra(EXTRA_PLAYLIST, INDICE_POR_DEFECTO);
         playlist = accesoFichero.buscarPlaylistPorIndice(indicePlaylist);
-
-        TextView lblNombrePlaylist = findViewById(R.id.lblNombrePlaylist);
-        lblNombrePlaylist.setText(playlist.getNombre());
-        lblNombrePlaylist.setSelected(true);
 
         ImageView imgPlaylist = findViewById(R.id.imgPlaylist);
         String rutaImagen = playlist.getRutaImagen();
@@ -138,6 +166,8 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         canciones = filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), playlist.getCanciones());
 
         actualizarRecyclerView();
+
+        actualizarNombrePlaylist();
     }
 
     private void actualizarRecyclerView() {
@@ -168,5 +198,13 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         AdaptadorCanciones adaptador = new AdaptadorCanciones(canciones);
         recyclerView.setAdapter(adaptador);
+    }
+
+    private void actualizarNombrePlaylist() {
+        TextView lblNombrePlaylist = findViewById(R.id.lblNombrePlaylist);
+        lblNombrePlaylist.setText(playlist.getNombre());
+        lblNombrePlaylist.setOnClickListener(this);
+        lblNombrePlaylist.setOnLongClickListener(this);
+        lblNombrePlaylist.setSelected(true);
     }
 }

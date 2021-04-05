@@ -65,4 +65,6 @@
     <string name="elementoNombrePlaylist">nombrePlaylist</string>
     <string name="elementoNumCancionesPlaylist">numCancionesPlaylist</string>
     <string name="introduceNombrePlaylist">Introduce un nombre para la playlist</string>
+    <string name="mantenParaCambiarImagen">Mantén pulsado para cambiar la imagen de la playlist</string>
+    <string name="mantenerParaCambiarNombre">Mantén pulsado para cambiar el nombre de la playlist</string>
 </resources>
