@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorFondoApp"
+    android:paddingTop="24dp"
+    tools:context=".vista.activities.AnadirCancionesActivity">
+
+    <ImageView
+        android:id="@+id/btnAtrasAnadirCancion"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/descIconoFlechaIzquierda"
+        android:src="?attr/iconoFlechaIzquierda"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblTituloAnadirCancion"
+        style="@style/tituloActivity"
+        android:text="@string/anadirCanciones"
+        app:layout_constraintEnd_toStartOf="@+id/btnAceptarAnadirCanciones"
+        app:layout_constraintStart_toEndOf="@+id/btnAtrasAnadirCancion"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnAceptarAnadirCanciones"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:contentDescription="@string/descIconoAceptar"
+        android:src="?attr/iconoAceptar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/txtFiltrarAnadirCancion"
+        style="@style/campoTextoConIcono"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAceptarAnadirCanciones" />
+
+    <ImageView
+        android:id="@+id/imgBuscarAnadirCancion"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/descIconoBuscar"
+        android:src="?attr/iconoBuscar"
+        app:layout_constraintBottom_toBottomOf="@+id/txtFiltrarAnadirCancion"
+        app:layout_constraintEnd_toEndOf="@+id/txtFiltrarAnadirCancion"
+        app:layout_constraintTop_toTopOf="@+id/txtFiltrarAnadirCancion" />
+
+    <in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
+        android:id="@+id/recyclerViewAnadirCanciones"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtFiltrarAnadirCancion" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

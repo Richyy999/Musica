@@ -1,10 +1,13 @@
 package es.rbp.musica.vista.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,8 +31,13 @@ import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorNombres;
 import static es.rbp.musica.modelo.entidad.Playlist.EXTRA_PLAYLIST;
 import static es.rbp.musica.modelo.entidad.Playlist.INDICE_POR_DEFECTO;
+import static es.rbp.musica.vista.activities.AnadirCancionesActivity.EXTRA_CANCIONES_ANADIDAS;
 
 public class PlaylistActivity extends AppCompatActivity implements View.OnClickListener {
+
+    public static final int CODIGO_REQUEST_PLAYLIST = 10;
+
+    private static final String TAG = "ACTIVITY PLAYLIST";
 
     private List<Cancion> canciones;
 
@@ -37,8 +46,6 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     private AccesoFichero accesoFichero;
 
     private Playlist playlist;
-
-    private AdaptadorCanciones adaptador;
 
     private int indicePlaylist;
 
@@ -55,10 +62,43 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnEliminarPlaylist:
-                accesoFichero.eliminarPlaylist(playlist);
-                finish();
+                accesoFichero.eliminarPlaylist(indicePlaylist);
+                finishAfterTransition();
+                break;
+            case R.id.btnAnadirCancionPlaylist:
+                Intent intent = new Intent(this, AnadirCancionesActivity.class);
+                startActivityForResult(intent, CODIGO_REQUEST_PLAYLIST);
+                break;
+            case R.id.btnAtrasPlaylist:
+                finishAfterTransition();
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODIGO_REQUEST_PLAYLIST) {
+            if (resultCode == RESULT_OK) {
+                String[] nombreCanciones = data.getStringArrayExtra(EXTRA_CANCIONES_ANADIDAS);
+                List<String> listaNombreCanciones = new ArrayList<>();
+                for (int i = 0; i < nombreCanciones.length; i++) {
+                    Log.i(TAG, "Añadido: " + nombreCanciones[i]);
+                    listaNombreCanciones.add(nombreCanciones[i]);
+                }
+                canciones.addAll(filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), listaNombreCanciones));
+                playlist.getCanciones().addAll(listaNombreCanciones);
+                accesoFichero.guardarPlaylists(accesoFichero.getPlaylists());
+                actualizarRecyclerView();
+            } else {
+                Log.i(TAG, "No se han añadido canciones");
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAfterTransition();
     }
 
     private void cargarAjustes() {
@@ -96,10 +136,21 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         else
             Glide.with(this).load(rutaImagen).into(imgPlaylist);
 
+        ImageView btnAtras = findViewById(R.id.btnAtrasPlaylist);
+        btnAtras.setOnClickListener(this);
+
         LinearLayout btnEliminarPlaylist = findViewById(R.id.btnEliminarPlaylist);
         btnEliminarPlaylist.setOnClickListener(this);
 
+        LinearLayout btnAnadirCanciones = findViewById(R.id.btnAnadirCancionPlaylist);
+        btnAnadirCanciones.setOnClickListener(this);
+
         canciones = filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), playlist.getCanciones());
+
+        actualizarRecyclerView();
+    }
+
+    private void actualizarRecyclerView() {
         Collections.sort(canciones);
         IndexFastScrollRecyclerView recyclerView = findViewById(R.id.recyclerViewCancionesPlaylist);
         if (ajustes.isModoOscuro()) {
@@ -117,7 +168,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
             recyclerView.setIndexBarVisibility(false);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adaptador = new AdaptadorCanciones(canciones);
+        AdaptadorCanciones adaptador = new AdaptadorCanciones(canciones);
         recyclerView.setAdapter(adaptador);
     }
 }

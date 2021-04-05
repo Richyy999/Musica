@@ -27,6 +27,8 @@ public class Cancion implements Serializable, Comparable<Cancion> {
     private int duracion;
     private int tamano;
 
+    private boolean seleccionada;
+
     public Cancion(String album, String nombre, String artista, String datos, String duracion, String tamano) {
         this.album = album;
         this.nombre = nombre;
@@ -34,6 +36,7 @@ public class Cancion implements Serializable, Comparable<Cancion> {
         this.datos = datos;
         this.duracion = Integer.parseInt(duracion);
         this.tamano = Integer.parseInt(tamano);
+        this.seleccionada = false;
     }
 
     public Bitmap getImagenAlbum(Context context) {
@@ -100,6 +103,14 @@ public class Cancion implements Serializable, Comparable<Cancion> {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public boolean isSeleccionada() {
+        return seleccionada;
+    }
+
+    public void setSeleccionada(boolean seleccionada) {
+        this.seleccionada = seleccionada;
     }
 
     @Override

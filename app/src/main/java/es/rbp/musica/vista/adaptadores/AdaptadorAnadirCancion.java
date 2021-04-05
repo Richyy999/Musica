@@ -1,6 +1,5 @@
 package es.rbp.musica.vista.adaptadores;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,23 +16,32 @@ import es.rbp.musica.R;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
 
-public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.MyHolder> implements SectionIndexer {
+public class AdaptadorAnadirCancion extends RecyclerView.Adapter<AdaptadorAnadirCancion.MyHolder> implements SectionIndexer {
 
-    private static final String TAG = "ADAPTADOR CANCION";
+    public static class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public static class MyHolder extends RecyclerView.ViewHolder {
+        private OnCancionClick onCancionClick;
 
-        private TextView lblNombreCancion, lblArtista, lblNumCancion;
+        private View circulo;
 
-        public MyHolder(@NonNull View itemView) {
+        private TextView lblNombreCancion;
+        private TextView lblArtistaAlbum;
+
+        public MyHolder(@NonNull View itemView, OnCancionClick onCancionClick) {
             super(itemView);
+            itemView.setOnClickListener(this);
 
-            lblNombreCancion = itemView.findViewById(R.id.lblNombreCancionRecycler);
-            lblArtista = itemView.findViewById(R.id.lblArtista);
-            lblNumCancion = itemView.findViewById(R.id.lblNumCancion);
+            this.onCancionClick = onCancionClick;
 
-            lblNombreCancion.setSelected(true);
-            lblArtista.setSelected(true);
+            this.circulo = itemView.findViewById(R.id.circulo);
+
+            this.lblNombreCancion = itemView.findViewById(R.id.lblNombreCancionAnadirCancion);
+            this.lblArtistaAlbum = itemView.findViewById(R.id.lblSubtituloAnadirCancion);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onCancionClick.onCancionClick(getAdapterPosition());
         }
     }
 
@@ -41,20 +49,24 @@ public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.
 
     private List<Integer> sectionPosition;
 
-    public AdaptadorCanciones(List<Cancion> canciones) {
+    private OnCancionClick onCancionClick;
+
+    public AdaptadorAnadirCancion(List<Cancion> canciones, OnCancionClick onCancionClick) {
         this.canciones = canciones;
+        this.onCancionClick = onCancionClick;
+
         this.sectionPosition = new ArrayList<>();
     }
 
     @NonNull
     @Override
-    public AdaptadorCanciones.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_canciones, parent, false);
-        return new MyHolder(v);
+    public AdaptadorAnadirCancion.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_anadir_canciones, parent, false);
+        return new MyHolder(v, onCancionClick);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdaptadorCanciones.MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AdaptadorAnadirCancion.MyHolder holder, int position) {
         Cancion cancion = canciones.get(position);
         Ajustes ajustes = Ajustes.getInstance(null);
 
@@ -63,7 +75,7 @@ public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.
         else
             holder.lblNombreCancion.setText(cancion.getNombre());
 
-        holder.lblNumCancion.setText(String.valueOf(position + 1));
+        holder.lblNombreCancion.setSelected(true);
 
         String artista = cancion.getArtista();
 //        if (artista.equals(Cancion.UNKNOWN))
@@ -73,10 +85,14 @@ public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.
 //        if (album.equals(cancion.getCarpetaPadre().substring(cancion.getCarpetaPadre().lastIndexOf("/") + 1)))
 //            album = Cancion.ALBUM_DESCONOCIDO;
 
-        Log.d(TAG, "Album real:" + cancion.getAlbum() + ".Carpeta:" + cancion.getCarpetaPadre() + ".Album:" + album + ".");
-
         String textoArtistas = artista + " | " + album;
-        holder.lblArtista.setText(textoArtistas);
+        holder.lblArtistaAlbum.setText(textoArtistas);
+        holder.lblArtistaAlbum.setSelected(true);
+
+        if (cancion.isSeleccionada())
+            holder.circulo.setBackgroundResource(R.drawable.fondo_cancion_seleccionada);
+        else
+            holder.circulo.setBackgroundResource(R.drawable.fondo_seleccionar_cancion);
     }
 
     @Override
@@ -107,11 +123,15 @@ public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.
 
     @Override
     public int getPositionForSection(int sectionIndex) {
-        return this.sectionPosition.get(sectionIndex);
+        return sectionPosition.get(sectionIndex);
     }
 
     @Override
     public int getSectionForPosition(int position) {
         return 0;
+    }
+
+    public interface OnCancionClick {
+        void onCancionClick(int indice);
     }
 }

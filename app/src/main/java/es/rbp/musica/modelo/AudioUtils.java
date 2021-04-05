@@ -34,11 +34,12 @@ public class AudioUtils {
 
     public static List<Cancion> filtrarCancionesPorNombres(List<Cancion> canciones, List<String> nombres) {
         List<Cancion> cancionesFiltradas = new ArrayList<>();
-        for (Cancion cancion : canciones) {
-            if (nombres.contains(cancion.getDatos()))
-                cancionesFiltradas.add(cancion);
+        for (String nombre : nombres) {
+            for (Cancion cancion : canciones) {
+                if (cancion.getDatos().toLowerCase().contains(nombre.toLowerCase()))
+                    cancionesFiltradas.add(cancion);
+            }
         }
-
         return cancionesFiltradas;
     }
 
@@ -55,5 +56,36 @@ public class AudioUtils {
             todasCarpetas.add(new Carpeta(carpetas.getKey(), carpetas.getValue()));
         }
         return todasCarpetas;
+    }
+
+    public static List<Cancion> filtrarCancionesPorQuery(List<Cancion> canciones, String query, Ajustes ajustes) {
+        List<Cancion> cancionesFiltradas = new ArrayList<>();
+
+        if (query.equals("")) {
+            cancionesFiltradas.addAll(canciones);
+            return cancionesFiltradas;
+        }
+
+        for (Cancion cancion : canciones) {
+            if (ajustes.isUtilizarNombreDeArchivo()) {
+                if ((!cancion.getAlbum().equals(Cancion.ALBUM_DESCONOCIDO) && cancion.getAlbum().toLowerCase().contains(query.toLowerCase()))
+                        || (!cancion.getArtista().equals(Cancion.ARTISTA_DESCONOCIDO) && cancion.getArtista().toLowerCase().contains(query.toLowerCase()))
+                        || cancion.getNombreArchivo().toLowerCase().contains(query.toLowerCase()))
+                    cancionesFiltradas.add(cancion);
+            } else {
+                if ((!cancion.getAlbum().equals(Cancion.ALBUM_DESCONOCIDO) && cancion.getAlbum().toLowerCase().contains(query.toLowerCase()))
+                        || (!cancion.getArtista().equals(Cancion.ARTISTA_DESCONOCIDO) && cancion.getArtista().toLowerCase().contains(query.toLowerCase()))
+                        || cancion.getNombre().toLowerCase().contains(query.toLowerCase()))
+                    cancionesFiltradas.add(cancion);
+            }
+        }
+
+        return cancionesFiltradas;
+    }
+
+    public static void seleccionarCanciones(List<Cancion> canciones, boolean seleccionada) {
+        for (Cancion cancion : canciones) {
+            cancion.setSeleccionada(seleccionada);
+        }
     }
 }

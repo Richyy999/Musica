@@ -7,24 +7,30 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import es.rbp.musica.R;
 
-public class SnackbarCrearPlaylist extends Dialog implements View.OnClickListener {
+public class SnackbarTexto extends Dialog implements View.OnClickListener {
 
-    private EditText txtNombrePlaylist;
+    private EditText txtSnackbarTexto;
 
     private Accion accion;
 
-    public SnackbarCrearPlaylist(Accion accion, Activity activity) {
+    private int idTexto;
+    private int idAviso;
+
+    public SnackbarTexto(Accion accion, Activity activity, int idTexto, int idAviso) {
         super(activity);
         this.accion = accion;
+        this.idTexto = idTexto;
+        this.idAviso = idAviso;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.snackbar_crear_playlist);
+        setContentView(R.layout.snackbar_texto);
         getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setBackgroundDrawable(null);
@@ -35,25 +41,33 @@ public class SnackbarCrearPlaylist extends Dialog implements View.OnClickListene
         View contenedor = findViewById(R.id.contenedorSnackbarCrearPlaylist);
         contenedor.setOnClickListener(this);
 
+        TextView lblTitulo = findViewById(R.id.lblTituloSnackbarTexto);
+        lblTitulo.setText(idTexto);
+
         TextView btnAceptar = findViewById(R.id.btnOkSnackbarCrearPlaylist);
         btnAceptar.setOnClickListener(this);
 
         TextView btnCancelar = findViewById(R.id.btnCancelarSnackbarCrearPlaylist);
         btnCancelar.setOnClickListener(this);
 
-        this.txtNombrePlaylist = findViewById(R.id.txtNombrePlaylist);
+        this.txtSnackbarTexto = findViewById(R.id.txtNombrePlaylist);
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btnOkSnackbarCrearPlaylist)
-            accion.crearPlaylist(txtNombrePlaylist.getText().toString());
-
-        if (v.getId() != R.id.contenedorSnackbarCrearPlaylist)
+        if (v.getId() == R.id.btnOkSnackbarCrearPlaylist) {
+            String texto = txtSnackbarTexto.getText().toString().trim();
+            if (texto.equals(""))
+                Toast.makeText(getContext(), idAviso, Toast.LENGTH_SHORT).show();
+            else {
+                accion.realizarAccion(texto);
+                dismiss();
+            }
+        } else if (v.getId() != R.id.contenedorSnackbarCrearPlaylist)
             dismiss();
     }
 
     public interface Accion {
-        void crearPlaylist(String nombrePlaylist);
+        void realizarAccion(String texto);
     }
 }

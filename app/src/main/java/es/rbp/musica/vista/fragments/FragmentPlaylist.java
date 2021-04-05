@@ -23,11 +23,11 @@ import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.entidad.Playlist;
 import es.rbp.musica.vista.activities.PlaylistActivity;
 import es.rbp.musica.vista.adaptadores.AdaptadorPlaylists;
-import es.rbp.musica.vista.snackbar.SnackbarCrearPlaylist;
+import es.rbp.musica.vista.snackbar.SnackbarTexto;
 
 import static es.rbp.musica.modelo.entidad.Playlist.EXTRA_PLAYLIST;
 
-public class FragmentPlaylist extends Fragment implements SnackbarCrearPlaylist.Accion, AdaptadorPlaylists.OnPlaylistClick, View.OnClickListener {
+public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, AdaptadorPlaylists.OnPlaylistClick, View.OnClickListener {
 
     private List<Playlist> playlists;
 
@@ -72,12 +72,12 @@ public class FragmentPlaylist extends Fragment implements SnackbarCrearPlaylist.
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnCrearPlaylist)
-            new SnackbarCrearPlaylist(this, getActivity()).show();
+            new SnackbarTexto(this, getActivity(), R.string.nombreDeLaPlaylist, R.string.introduceNombrePlaylist).show();
     }
 
     @Override
-    public void crearPlaylist(String nombrePlaylist) {
-        Playlist nuevaPlaylist = new Playlist(nombrePlaylist);
+    public void realizarAccion(String texto) {
+        Playlist nuevaPlaylist = new Playlist(texto);
         playlists.add(nuevaPlaylist);
         accesoFichero.guardarPlaylists(playlists);
 
