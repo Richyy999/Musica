@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import es.rbp.musica.R;
@@ -39,9 +40,12 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
 
     private View root;
 
+    private int numPlaylists;
+
     public FragmentPlaylist() {
         accesoFichero = AccesoFichero.getInstance(getContext());
         playlists = accesoFichero.getPlaylists();
+        numPlaylists = 0;
 
         if (playlists == null)
             playlists = new ArrayList<>();
@@ -56,14 +60,19 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
     @Override
     public void onResume() {
         super.onResume();
-        recyclerView = root.findViewById(R.id.recyclerViewPlaylist);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        adaptador = new AdaptadorPlaylists(playlists, this, getContext());
-        recyclerView.setHasFixedSize(false);
-        recyclerView.setAdapter(adaptador);
+        if (numPlaylists != playlists.size()) {
+            Collections.sort(playlists);
+            recyclerView = root.findViewById(R.id.recyclerViewPlaylist);
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            adaptador = new AdaptadorPlaylists(playlists, this, getContext());
+            recyclerView.setHasFixedSize(false);
+            recyclerView.setAdapter(adaptador);
 
-        if (playlists.size() == 0)
-            recyclerView.setVisibility(View.INVISIBLE);
+            if (playlists.size() == 0)
+                recyclerView.setVisibility(View.INVISIBLE);
+        }
+
+        numPlaylists = playlists.size();
 
         ImageView btnAnadirPlailist = root.findViewById(R.id.btnCrearPlaylist);
         btnAnadirPlailist.setOnClickListener(this);

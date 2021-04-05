@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Playlist implements Serializable {
+public class Playlist implements Serializable, Comparable<Playlist> {
 
     public static final long serialVersionUID = 3L;
 
@@ -48,6 +48,11 @@ public class Playlist implements Serializable {
 
     public void setNombreFichero(String nombreFichero) {
         this.nombreFichero = nombreFichero;
+    }
+
+    @Override
+    public int compareTo(Playlist o) {
+        return getNombreFichero().compareTo(o.getNombreFichero());
     }
 
     @Override
