@@ -47,8 +47,6 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
 
     private Playlist playlist;
 
-    private int indicePlaylist;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +60,8 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnEliminarPlaylist:
-                accesoFichero.eliminarPlaylist(indicePlaylist);
-                finishAfterTransition();
+                accesoFichero.eliminarPlaylist(playlist);
+                finish();
                 break;
             case R.id.btnAnadirCancionPlaylist:
                 Intent intent = new Intent(this, AnadirCancionesActivity.class);
@@ -88,7 +86,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
                 }
                 canciones.addAll(filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), listaNombreCanciones));
                 playlist.getCanciones().addAll(listaNombreCanciones);
-                accesoFichero.guardarPlaylists(accesoFichero.getPlaylists());
+                accesoFichero.guardarPlaylists(playlist);
                 actualizarRecyclerView();
             } else {
                 Log.i(TAG, "No se han añadido canciones");
@@ -114,20 +112,12 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
 
     private void cargarVista() {
         accesoFichero = AccesoFichero.getInstance(this);
-        indicePlaylist = getIntent().getIntExtra(EXTRA_PLAYLIST, INDICE_POR_DEFECTO);
+        int indicePlaylist = getIntent().getIntExtra(EXTRA_PLAYLIST, INDICE_POR_DEFECTO);
         playlist = accesoFichero.buscarPlaylistPorIndice(indicePlaylist);
 
         TextView lblNombrePlaylist = findViewById(R.id.lblNombrePlaylist);
         lblNombrePlaylist.setText(playlist.getNombre());
         lblNombrePlaylist.setSelected(true);
-
-        String texto;
-        if (playlist.getCanciones().size() == 1)
-            texto = getString(R.string.unaCancion);
-        else
-            texto = playlist.getCanciones().size() + " " + getString(R.string.canciones);
-        TextView lblNumCanciones = findViewById(R.id.lblNumCancionesPlaylist);
-        lblNumCanciones.setText(texto);
 
         ImageView imgPlaylist = findViewById(R.id.imgPlaylist);
         String rutaImagen = playlist.getRutaImagen();
@@ -151,6 +141,14 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void actualizarRecyclerView() {
+        String texto;
+        if (playlist.getCanciones().size() == 1)
+            texto = getString(R.string.unaCancion);
+        else
+            texto = playlist.getCanciones().size() + " " + getString(R.string.canciones);
+        TextView lblNumCanciones = findViewById(R.id.lblNumCancionesPlaylist);
+        lblNumCanciones.setText(texto);
+
         Collections.sort(canciones);
         IndexFastScrollRecyclerView recyclerView = findViewById(R.id.recyclerViewCancionesPlaylist);
         if (ajustes.isModoOscuro()) {

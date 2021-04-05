@@ -36,9 +36,9 @@ public class AccesoFichero {
 
     public static final int REQUEST_PERMISO_LECTURA = 1;
 
-    private static final String CARPETA_PLAYLISTS = "playlists";
+    private static final String CARPETA_PLAYLISTS = "playlists/";
 
-    private static final String CARPETA_IMAGEN_PLAYLIST = CARPETA_PLAYLISTS + "/img";
+    private static final String CARPETA_IMAGEN_PLAYLIST = CARPETA_PLAYLISTS + "img/";
 
     private static final String RUTA_FICHERO_AJUSTES = "ajustes.properties";
     private static final String RUTA_CARPETAS_OCULTAS = "carpetasOcultas.txt";
@@ -245,28 +245,56 @@ public class AccesoFichero {
         Gson gson = new Gson();
         playlists = new ArrayList<>();
         File carpetaPlaylist = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
+        if (!carpetaPlaylist.exists()) {
+            carpetaPlaylist.mkdir();
+            Log.i(TAG, "Creada carpeta playlist");
+        } else
+            Log.i(TAG, "Carpeta playlist existe");
+
+        Log.d(TAG, "Carpeta playlist es directorio: " + carpetaPlaylist.isDirectory());
+
         File[] ficheros = carpetaPlaylist.listFiles();
-        for (File fichero : ficheros) {
-            if (!fichero.isDirectory()) {
-                try (FileReader fileReader = new FileReader(fichero)) {
-                    Playlist playlist = gson.fromJson(fileReader, Playlist.class);
-                    playlists.add(playlist);
-                } catch (IOException e) {
-                    Log.e(TAG, e.toString());
+
+        if (ficheros != null) {
+            for (File fichero : ficheros) {
+                if (!fichero.isDirectory()) {
+                    try (FileReader fileReader = new FileReader(fichero)) {
+                        Playlist playlist = gson.fromJson(fileReader, Playlist.class);
+                        playlists.add(playlist);
+                    } catch (IOException e) {
+                        Log.e(TAG, e.toString());
+                    }
                 }
             }
-        }
+        } else
+            Log.i(TAG, "Ficheros playlist = null");
     }
 
     public void guardarPlaylists(Playlist playlist) {
         Gson gson = new Gson();
         File carpetaPlaylists = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
         File ficheroPlaylist = new File(carpetaPlaylists, playlist.getNombreFichero());
+        if (!ficheroPlaylist.exists()) {
+            try {
+                if (ficheroPlaylist.createNewFile())
+                    Log.d(TAG, "Fichero playlist creado");
+                else
+                    Log.d(TAG, "Fichero playlist no creado");
+            } catch (IOException e) {
+                Log.d(TAG, "Catch crear fichero");
+                Log.e(TAG, e.toString());
+            }
+        } else {
+            Log.d(TAG, "Fichero playlist existe");
+        }
 
-        String json = gson.toJson(ficheroPlaylist, Playlist.class);
+        Log.d(TAG, "Fichero playlist: " + ficheroPlaylist.getAbsolutePath());
+
+        String json = gson.toJson(playlist, Playlist.class);
         try (FileOutputStream fos = new FileOutputStream(ficheroPlaylist)) {
             fos.write(json.getBytes());
             fos.flush();
+            Log.i(TAG, "Guardado: " + playlist.toString());
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
@@ -289,5 +317,14 @@ public class AccesoFichero {
         File ficheroPlaylist = new File(carpetaPlaylist, playlist.getNombreFichero());
 
         ficheroPlaylist.delete();
+
+        playlists.remove(playlist);
+    }
+
+    public String getNombrePlaylistNueva() {
+        if (playlists == null)
+            leerPlaylists();
+
+        return String.valueOf(playlists.size());
     }
 }

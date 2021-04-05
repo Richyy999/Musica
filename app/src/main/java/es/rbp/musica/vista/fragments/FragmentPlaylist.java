@@ -77,9 +77,9 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
 
     @Override
     public void realizarAccion(String texto) {
-        Playlist nuevaPlaylist = new Playlist(texto);
+        Playlist nuevaPlaylist = new Playlist(texto, accesoFichero.getNombrePlaylistNueva());
         playlists.add(nuevaPlaylist);
-        accesoFichero.guardarPlaylists(playlists);
+        accesoFichero.guardarPlaylists(nuevaPlaylist);
 
         adaptador.notifyItemInserted(playlists.size() - 1);
         adaptador.notifyDataSetChanged();
