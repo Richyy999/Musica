@@ -3,6 +3,7 @@ package es.rbp.musica.vista.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
@@ -10,17 +11,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
+import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Playlist;
 import es.rbp.musica.vista.activities.PlaylistActivity;
 import es.rbp.musica.vista.adaptadores.AdaptadorPlaylists;
@@ -29,6 +33,8 @@ import es.rbp.musica.vista.snackbar.SnackbarTexto;
 import static es.rbp.musica.modelo.entidad.Playlist.EXTRA_PLAYLIST;
 
 public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, AdaptadorPlaylists.OnPlaylistClick, View.OnClickListener {
+
+    private static final String TAG = "Fragment playlist";
 
     private List<Playlist> playlists;
 
@@ -60,19 +66,16 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
     @Override
     public void onResume() {
         super.onResume();
-        if (numPlaylists != playlists.size()) {
-            Collections.sort(playlists);
-            recyclerView = root.findViewById(R.id.recyclerViewPlaylist);
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            adaptador = new AdaptadorPlaylists(playlists, this, getContext());
-            recyclerView.setHasFixedSize(false);
-            recyclerView.setAdapter(adaptador);
 
-            if (playlists.size() == 0)
-                recyclerView.setVisibility(View.INVISIBLE);
-        }
+        Collections.sort(playlists);
+        recyclerView = root.findViewById(R.id.recyclerViewPlaylist);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        adaptador = new AdaptadorPlaylists(playlists, this, getContext());
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setAdapter(adaptador);
 
-        numPlaylists = playlists.size();
+        if (playlists.size() == 0)
+            recyclerView.setVisibility(View.INVISIBLE);
 
         ImageView btnAnadirPlailist = root.findViewById(R.id.btnCrearPlaylist);
         btnAnadirPlailist.setOnClickListener(this);
@@ -86,14 +89,18 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
 
     @Override
     public void realizarAccion(String texto) {
-        Playlist nuevaPlaylist = new Playlist(texto, accesoFichero.getNombrePlaylistNueva());
-        playlists.add(nuevaPlaylist);
-        accesoFichero.guardarPlaylist(nuevaPlaylist);
+        try {
+            Playlist nuevaPlaylist = accesoFichero.crearPlaylist(texto, Ajustes.getInstance(getContext()));
+            playlists.add(nuevaPlaylist);
+            accesoFichero.guardarPlaylist(nuevaPlaylist);
 
-        adaptador.notifyItemInserted(playlists.size() - 1);
-        adaptador.notifyDataSetChanged();
+            adaptador.notifyItemInserted(playlists.size() - 1);
+            adaptador.notifyDataSetChanged();
 
-        recyclerView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
     }
 
     @Override

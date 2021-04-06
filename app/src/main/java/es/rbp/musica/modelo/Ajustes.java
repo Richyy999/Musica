@@ -25,6 +25,7 @@ public class Ajustes implements Serializable {
     public static final String PROPIEDAD_FILTRO_DURACION = "duracion";
     public static final String PROPIEDAD_ULTIMO_FILTRO_DURACION = "ultimoDuracion";
     public static final String PROPIEDAD_UTILIZAR_NOMBRE_DE_ARCHIVO = "utilizarNombreDeArchivo";
+    public static final String PROPIEDAD_NUMERO_PLAYLISTS = "numereoDePlaylists";
 
     private static final String TAG = "AJUSTES";
     private static final String CARPETAS_OCULTAS_POR_DEFECTO = "/storage/emulated/0/WhatsApp/Media/WhatsApp Audio";
@@ -47,6 +48,8 @@ public class Ajustes implements Serializable {
     private int ultimoFiltroTamano;
     private int ultimoFiltroDuracion;
 
+    private int numPlaylists;
+
     /**
      * Constructor por defecto de la clase. Para obtener una instancia de la clase, usar el método {@link Ajustes#getInstance(Context)}
      */
@@ -65,7 +68,7 @@ public class Ajustes implements Serializable {
      * @param ultimoFiltroDuracion    último valor de {@link Ajustes#filtroDuracionActual}
      */
     public Ajustes(List<String> carpetasOcultas, boolean modoOscuro, boolean utilizarNombreDeArchivo, int filtroTanamoActual, int filtroDuracionActual,
-                   int ultimoFiltroTamano, int ultimoFiltroDuracion) {
+                   int ultimoFiltroTamano, int ultimoFiltroDuracion, int numPlaylists) {
         this.carpetasOcultas = carpetasOcultas;
         this.modoOscuro = modoOscuro;
         this.utilizarNombreDeArchivo = utilizarNombreDeArchivo;
@@ -73,6 +76,7 @@ public class Ajustes implements Serializable {
         this.filtroDuracionActual = filtroDuracionActual;
         this.ultimoFiltroTamano = ultimoFiltroTamano;
         this.ultimoFiltroDuracion = ultimoFiltroDuracion;
+        this.numPlaylists = numPlaylists;
     }
 
     /**
@@ -118,6 +122,8 @@ public class Ajustes implements Serializable {
 
         ajustes.ultimoFiltroTamano = FILTRO_TAMANO_POR_DEFECTO;
         ajustes.ultimoFiltroDuracion = FILTRO_DURACION_POR_DEFECTO;
+
+        ajustes.numPlaylists = 0;
 
         guardarAjustes(context);
     }
@@ -167,6 +173,18 @@ public class Ajustes implements Serializable {
 
     public List<String> getCarpetasOcultas() {
         return carpetasOcultas;
+    }
+
+    public String getNombreFicheroNuevaPLaylist() {
+        return String.valueOf(numPlaylists);
+    }
+
+    public int getNumPlaylists() {
+        return numPlaylists;
+    }
+
+    public void setNumPlaylists(int numPlaylists) {
+        this.numPlaylists = numPlaylists;
     }
 
     public void setCarpetasOcultas(List<String> carpetasOcultas) {
