@@ -26,6 +26,7 @@ import java.util.Properties;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_FILTRO_DURACION;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_FILTRO_TAMANO;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_MODO_OSCURO;
+import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_NUMERO_PLAYLISTS;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_ULTIMO_FILTRO_DURACION;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_ULTIMO_FILTRO_TAMANO;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_UTILIZAR_NOMBRE_DE_ARCHIVO;
@@ -94,7 +95,8 @@ public class AccesoFichero {
         }
         if (!properties.containsKey(PROPIEDAD_MODO_OSCURO) || !properties.containsKey(PROPIEDAD_FILTRO_TAMANO)
                 || !properties.containsKey(PROPIEDAD_FILTRO_DURACION) || !properties.containsKey(PROPIEDAD_ULTIMO_FILTRO_TAMANO)
-                || !properties.containsKey(PROPIEDAD_ULTIMO_FILTRO_DURACION) || !properties.containsKey(PROPIEDAD_UTILIZAR_NOMBRE_DE_ARCHIVO)) {
+                || !properties.containsKey(PROPIEDAD_ULTIMO_FILTRO_DURACION) || !properties.containsKey(PROPIEDAD_UTILIZAR_NOMBRE_DE_ARCHIVO)
+                || !properties.containsKey(PROPIEDAD_NUMERO_PLAYLISTS)) {
             Log.d(TAG, "Ajustes properties corrupto");
             return null;
         }
@@ -104,8 +106,9 @@ public class AccesoFichero {
         int filtroDuracion = Integer.parseInt(properties.getProperty(PROPIEDAD_FILTRO_DURACION));
         int ultimoFiltroTamano = Integer.parseInt(properties.getProperty(PROPIEDAD_ULTIMO_FILTRO_TAMANO));
         int ultimoFiltroDuracion = Integer.parseInt(properties.getProperty(PROPIEDAD_ULTIMO_FILTRO_DURACION));
+        int numPlaylists = Integer.parseInt(properties.getProperty(PROPIEDAD_NUMERO_PLAYLISTS));
 
-        return new Ajustes(carpetasOcultas, modoOscuro, utilizarNombreDeArchivo, filtroTamano, filtroDuracion, ultimoFiltroTamano, ultimoFiltroDuracion);
+        return new Ajustes(carpetasOcultas, modoOscuro, utilizarNombreDeArchivo, filtroTamano, filtroDuracion, ultimoFiltroTamano, ultimoFiltroDuracion, numPlaylists);
     }
 
     /**
@@ -121,6 +124,7 @@ public class AccesoFichero {
         String filtroDuracion = String.valueOf(ajustes.getFiltroDuracionActual());
         String ultimoFiltroTamano = String.valueOf(ajustes.getUltimoFiltroTamano());
         String ultimoFiltroDuracion = String.valueOf(ajustes.getUltimoFiltroDuracion());
+        String numPlaylists = String.valueOf(ajustes.getNumPlaylists());
 
         File ficheroProperties = new File(context.getFilesDir(), RUTA_FICHERO_AJUSTES);
         if (!ficheroProperties.exists())
@@ -134,6 +138,7 @@ public class AccesoFichero {
         properties.setProperty(PROPIEDAD_FILTRO_DURACION, filtroDuracion);
         properties.setProperty(PROPIEDAD_ULTIMO_FILTRO_TAMANO, ultimoFiltroTamano);
         properties.setProperty(PROPIEDAD_ULTIMO_FILTRO_DURACION, ultimoFiltroDuracion);
+        properties.setProperty(PROPIEDAD_NUMERO_PLAYLISTS, numPlaylists);
         properties.store(new FileOutputStream(ficheroProperties), "");
 
         File ficheroCarpetas = new File(context.getFilesDir(), RUTA_CARPETAS_OCULTAS);
@@ -241,6 +246,15 @@ public class AccesoFichero {
         return playlists;
     }
 
+    public Playlist crearPlaylist(String nombrePlaylist, Ajustes ajustes) throws IOException {
+        Playlist nuevaPlaylist = new Playlist(nombrePlaylist, ajustes.getNombreFicheroNuevaPLaylist());
+        ajustes.setNumPlaylists(ajustes.getNumPlaylists() + 1);
+
+        guardarAjustes(ajustes);
+
+        return nuevaPlaylist;
+    }
+
     private void leerPlaylists() {
         playlists = new ArrayList<>();
         File carpetaPlaylist = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
@@ -338,17 +352,10 @@ public class AccesoFichero {
 
     public void eliminarPlaylist(Playlist playlist) {
         File carpetaPlaylist = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
-        File ficheroPlaylist = new File(carpetaPlaylist, playlist.getNombreFichero());
+        File ficheroPlaylist = new File(carpetaPlaylist, playlist.getNombreFichero() + EXTENSION_PLAYLISTS);
 
         ficheroPlaylist.delete();
 
         playlists.remove(playlist);
-    }
-
-    public String getNombrePlaylistNueva() {
-        if (playlists == null)
-            leerPlaylists();
-
-        return String.valueOf(playlists.size());
     }
 }

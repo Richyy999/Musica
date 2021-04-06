@@ -43,7 +43,6 @@ import static es.rbp.musica.vista.activities.AnadirCancionesActivity.EXTRA_CANCI
 public class PlaylistActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, SnackbarTexto.Accion {
 
     public static final int CODIGO_REQUEST_PLAYLIST = 10;
-
     public static final int CODIGO_REQUEST_CAMBIAR_IMAGEN = 11;
 
     private static final String TAG = "ACTIVITY PLAYLIST";
