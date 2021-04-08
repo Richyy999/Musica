@@ -72,4 +72,5 @@
     <string name="reproducirSiguiente">Reproducir siguiente</string>
     <string name="anadirAFavoritos">Añadir a favoritos</string>
     <string name="eliminarDeLaPlaylist">Eliminar de la playlist</string>
+    <string name="eliminarDeFavoritos">Eliminar de favoritos</string>
 </resources>

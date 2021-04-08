@@ -26,21 +26,69 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
 
     private List<Cancion> canciones;
 
+    private View root;
+
+    private Ajustes ajustes;
+
     private Cancion cancionSeleccionada;
 
+    private AccesoFichero accesoFichero;
+
+    private boolean muestraFavoritos;
+
     public FragmentFavoritos() {
-        AccesoFichero accesoFichero = AccesoFichero.getInstance(getContext());
-        canciones = accesoFichero.getFavoritos();
+        accesoFichero = AccesoFichero.getInstance(getContext());
+        this.canciones = accesoFichero.getFavoritos();
+        this.muestraFavoritos = true;
     }
 
     public FragmentFavoritos(List<Cancion> canciones) {
         this.canciones = canciones;
+        this.muestraFavoritos = false;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_favoritos, container, false);
-        Ajustes ajustes = Ajustes.getInstance(getContext());
+        root = inflater.inflate(R.layout.fragment_favoritos, container, false);
+        ajustes = Ajustes.getInstance(getContext());
+        accesoFichero = AccesoFichero.getInstance(getContext());
+        actualizarRecyclerView();
+        return root;
+    }
+
+    @Override
+    public void onMenuClicked(int indice) {
+        cancionSeleccionada = canciones.get(indice);
+        SnackbarMusica snackbarMusica = new SnackbarCancion(getActivity(), getActivity().findViewById(android.R.id.content),
+                this, cancionSeleccionada, Ajustes.getInstance(getContext()));
+        ((MainActivity) getActivity()).setSnackbarMusica(snackbarMusica);
+    }
+
+    @Override
+    public void onClick(int indice) {
+
+    }
+
+    @Override
+    public void realizarAccion(int accion) {
+        switch (accion) {
+            case SnackbarCancion.ACCION_ANADIR_A_FAVORITOS:
+                accesoFichero.anadirFavorito(cancionSeleccionada.getDatos());
+                break;
+            case SnackbarCancion.ACCION_ELIMINAR_DE_FAVORITOS:
+                accesoFichero.eliminarFavorito(cancionSeleccionada.getDatos());
+                break;
+        }
+
+        if (muestraFavoritos) {
+            canciones = accesoFichero.getFavoritos();
+            actualizarRecyclerView();
+        }
+
+        ((MainActivity) getActivity()).setSnackbarMusica(null);
+    }
+
+    private void actualizarRecyclerView() {
         Collections.sort(canciones);
         IndexFastScrollRecyclerView recyclerView = root.findViewById(R.id.recyclerViewFavoritos);
         if (ajustes.isModoOscuro()) {
@@ -62,24 +110,5 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
         recyclerView.setAdapter(adaptador);
         if (canciones.size() == 0)
             recyclerView.setVisibility(View.INVISIBLE);
-        return root;
-    }
-
-    @Override
-    public void onMenuClicked(int indice) {
-        cancionSeleccionada = canciones.get(indice);
-        SnackbarMusica snackbarMusica = new SnackbarCancion(getActivity(), getActivity().findViewById(android.R.id.content),
-                this, cancionSeleccionada, Ajustes.getInstance(getContext()));
-        ((MainActivity) getActivity()).setSnackbarMusica(snackbarMusica);
-    }
-
-    @Override
-    public void onClick(int indice) {
-
-    }
-
-    @Override
-    public void realizarAccion(int accion) {
-
     }
 }

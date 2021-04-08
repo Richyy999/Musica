@@ -46,6 +46,20 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/btnEliminarFavoritos"
+            style="@style/itemSnackbarCancion"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblTituloSnackbarCancion">
+
+            <TextView
+                style="@style/tituloItemSnackbarCancion"
+                android:text="@string/eliminarDeFavoritos" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/btnAnadirAPlaylist"
             style="@style/itemSnackbarCancion"
             app:layout_constraintEnd_toEndOf="parent"

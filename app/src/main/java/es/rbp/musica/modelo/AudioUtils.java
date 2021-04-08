@@ -88,4 +88,10 @@ public class AudioUtils {
             cancion.setSeleccionada(seleccionada);
         }
     }
+
+    public static boolean esFavorito(AccesoFichero accesoFichero, Cancion cancion) {
+        boolean esFavorito = accesoFichero.getFavoritos().contains(cancion);
+        Log.i(TAG, "Es favorito: " + esFavorito);
+        return esFavorito;
+    }
 }
