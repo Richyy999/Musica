@@ -239,6 +239,29 @@ public class AccesoFichero {
         }
     }
 
+    public void guardarFavoritos() {
+        File ficheroFavoritos = new File(context.getFilesDir(), RUTA_FAVORITOS);
+        StringBuilder contenido = new StringBuilder();
+        for (String estring : favoritos) {
+            contenido.append(estring).append("\n");
+        }
+        try (FileOutputStream fos = new FileOutputStream(ficheroFavoritos)) {
+            fos.write(contenido.toString().getBytes());
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
+    public void anadirFavorito(String favorito) {
+        favoritos.add(favorito);
+        guardarFavoritos();
+    }
+
+    public void eliminarFavorito(String favorito) {
+        favoritos.remove(favorito);
+        guardarFavoritos();
+    }
+
     public List<Playlist> getPlaylists() {
         if (playlists == null)
             leerPlaylists();
@@ -335,7 +358,6 @@ public class AccesoFichero {
         Log.d(TAG, "Ruta fichero imagen: " + ficherioImagen.getAbsolutePath());
 
         return ficherioImagen;
-
     }
 
     public Playlist buscarPlaylistPorIndice(int indice) {

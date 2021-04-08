@@ -119,6 +119,12 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
             case SnackbarCancion.ACCION_ELIMINAR_DE_LA_PLAYLIST:
                 eliminarCancion();
                 break;
+            case SnackbarCancion.ACCION_ANADIR_A_FAVORITOS:
+                accesoFichero.anadirFavorito(cancionSeleccionada.getDatos());
+                break;
+            case SnackbarCancion.ACCION_ELIMINAR_DE_FAVORITOS:
+                accesoFichero.eliminarFavorito(cancionSeleccionada.getDatos());
+                break;
         }
         snackbarMusica = null;
     }

@@ -10,9 +10,12 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 
 import es.rbp.musica.R;
+import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
 import es.rbp.musica.vista.activities.PlaylistActivity;
+
+import static es.rbp.musica.modelo.AudioUtils.esFavorito;
 
 public class SnackbarCancion implements SnackbarMusica, View.OnClickListener {
 
@@ -20,7 +23,8 @@ public class SnackbarCancion implements SnackbarMusica, View.OnClickListener {
     public static final int ACCION_REPRODUCIR_SIGUIENTE = 1;
     public static final int ACCION_ANADIR_A_LA_PLAYLIST = 2;
     public static final int ACCION_ANADIR_A_FAVORITOS = 3;
-    public static final int ACCION_ELIMINAR_DE_LA_PLAYLIST = 4;
+    public static final int ACCION_ELIMINAR_DE_FAVORITOS = 4;
+    public static final int ACCION_ELIMINAR_DE_LA_PLAYLIST = 5;
 
     private Snackbar snackbar;
 
@@ -60,6 +64,15 @@ public class SnackbarCancion implements SnackbarMusica, View.OnClickListener {
 
         LinearLayout btnEliminarDeLaPlaylist = vistaPersonalizada.findViewById(R.id.btnEliminarDePlaylist);
         btnEliminarDeLaPlaylist.setOnClickListener(this);
+
+        LinearLayout btnAnadirFavoritos = vistaPersonalizada.findViewById(R.id.btnAnadirAFavoritos);
+        btnAnadirFavoritos.setOnClickListener(this);
+
+        LinearLayout btnEliminarFavoritos = vistaPersonalizada.findViewById(R.id.btnEliminarFavoritos);
+        btnEliminarFavoritos.setOnClickListener(this);
+
+        if (!esFavorito(AccesoFichero.getInstance(activity), cancion))
+            btnEliminarFavoritos.setVisibility(View.INVISIBLE);
 
         if (!(activity instanceof PlaylistActivity))
             btnEliminarDeLaPlaylist.setVisibility(View.GONE);
@@ -102,9 +115,14 @@ public class SnackbarCancion implements SnackbarMusica, View.OnClickListener {
                 accion.realizarAccion(ACCION_ANADIR_A_FAVORITOS);
                 ocultar();
                 break;
+            case R.id.btnEliminarFavoritos:
+                accion.realizarAccion(ACCION_ELIMINAR_DE_FAVORITOS);
+                ocultar();
+                break;
             case R.id.btnEliminarDePlaylist:
                 accion.realizarAccion(ACCION_ELIMINAR_DE_LA_PLAYLIST);
                 ocultar();
+                break;
             case R.id.opacityPaneSnackbarCancion:
                 ocultar();
                 break;
