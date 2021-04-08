@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -21,12 +22,21 @@ public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.
 
     private static final String TAG = "ADAPTADOR CANCION";
 
-    public static class MyHolder extends RecyclerView.ViewHolder {
+    public static class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private OnCancionClick onCancionClick;
+
+        private ImageView btnPuntos;
 
         private TextView lblNombreCancion, lblArtista, lblNumCancion;
 
-        public MyHolder(@NonNull View itemView) {
+        public MyHolder(@NonNull View itemView, OnCancionClick onCancionClick) {
             super(itemView);
+
+            this.onCancionClick = onCancionClick;
+
+            btnPuntos = itemView.findViewById(R.id.btnMenuPuntos);
+            btnPuntos.setOnClickListener(this);
 
             lblNombreCancion = itemView.findViewById(R.id.lblNombreCancionRecycler);
             lblArtista = itemView.findViewById(R.id.lblArtista);
@@ -35,14 +45,25 @@ public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.
             lblNombreCancion.setSelected(true);
             lblArtista.setSelected(true);
         }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == btnPuntos.getId())
+                onCancionClick.onMenuClicked(getAdapterPosition());
+            else if (v.getId() == itemView.getId())
+                onCancionClick.onClick(getAdapterPosition());
+        }
     }
 
     private List<Cancion> canciones;
 
     private List<Integer> sectionPosition;
 
-    public AdaptadorCanciones(List<Cancion> canciones) {
+    private OnCancionClick onCancionClick;
+
+    public AdaptadorCanciones(List<Cancion> canciones, OnCancionClick onCancionClick) {
         this.canciones = canciones;
+        this.onCancionClick = onCancionClick;
         this.sectionPosition = new ArrayList<>();
     }
 
@@ -50,7 +71,7 @@ public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.
     @Override
     public AdaptadorCanciones.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_canciones, parent, false);
-        return new MyHolder(v);
+        return new MyHolder(v, onCancionClick);
     }
 
     @Override
@@ -113,5 +134,12 @@ public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.
     @Override
     public int getSectionForPosition(int position) {
         return 0;
+    }
+
+    public interface OnCancionClick {
+
+        void onMenuClicked(int indice);
+
+        void onClick(int indice);
     }
 }

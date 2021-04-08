@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import es.rbp.musica.R;
 
-public class SnackbarTexto extends Dialog implements View.OnClickListener {
+public class SnackbarTexto extends Dialog implements SnackbarMusica, View.OnClickListener {
 
     private EditText txtSnackbarTexto;
 
@@ -61,10 +61,15 @@ public class SnackbarTexto extends Dialog implements View.OnClickListener {
                 Toast.makeText(getContext(), idAviso, Toast.LENGTH_SHORT).show();
             else {
                 accion.realizarAccion(texto);
-                dismiss();
+                ocultar();
             }
         } else if (v.getId() != R.id.contenedorSnackbarCrearPlaylist)
-            dismiss();
+            ocultar();
+    }
+
+    @Override
+    public void ocultar() {
+        dismiss();
     }
 
     public interface Accion {

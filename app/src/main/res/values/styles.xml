@@ -259,6 +259,21 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="tituloSnackbar" parent="tituloActivity">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginEnd">24dp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">?attr/colorTitulo</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:freezesText">true</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
     <style name="tituloAjustes">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -301,7 +316,7 @@
 
     <style name="seccionGrandeAjustes">
         <item name="android:animateLayoutChanges">true</item>
-        <item name="android:background">@drawable/fondo_seccion_ajustes</item>
+        <item name="android:background">@drawable/fondo_item_seleccionable</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">8dp</item>
@@ -375,5 +390,18 @@
         <item name="android:scrollHorizontally">true</item>
         <item name="android:singleLine">true</item>
         <item name="android:textColor">?attr/colorTitulo</item>
+    </style>
+
+    <style name="itemSnackbarCancion">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@drawable/fondo_item_seleccionable</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="tituloItemSnackbarCancion" parent="tituloRecyclerView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginStart">24dp</item>
     </style>
 </resources>

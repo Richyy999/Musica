@@ -10,7 +10,10 @@ import com.google.android.material.snackbar.Snackbar;
 
 import es.rbp.musica.R;
 
-public class SnackbarAlerta implements View.OnClickListener {
+public class SnackbarOkCancelar implements SnackbarMusica, View.OnClickListener {
+
+    public static final int ACCION_OK = 0;
+    public static final int ACCION_NO = 1;
 
     private Snackbar snackbar;
 
@@ -21,12 +24,12 @@ public class SnackbarAlerta implements View.OnClickListener {
 
     private Accion accion;
 
-    public SnackbarAlerta(Activity activity, View view, Accion accion, int idTituo, int idMensaje) {
+    public SnackbarOkCancelar(Activity activity, View view, Accion accion, int idTituo, int idMensaje) {
         this.accion = accion;
 
         this.snackbar = Snackbar.make(view, "", Snackbar.LENGTH_INDEFINITE);
 
-        View vistaPersonalizada = activity.getLayoutInflater().inflate(R.layout.snackbar_alerta, null);
+        View vistaPersonalizada = activity.getLayoutInflater().inflate(R.layout.snackbar_ok_cancelar, null);
 
         View snackbarView = this.snackbar.getView();
         snackbarView.setBackground(null);
@@ -68,9 +71,13 @@ public class SnackbarAlerta implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == btnAceptar.getId())
-            accion.realizarAccion();
-        else if (v.getId() == btnCancelar.getId() || v.getId() == opacityPane.getId())
+        if (v.getId() == btnAceptar.getId()) {
+            accion.realizarAccion(ACCION_OK);
+            ocultar();
+        } else if (v.getId() == btnCancelar.getId()) {
+            accion.realizarAccion(ACCION_NO);
+            ocultar();
+        } else if (v.getId() == opacityPane.getId())
             ocultar();
     }
 
@@ -83,7 +90,8 @@ public class SnackbarAlerta implements View.OnClickListener {
         this.opacityPane.setAlpha(1);
     }
 
-    private void ocultar() {
+    @Override
+    public void ocultar() {
         AlphaAnimation animacion = new AlphaAnimation(255, 0);
         animacion.setDuration(300);
         this.opacityPane.startAnimation(animacion);
@@ -97,6 +105,6 @@ public class SnackbarAlerta implements View.OnClickListener {
     }
 
     public interface Accion {
-        void realizarAccion();
+        void realizarAccion(int accion);
     }
 }
