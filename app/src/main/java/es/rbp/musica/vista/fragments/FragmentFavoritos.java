@@ -16,12 +16,17 @@ import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
+import es.rbp.musica.vista.activities.MainActivity;
 import es.rbp.musica.vista.adaptadores.AdaptadorCanciones;
+import es.rbp.musica.vista.snackbar.SnackbarCancion;
+import es.rbp.musica.vista.snackbar.SnackbarMusica;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 
-public class FragmentFavoritos extends Fragment {
+public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.OnCancionClick, SnackbarCancion.Accion {
 
     private List<Cancion> canciones;
+
+    private Cancion cancionSeleccionada;
 
     public FragmentFavoritos() {
         AccesoFichero accesoFichero = AccesoFichero.getInstance(getContext());
@@ -53,10 +58,28 @@ public class FragmentFavoritos extends Fragment {
             recyclerView.setIndexBarVisibility(false);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        AdaptadorCanciones adaptador = new AdaptadorCanciones(canciones);
+        AdaptadorCanciones adaptador = new AdaptadorCanciones(canciones, this);
         recyclerView.setAdapter(adaptador);
         if (canciones.size() == 0)
             recyclerView.setVisibility(View.INVISIBLE);
         return root;
+    }
+
+    @Override
+    public void onMenuClicked(int indice) {
+        cancionSeleccionada = canciones.get(indice);
+        SnackbarMusica snackbarMusica = new SnackbarCancion(getActivity(), getActivity().findViewById(android.R.id.content),
+                this, cancionSeleccionada, Ajustes.getInstance(getContext()));
+        ((MainActivity) getActivity()).setSnackbarMusica(snackbarMusica);
+    }
+
+    @Override
+    public void onClick(int indice) {
+
+    }
+
+    @Override
+    public void realizarAccion(int accion) {
+
     }
 }

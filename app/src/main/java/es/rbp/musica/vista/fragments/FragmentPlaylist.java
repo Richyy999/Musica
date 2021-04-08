@@ -40,12 +40,9 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
 
     private View root;
 
-    private int numPlaylists;
-
     public FragmentPlaylist() {
         accesoFichero = AccesoFichero.getInstance(getContext());
         playlists = accesoFichero.getPlaylists();
-        numPlaylists = 0;
 
         if (playlists == null)
             playlists = new ArrayList<>();
@@ -60,19 +57,15 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
     @Override
     public void onResume() {
         super.onResume();
-        if (numPlaylists != playlists.size()) {
-            Collections.sort(playlists);
-            recyclerView = root.findViewById(R.id.recyclerViewPlaylist);
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            adaptador = new AdaptadorPlaylists(playlists, this, getContext());
-            recyclerView.setHasFixedSize(false);
-            recyclerView.setAdapter(adaptador);
+        Collections.sort(playlists);
+        recyclerView = root.findViewById(R.id.recyclerViewPlaylist);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        adaptador = new AdaptadorPlaylists(playlists, this, getContext());
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setAdapter(adaptador);
 
-            if (playlists.size() == 0)
-                recyclerView.setVisibility(View.INVISIBLE);
-        }
-
-        numPlaylists = playlists.size();
+        if (playlists.size() == 0)
+            recyclerView.setVisibility(View.INVISIBLE);
 
         ImageView btnAnadirPlailist = root.findViewById(R.id.btnCrearPlaylist);
         btnAnadirPlailist.setOnClickListener(this);
