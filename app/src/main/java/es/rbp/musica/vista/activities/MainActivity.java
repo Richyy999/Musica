@@ -24,6 +24,7 @@ import es.rbp.musica.modelo.entidad.Carpeta;
 import es.rbp.musica.vista.fragments.FragmentCarpetas;
 import es.rbp.musica.vista.fragments.FragmentFavoritos;
 import es.rbp.musica.vista.fragments.FragmentPlaylist;
+import es.rbp.musica.vista.snackbar.SnackbarMusica;
 
 import static es.rbp.musica.modelo.AccesoFichero.REQUEST_PERMISO_LECTURA;
 
@@ -31,6 +32,8 @@ import static es.rbp.musica.modelo.AccesoFichero.REQUEST_PERMISO_LECTURA;
  * @author Ricardo Bordería Pi
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private SnackbarMusica snackbarMusica;
 
     private Fragment carpetas;
 
@@ -52,7 +55,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        if (carpetaAbierta)
+        if (snackbarMusica != null) {
+            snackbarMusica.ocultar();
+            snackbarMusica = null;
+        } else if (carpetaAbierta)
             cargarFragmentCarpetas();
         else
             super.onBackPressed();
@@ -84,6 +90,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 cargarPlaylists();
                 break;
         }
+    }
+
+    public void setSnackbarMusica(SnackbarMusica snackbarMusica) {
+        this.snackbarMusica = snackbarMusica;
     }
 
     private void abrirAjustes() {

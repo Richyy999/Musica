@@ -17,14 +17,18 @@ import android.widget.TextView;
 
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.Ajustes;
-import es.rbp.musica.vista.snackbar.SnackbarAlerta;
+import es.rbp.musica.vista.snackbar.SnackbarMusica;
+import es.rbp.musica.vista.snackbar.SnackbarOkCancelar;
 
 import static es.rbp.musica.modelo.Ajustes.MAX_FILTRO_DURACION;
 import static es.rbp.musica.modelo.Ajustes.MAX_FILTRO_TAMANO;
 import static es.rbp.musica.modelo.Ajustes.SIN_FILTRO;
+import static es.rbp.musica.vista.snackbar.SnackbarOkCancelar.ACCION_OK;
 
 public class AjustesActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener,
-        SeekBar.OnSeekBarChangeListener, SnackbarAlerta.Accion {
+        SeekBar.OnSeekBarChangeListener, SnackbarOkCancelar.Accion {
+
+    private SnackbarMusica snackbarMusica;
 
     private Ajustes ajustes;
 
@@ -137,17 +141,22 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        volver();
+        if (snackbarMusica != null) {
+            snackbarMusica.ocultar();
+            snackbarMusica = null;
+        } else
+            volver();
     }
 
     @Override
-    public void realizarAccion() {
-        ajustes.restablecerAjustes(this);
+    public void realizarAccion(int accion) {
+        if (accion == ACCION_OK) {
+            ajustes.restablecerAjustes(this);
 
-        Intent intent = new Intent(this, AjustesActivity.class);
-        startActivity(intent);
-        finish();
+            Intent intent = new Intent(this, AjustesActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void volver() {
@@ -259,6 +268,7 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
     }
 
     private void mostrarDialog() {
-        new SnackbarAlerta(this, findViewById(android.R.id.content), this, R.string.restablecerAjustes, R.string.mensajeDialogRestablecerAjustes);
+        snackbarMusica = new SnackbarOkCancelar(this, findViewById(android.R.id.content),
+                this, R.string.restablecerAjustes, R.string.mensajeDialogRestablecerAjustes);
     }
 }

@@ -2,6 +2,7 @@ package es.rbp.musica.modelo.entidad;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Playlist implements Serializable, Comparable<Playlist> {
@@ -23,7 +24,11 @@ public class Playlist implements Serializable, Comparable<Playlist> {
     public Playlist(String nombre, String nombreFichero) {
         this.nombre = nombre;
         this.nombreFichero = nombreFichero;
-        this.canciones = new ArrayList<>();
+        this.canciones = new LinkedList<>();
+    }
+
+    public void eliminarCancion(int indice) {
+        canciones.remove(indice);
     }
 
     public List<String> getCanciones() {

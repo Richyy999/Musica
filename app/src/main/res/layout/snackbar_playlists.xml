@@ -2,11 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:windowSoftInputMode="adjustPan">
+    android:layout_height="match_parent">
 
     <View
-        android:id="@+id/opacityPaneSnackbarTexto"
+        android:id="@+id/opacityPaneSnackbarPlaylist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/colorFondoOpacityPane"
@@ -16,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contenedorSnackbarTexto"
+        android:id="@+id/snackbarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/fondo_snackbar"
@@ -26,40 +25,23 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/lblTituloSnackbarTexto"
-            style="@style/tituloActivity"
-            android:soundEffectsEnabled="false"
+            android:id="@+id/lblTituloSnackbarPlaylist"
+            style="@style/tituloSnackbar"
+            android:text="@string/anadirALaPlaylist"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/txtCampo"
-            style="@style/campoTexto"
-            android:layout_marginStart="48dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewSnackbarPlaylists"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="48dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lblTituloSnackbarTexto" />
-
-        <TextView
-            android:id="@+id/btnCancelarSnackbarTexto"
-            style="@style/botonNeutro"
-            android:text="@string/cancelar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnOkSnackbarTexto"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtCampo" />
-
-        <TextView
-            android:id="@+id/btnOkSnackbarTexto"
-            style="@style/botonPositivo"
-            android:text="@string/ok"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btnCancelarSnackbarTexto"
-            app:layout_constraintTop_toBottomOf="@+id/txtCampo" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblTituloSnackbarPlaylist" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

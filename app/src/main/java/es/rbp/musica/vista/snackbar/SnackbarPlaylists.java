@@ -4,29 +4,34 @@ import android.app.Activity;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import es.rbp.musica.R;
+import java.util.List;
 
-public class SnackbarAlerta implements View.OnClickListener {
+import es.rbp.musica.R;
+import es.rbp.musica.modelo.entidad.Playlist;
+import es.rbp.musica.vista.adaptadores.AdaptadorSnackbarPlaylist;
+
+public class SnackbarPlaylists implements SnackbarMusica, View.OnClickListener, AdaptadorSnackbarPlaylist.OnPlaylistClicked {
+
+    public static final int NINGUNA_PLAYLIST = -1;
 
     private Snackbar snackbar;
 
     private View opacityPane;
 
-    private TextView btnCancelar;
-    private TextView btnAceptar;
-
     private Accion accion;
 
-    public SnackbarAlerta(Activity activity, View view, Accion accion, int idTituo, int idMensaje) {
+    public SnackbarPlaylists(Activity activity, View view, Accion accion, List<Playlist> playlists) {
         this.accion = accion;
 
         this.snackbar = Snackbar.make(view, "", Snackbar.LENGTH_INDEFINITE);
 
-        View vistaPersonalizada = activity.getLayoutInflater().inflate(R.layout.snackbar_alerta, null);
+        View vistaPersonalizada = activity.getLayoutInflater().inflate(R.layout.snackbar_playlists, null);
 
         View snackbarView = this.snackbar.getView();
         snackbarView.setBackground(null);
@@ -38,21 +43,16 @@ public class SnackbarAlerta implements View.OnClickListener {
         View contenedor = vistaPersonalizada.findViewById(R.id.snackbarLayout);
         contenedor.setOnClickListener(this);
 
-        this.opacityPane = vistaPersonalizada.findViewById(R.id.opacityPaneSnackbarAlerta);
+        this.opacityPane = vistaPersonalizada.findViewById(R.id.opacityPaneSnackbarPlaylist);
         this.opacityPane.setOnClickListener(this);
         this.opacityPane.setVisibility(View.INVISIBLE);
 
-        this.btnAceptar = vistaPersonalizada.findViewById(R.id.btnOkSnackbarAlerta);
-        this.btnAceptar.setOnClickListener(this);
+        RecyclerView recyclerView = vistaPersonalizada.findViewById(R.id.recyclerViewSnackbarPlaylists);
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.setHasFixedSize(false);
 
-        this.btnCancelar = vistaPersonalizada.findViewById(R.id.btnCancelarSnackbarAlerta);
-        this.btnCancelar.setOnClickListener(this);
-
-        TextView lblTitulo = vistaPersonalizada.findViewById(R.id.lblTituloSnackbarAlerta);
-        lblTitulo.setText(idTituo);
-
-        TextView lblMensaje = vistaPersonalizada.findViewById(R.id.lblMensajeSnackbarAlerta);
-        lblMensaje.setText(idMensaje);
+        AdaptadorSnackbarPlaylist adaptador = new AdaptadorSnackbarPlaylist(playlists, this);
+        recyclerView.setAdapter(adaptador);
 
         layout.addView(vistaPersonalizada);
         layout.setPadding(0, 0, 0, 0);
@@ -68,22 +68,14 @@ public class SnackbarAlerta implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == btnAceptar.getId())
-            accion.realizarAccion();
-        else if (v.getId() == btnCancelar.getId() || v.getId() == opacityPane.getId())
+        if (v.getId() == opacityPane.getId()) {
+            accion.onPlaylistSeleccionada(NINGUNA_PLAYLIST);
             ocultar();
+        }
     }
 
-    private void mostrarOpacityPane() {
-        AlphaAnimation animacion = new AlphaAnimation(0, 255);
-        animacion.setDuration(200);
-        this.opacityPane.setAlpha(0);
-        this.opacityPane.setVisibility(View.VISIBLE);
-        this.opacityPane.startAnimation(animacion);
-        this.opacityPane.setAlpha(1);
-    }
-
-    private void ocultar() {
+    @Override
+    public void ocultar() {
         AlphaAnimation animacion = new AlphaAnimation(255, 0);
         animacion.setDuration(300);
         this.opacityPane.startAnimation(animacion);
@@ -96,7 +88,22 @@ public class SnackbarAlerta implements View.OnClickListener {
         }, 300);
     }
 
+    @Override
+    public void onPlaylistClick(int indice) {
+        accion.onPlaylistSeleccionada(indice);
+        ocultar();
+    }
+
+    private void mostrarOpacityPane() {
+        AlphaAnimation animacion = new AlphaAnimation(0, 255);
+        animacion.setDuration(200);
+        this.opacityPane.setAlpha(0);
+        this.opacityPane.setVisibility(View.VISIBLE);
+        this.opacityPane.startAnimation(animacion);
+        this.opacityPane.setAlpha(1);
+    }
+
     public interface Accion {
-        void realizarAccion();
+        void onPlaylistSeleccionada(int indicePlaylist);
     }
 }

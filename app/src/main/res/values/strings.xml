@@ -67,4 +67,10 @@
     <string name="introduceNombrePlaylist">Introduce un nombre para la playlist</string>
     <string name="mantenParaCambiarImagen">Mantén pulsado para cambiar la imagen de la playlist</string>
     <string name="mantenerParaCambiarNombre">Mantén pulsado para cambiar el nombre de la playlist</string>
+    <string name="anadirALaPlaylist">Añadir a la playlist</string>
+    <string name="anadirALaCola">Añadir a la cola</string>
+    <string name="reproducirSiguiente">Reproducir siguiente</string>
+    <string name="anadirAFavoritos">Añadir a favoritos</string>
+    <string name="eliminarDeLaPlaylist">Eliminar de la playlist</string>
+    <string name="eliminarDeFavoritos">Eliminar de favoritos</string>
 </resources>

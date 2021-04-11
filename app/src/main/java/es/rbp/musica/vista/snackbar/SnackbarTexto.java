@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import es.rbp.musica.R;
 
-public class SnackbarTexto extends Dialog implements View.OnClickListener {
+public class SnackbarTexto extends Dialog implements SnackbarMusica, View.OnClickListener {
 
     private EditText txtSnackbarTexto;
 
@@ -35,36 +35,41 @@ public class SnackbarTexto extends Dialog implements View.OnClickListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setBackgroundDrawable(null);
 
-        View opacityPane = findViewById(R.id.opacityPaneSnackbarCrearPlaylist);
+        View opacityPane = findViewById(R.id.opacityPaneSnackbarTexto);
         opacityPane.setOnClickListener(this);
 
-        View contenedor = findViewById(R.id.contenedorSnackbarCrearPlaylist);
+        View contenedor = findViewById(R.id.contenedorSnackbarTexto);
         contenedor.setOnClickListener(this);
 
         TextView lblTitulo = findViewById(R.id.lblTituloSnackbarTexto);
         lblTitulo.setText(idTexto);
 
-        TextView btnAceptar = findViewById(R.id.btnOkSnackbarCrearPlaylist);
+        TextView btnAceptar = findViewById(R.id.btnOkSnackbarTexto);
         btnAceptar.setOnClickListener(this);
 
-        TextView btnCancelar = findViewById(R.id.btnCancelarSnackbarCrearPlaylist);
+        TextView btnCancelar = findViewById(R.id.btnCancelarSnackbarTexto);
         btnCancelar.setOnClickListener(this);
 
-        this.txtSnackbarTexto = findViewById(R.id.txtNombrePlaylist);
+        this.txtSnackbarTexto = findViewById(R.id.txtCampo);
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btnOkSnackbarCrearPlaylist) {
+        if (v.getId() == R.id.btnOkSnackbarTexto) {
             String texto = txtSnackbarTexto.getText().toString().trim();
             if (texto.equals(""))
                 Toast.makeText(getContext(), idAviso, Toast.LENGTH_SHORT).show();
             else {
                 accion.realizarAccion(texto);
-                dismiss();
+                ocultar();
             }
-        } else if (v.getId() != R.id.contenedorSnackbarCrearPlaylist)
-            dismiss();
+        } else if (v.getId() != R.id.contenedorSnackbarTexto)
+            ocultar();
+    }
+
+    @Override
+    public void ocultar() {
+        dismiss();
     }
 
     public interface Accion {
