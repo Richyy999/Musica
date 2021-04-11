@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +18,16 @@ import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
+import es.rbp.musica.modelo.entidad.Playlist;
 import es.rbp.musica.vista.activities.MainActivity;
 import es.rbp.musica.vista.adaptadores.AdaptadorCanciones;
+import es.rbp.musica.vista.adaptadores.AdaptadorSnackbarPlaylist;
 import es.rbp.musica.vista.snackbar.SnackbarCancion;
 import es.rbp.musica.vista.snackbar.SnackbarMusica;
+import es.rbp.musica.vista.snackbar.SnackbarPlaylists;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 
-public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.OnCancionClick, SnackbarCancion.Accion {
+public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.OnCancionClick, SnackbarCancion.Accion, SnackbarPlaylists.Accion {
 
     private List<Cancion> canciones;
 
@@ -74,9 +79,23 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
         switch (accion) {
             case SnackbarCancion.ACCION_ANADIR_A_FAVORITOS:
                 accesoFichero.anadirFavorito(cancionSeleccionada.getDatos());
+                ((MainActivity) getActivity()).setSnackbarMusica(null);
                 break;
             case SnackbarCancion.ACCION_ELIMINAR_DE_FAVORITOS:
                 accesoFichero.eliminarFavorito(cancionSeleccionada.getDatos());
+                ((MainActivity) getActivity()).setSnackbarMusica(null);
+                break;
+            case SnackbarCancion.ACCION_OCULTAR:
+                ((MainActivity) getActivity()).setSnackbarMusica(null);
+                break;
+            case SnackbarCancion.ACCION_ANADIR_A_LA_PLAYLIST:
+                Log.d("FragmentPLaylists", "añadir playlist");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mostrarPlaylists();
+                    }
+                }, 400);
                 break;
         }
 
@@ -84,8 +103,24 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
             canciones = accesoFichero.getFavoritos();
             actualizarRecyclerView();
         }
+    }
+
+    @Override
+    public void onPlaylistSeleccionada(int indicePlaylist) {
+        if (indicePlaylist != SnackbarPlaylists.NINGUNA_PLAYLIST) {
+            Playlist playlist = accesoFichero.getPlaylistPorIndice(indicePlaylist);
+            playlist.getCanciones().add(cancionSeleccionada.getDatos());
+            accesoFichero.guardarPlaylist(playlist);
+            Log.d("FRAGMENT FAVORITOS", "Indice de playlist: " + indicePlaylist);
+        }
 
         ((MainActivity) getActivity()).setSnackbarMusica(null);
+    }
+
+    private void mostrarPlaylists() {
+        List<Playlist> playlists = accesoFichero.getPlaylists();
+        SnackbarMusica snackbarMusica = new SnackbarPlaylists(getActivity(), getActivity().findViewById(android.R.id.content), this, playlists);
+        ((MainActivity) getActivity()).setSnackbarMusica(snackbarMusica);
     }
 
     private void actualizarRecyclerView() {

@@ -73,6 +73,19 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/btnEliminarDePlaylist"
+            style="@style/itemSnackbarCancion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnAnadirAFavoritos">
+
+            <TextView
+                style="@style/tituloItemSnackbarCancion"
+                android:text="@string/eliminarDeLaPlaylist" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/btnAnadirACola"
             style="@style/itemSnackbarCancion"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,6 +101,8 @@
         <LinearLayout
             android:id="@+id/btnReproducirSiguiente"
             style="@style/itemSnackbarCancion"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnAnadirACola">
@@ -95,21 +110,6 @@
             <TextView
                 style="@style/tituloItemSnackbarCancion"
                 android:text="@string/reproducirSiguiente" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/btnEliminarDePlaylist"
-            style="@style/itemSnackbarCancion"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnReproducirSiguiente">
-
-            <TextView
-                style="@style/tituloItemSnackbarCancion"
-                android:text="@string/eliminarDeLaPlaylist" />
 
         </LinearLayout>
 
