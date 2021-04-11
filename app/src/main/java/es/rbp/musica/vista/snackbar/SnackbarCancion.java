@@ -19,6 +19,7 @@ import static es.rbp.musica.modelo.AudioUtils.esFavorito;
 
 public class SnackbarCancion implements SnackbarMusica, View.OnClickListener {
 
+    public static final int ACCION_OCULTAR = -1;
     public static final int ACCION_ANADIR_A_LA_COLA = 0;
     public static final int ACCION_REPRODUCIR_SIGUIENTE = 1;
     public static final int ACCION_ANADIR_A_LA_PLAYLIST = 2;
@@ -124,6 +125,7 @@ public class SnackbarCancion implements SnackbarMusica, View.OnClickListener {
                 ocultar();
                 break;
             case R.id.opacityPaneSnackbarCancion:
+                accion.realizarAccion(ACCION_OCULTAR);
                 ocultar();
                 break;
         }

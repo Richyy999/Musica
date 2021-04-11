@@ -309,6 +309,13 @@ public class AccesoFichero {
             Log.i(TAG, "Ficheros playlist = null");
     }
 
+    public Playlist getPlaylistPorIndice(int indice) {
+        if (playlists == null)
+            leerPlaylists();
+
+        return playlists.get(indice);
+    }
+
     public void guardarPlaylist(Playlist playlist) {
         File carpetaPlaylist = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
         File ficheroPlaylist = new File(carpetaPlaylist, playlist.getNombreFichero() + EXTENSION_PLAYLISTS);

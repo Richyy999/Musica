@@ -125,8 +125,10 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
             case SnackbarCancion.ACCION_ELIMINAR_DE_FAVORITOS:
                 accesoFichero.eliminarFavorito(cancionSeleccionada.getDatos());
                 break;
+            case SnackbarCancion.ACCION_OCULTAR:
+                snackbarMusica = null;
+                break;
         }
-        snackbarMusica = null;
     }
 
     @Override
@@ -247,7 +249,6 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         TextView lblNumCanciones = findViewById(R.id.lblNumCancionesPlaylist);
         lblNumCanciones.setText(texto);
 
-        Collections.sort(canciones);
         IndexFastScrollRecyclerView recyclerView = findViewById(R.id.recyclerViewCancionesPlaylist);
         if (ajustes.isModoOscuro()) {
             recyclerView.setIndexBarTextColor(R.color.subtituloOscuro);
