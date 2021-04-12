@@ -15,8 +15,19 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:contentDescription="@string/descIconoFlechaIzquierda"
-        android:src="@drawable/icono_flecha_izquierda_playlist_claro"
+        android:src="?attr/iconoFlechaIzquierdaPlaylist"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnMenuPuntosPlaylist"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:contentDescription="@string/descIconoMenuPuntos"
+        android:src="?attr/iconoMenuPuntosPlaylist"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.makeramen.roundedimageview.RoundedImageView
@@ -37,11 +48,11 @@
         style="@style/tituloPlaylist"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="56dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center_horizontal"
         android:soundEffectsEnabled="false"
         android:transitionName="@string/elementoNombrePlaylist"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnMenuPuntosPlaylist"
         app:layout_constraintStart_toEndOf="@+id/btnAtrasPlaylist"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,7 +78,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/btnEliminarPlaylist"
+            android:id="@+id/btnEliminarCanciones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -83,7 +94,7 @@
 
             <TextView
                 style="@style/textoBotonPlaylist"
-                android:text="@string/eliminarPlaylist" />
+                android:text="@string/eliminarCanciones" />
 
         </LinearLayout>
 
@@ -95,7 +106,7 @@
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btnEliminarPlaylist">
+            app:layout_constraintStart_toEndOf="@id/btnEliminarCanciones">
 
             <ImageView
                 android:layout_width="20dp"
@@ -126,15 +137,15 @@
             android:id="@+id/btnReproducirPlaylistAleatorio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="32dp"
             android:background="@drawable/fondo_boton_reproducir_playlist_aleatorio"
-            android:paddingStart="16dp"
+            android:paddingStart="24dp"
             android:paddingTop="8dp"
             android:paddingEnd="16dp"
             android:paddingBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/btnEliminarCancionPlaylist"
+            app:layout_constraintBottom_toBottomOf="@+id/btnAnadirPlaylistALaCola"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btnEliminarCancionPlaylist"
+            app:layout_constraintTop_toTopOf="@id/btnAnadirPlaylistALaCola"
             app:layout_constraintVertical_bias="0.5">
 
             <ImageView
@@ -161,10 +172,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
-            android:id="@+id/btnEliminarCancionPlaylist"
+            android:id="@+id/btnAnadirPlaylistALaCola"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="32dp"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -173,11 +184,12 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="?attr/iconoEliminar" />
+                android:contentDescription="@string/descIconoCrearPlaylist"
+                android:src="?attr/iconoCrearPlaylist" />
 
             <TextView
                 style="@style/nombreIcono"
-                android:text="@string/eliminarCanciones"
+                android:text="@string/anadirALaCola"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -190,8 +202,10 @@
             android:background="?attr/colorFondoApp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnEliminarCancionPlaylist" />
+            app:layout_constraintTop_toBottomOf="@id/btnAnadirPlaylistALaCola"
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

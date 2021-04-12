@@ -22,16 +22,24 @@ import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
+import es.rbp.musica.modelo.entidad.Playlist;
 import es.rbp.musica.vista.adaptadores.AdaptadorAnadirCancion;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 
 import static es.rbp.musica.modelo.AudioUtils.filtrarCanciones;
+import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorNombres;
 import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorQuery;
 import static es.rbp.musica.modelo.AudioUtils.seleccionarCanciones;
 
-public class AnadirCancionesActivity extends AppCompatActivity implements AdaptadorAnadirCancion.OnCancionClick, View.OnClickListener, TextWatcher {
+public class SeleccionaCancionesActivity extends AppCompatActivity implements AdaptadorAnadirCancion.OnCancionClick, View.OnClickListener, TextWatcher {
 
     public static final String EXTRA_CANCIONES_ANADIDAS = "extraCancionesAnadidas";
+    public static final String EXTRA_MODO_SELECCION = "modoDeSeleccion";
+
+    public static final String ACCION_ANADIR = "accionAnadir";
+    public static final String ACCION_ELIMINAR = "accionEliminar";
+
+    public static final int NINGUNA_PLAYLIST = -1;
 
     private static final String TAG = "AÑADIR CANCIÓN";
 
@@ -44,6 +52,8 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
     private AccesoFichero accesoFichero;
 
     private Ajustes ajustes;
+
+    private String accion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +68,11 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
     public void onClick(View v) {
         if (v.getId() == R.id.btnAtrasAnadirCancion)
             salir();
-        else if (v.getId() == R.id.btnAceptarAnadirCanciones)
-            anadirCanciones();
+        else if (v.getId() == R.id.btnAceptarAnadirCanciones && accion.equals(ACCION_ANADIR))
+            enviarCanciones();
+        else if (v.getId() == R.id.btnAceptarAnadirCanciones && accion.equals(ACCION_ELIMINAR))
+            enviarCanciones();
+
     }
 
     @Override
@@ -103,7 +116,7 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
         finish();
     }
 
-    private void anadirCanciones() {
+    private void enviarCanciones() {
         String[] canciones = new String[cancionesSeleccionadas.size()];
         for (int i = 0; i < canciones.length; i++) {
             Cancion cancion = cancionesSeleccionadas.get(i);
@@ -112,6 +125,7 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
 
         Intent intent = new Intent();
         intent.putExtra(EXTRA_CANCIONES_ANADIDAS, canciones);
+        intent.setAction(accion);
         setResult(RESULT_OK, intent);
 
         seleccionarCanciones(todasCancionesFiltradas, false);
@@ -120,10 +134,23 @@ public class AnadirCancionesActivity extends AppCompatActivity implements Adapta
     }
 
     private void cargarVista() {
+        accion = getIntent().getStringExtra(EXTRA_MODO_SELECCION);
+        if (accion == null)
+            salir();
+
         accesoFichero = AccesoFichero.getInstance(this);
         ajustes = Ajustes.getInstance(this);
 
-        todasCancionesFiltradas = filtrarCanciones(accesoFichero.getTodasCanciones(), ajustes);
+        if (accion.equals(ACCION_ANADIR))
+            todasCancionesFiltradas = filtrarCanciones(accesoFichero.getTodasCanciones(), ajustes);
+        else if (accion.equals(ACCION_ELIMINAR)) {
+            int indicePlaylist = getIntent().getIntExtra(Playlist.EXTRA_PLAYLIST, NINGUNA_PLAYLIST);
+            if (indicePlaylist == NINGUNA_PLAYLIST)
+                salir();
+
+            Playlist playlist = accesoFichero.getPlaylistPorIndice(indicePlaylist);
+            todasCancionesFiltradas = filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), playlist.getCanciones());
+        }
 
         cancionesFiltradas = filtrarCanciones(todasCancionesFiltradas, ajustes);
 

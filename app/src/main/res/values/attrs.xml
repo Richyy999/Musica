@@ -55,6 +55,7 @@
     <attr name="iconoAnadirPlaylist" format="reference" />
     <attr name="iconoEliminarPlaylist" format="reference" />
     <attr name="iconoEliminar" format="reference" />
+    <attr name="iconoMenuPuntosPlaylist" format="reference" />
 
     <attr name="iconoFavoritosLleno" format="reference" />
     <attr name="iconoFavoritosVacio" format="reference" />

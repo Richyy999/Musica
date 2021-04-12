@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorFondoApp"
     android:paddingTop="24dp"
-    tools:context=".vista.activities.AnadirCancionesActivity">
+    tools:context=".vista.activities.SeleccionaCancionesActivity">
 
     <ImageView
         android:id="@+id/btnAtrasAnadirCancion"
