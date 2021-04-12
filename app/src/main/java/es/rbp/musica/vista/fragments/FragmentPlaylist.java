@@ -3,7 +3,6 @@ package es.rbp.musica.vista.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
@@ -46,12 +45,9 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
 
     private View root;
 
-    private int numPlaylists;
-
     public FragmentPlaylist() {
         accesoFichero = AccesoFichero.getInstance(getContext());
         playlists = accesoFichero.getPlaylists();
-        numPlaylists = 0;
 
         if (playlists == null)
             playlists = new ArrayList<>();
