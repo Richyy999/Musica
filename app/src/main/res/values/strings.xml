@@ -73,6 +73,7 @@
     <string name="anadirAFavoritos">Añadir a favoritos</string>
     <string name="eliminarDeLaPlaylist">Eliminar de la playlist</string>
     <string name="eliminarDeFavoritos">Eliminar de favoritos</string>
+    <string name="opciones">Opciones</string>
     <string name="historialDeBusqueda">Historial de búsqueda</string>
     <string name="eliminarHistorial">Eliminar historial</string>
 </resources>

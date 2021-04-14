@@ -23,7 +23,6 @@ import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import es.rbp.musica.R;
@@ -33,6 +32,7 @@ import es.rbp.musica.modelo.entidad.Cancion;
 import es.rbp.musica.modelo.entidad.Playlist;
 import es.rbp.musica.vista.adaptadores.AdaptadorCanciones;
 import es.rbp.musica.vista.snackbar.SnackbarCancion;
+import es.rbp.musica.vista.snackbar.SnackbarMenuPlaylist;
 import es.rbp.musica.vista.snackbar.SnackbarMusica;
 import es.rbp.musica.vista.snackbar.SnackbarTexto;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
@@ -40,9 +40,10 @@ import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorNombres;
 import static es.rbp.musica.modelo.entidad.Playlist.EXTRA_PLAYLIST;
 import static es.rbp.musica.modelo.entidad.Playlist.INDICE_POR_DEFECTO;
-import static es.rbp.musica.vista.activities.AnadirCancionesActivity.EXTRA_CANCIONES_ANADIDAS;
+import static es.rbp.musica.vista.activities.SeleccionaCancionesActivity.EXTRA_CANCIONES_ANADIDAS;
 
-public class PlaylistActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, SnackbarTexto.Accion, SnackbarCancion.Accion, AdaptadorCanciones.OnCancionClick {
+public class PlaylistActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, SnackbarTexto.Accion,
+        SnackbarCancion.Accion, SnackbarMenuPlaylist.Accion, AdaptadorCanciones.OnCancionClick {
 
     public static final int CODIGO_REQUEST_PLAYLIST = 10;
     public static final int CODIGO_REQUEST_CAMBIAR_IMAGEN = 11;
@@ -61,6 +62,8 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
 
     private Cancion cancionSeleccionada;
 
+    private int indicePlaylist;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,12 +76,9 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnEliminarPlaylist:
-                accesoFichero.eliminarPlaylist(playlist);
-                finish();
-                break;
             case R.id.btnAnadirCancionPlaylist:
-                Intent intent = new Intent(this, AnadirCancionesActivity.class);
+                Intent intent = new Intent(this, SeleccionaCancionesActivity.class);
+                intent.putExtra(SeleccionaCancionesActivity.EXTRA_MODO_SELECCION, SeleccionaCancionesActivity.ACCION_ANADIR);
                 startActivityForResult(intent, CODIGO_REQUEST_PLAYLIST);
                 break;
             case R.id.btnAtrasPlaylist:
@@ -89,6 +89,15 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.lblNombrePlaylist:
                 mostrarToast(R.string.mantenerParaCambiarNombre);
+                break;
+            case R.id.btnMenuPuntosPlaylist:
+                mostrarMenu();
+                break;
+            case R.id.btnEliminarCanciones:
+                Intent intent1 = new Intent(this, SeleccionaCancionesActivity.class);
+                intent1.putExtra(SeleccionaCancionesActivity.EXTRA_MODO_SELECCION, SeleccionaCancionesActivity.ACCION_ELIMINAR);
+                intent1.putExtra(EXTRA_PLAYLIST, indicePlaylist);
+                startActivityForResult(intent1, CODIGO_REQUEST_PLAYLIST);
                 break;
         }
     }
@@ -125,10 +134,21 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
             case SnackbarCancion.ACCION_ELIMINAR_DE_FAVORITOS:
                 accesoFichero.eliminarFavorito(cancionSeleccionada.getDatos());
                 break;
-            case SnackbarCancion.ACCION_OCULTAR:
-                snackbarMusica = null;
+        }
+        snackbarMusica = null;
+    }
+
+    @Override
+    public void realizarAccionPlaylist(int accion) {
+        switch (accion) {
+            case SnackbarMenuPlaylist.ACCION_ELIMINAR_PLAYLIST:
+                accesoFichero.eliminarPlaylist(playlist);
+                finish();
+                break;
+            case SnackbarMenuPlaylist.ACCION_REPRODUCIR_SIGUIENTE:
                 break;
         }
+        snackbarMusica = null;
     }
 
     @Override
@@ -147,14 +167,23 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODIGO_REQUEST_PLAYLIST) {
             if (resultCode == RESULT_OK) {
+                String accion = data.getAction();
                 String[] nombreCanciones = data.getStringArrayExtra(EXTRA_CANCIONES_ANADIDAS);
-                List<String> listaNombreCanciones = new ArrayList<>();
-                for (int i = 0; i < nombreCanciones.length; i++) {
-                    Log.i(TAG, "Añadido: " + nombreCanciones[i]);
-                    listaNombreCanciones.add(nombreCanciones[i]);
+                if (accion.equals(SeleccionaCancionesActivity.ACCION_ANADIR)) {
+                    List<String> listaNombreCanciones = new ArrayList<>();
+                    for (int i = 0; i < nombreCanciones.length; i++) {
+                        Log.i(TAG, "Añadido: " + nombreCanciones[i]);
+                        listaNombreCanciones.add(nombreCanciones[i]);
+                    }
+                    canciones.addAll(filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), listaNombreCanciones));
+                    playlist.getCanciones().addAll(listaNombreCanciones);
+                } else if (accion.equals(SeleccionaCancionesActivity.ACCION_ELIMINAR)) {
+                    for (String cancion : nombreCanciones) {
+                        playlist.getCanciones().remove(cancion);
+                    }
+                    canciones = filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), playlist.getCanciones());
                 }
-                canciones.addAll(filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), listaNombreCanciones));
-                playlist.getCanciones().addAll(listaNombreCanciones);
+
                 accesoFichero.guardarPlaylist(playlist);
                 actualizarRecyclerView();
             } else {
@@ -177,6 +206,10 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
             snackbarMusica = null;
         } else
             finishAfterTransition();
+    }
+
+    private void mostrarMenu() {
+        snackbarMusica = new SnackbarMenuPlaylist(this, findViewById(android.R.id.content), this);
     }
 
     private void eliminarCancion() {
@@ -219,17 +252,20 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
 
     private void cargarVista() {
         accesoFichero = AccesoFichero.getInstance(this);
-        int indicePlaylist = getIntent().getIntExtra(EXTRA_PLAYLIST, INDICE_POR_DEFECTO);
+        indicePlaylist = getIntent().getIntExtra(EXTRA_PLAYLIST, INDICE_POR_DEFECTO);
         playlist = accesoFichero.buscarPlaylistPorIndice(indicePlaylist);
 
         ImageView btnAtras = findViewById(R.id.btnAtrasPlaylist);
         btnAtras.setOnClickListener(this);
 
-        LinearLayout btnEliminarPlaylist = findViewById(R.id.btnEliminarPlaylist);
-        btnEliminarPlaylist.setOnClickListener(this);
+        LinearLayout btnEliminarCanciones = findViewById(R.id.btnEliminarCanciones);
+        btnEliminarCanciones.setOnClickListener(this);
 
         LinearLayout btnAnadirCanciones = findViewById(R.id.btnAnadirCancionPlaylist);
         btnAnadirCanciones.setOnClickListener(this);
+
+        ImageView btnMenuPlaylist = findViewById(R.id.btnMenuPuntosPlaylist);
+        btnMenuPlaylist.setOnClickListener(this);
 
         canciones = filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), playlist.getCanciones());
 

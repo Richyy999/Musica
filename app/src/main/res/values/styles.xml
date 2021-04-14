@@ -49,6 +49,7 @@
         <item name="iconoFavoritosLleno">@drawable/icono_favoritos_lleno_claro</item>
         <item name="iconoCancionAnteriorFragment">@drawable/icono_cancion_anterior_fragment_claro
         </item>
+        <item name="iconoMenuPuntosPlaylist">@drawable/icono_menu_puntos_playlist_claro</item>
         <item name="iconoPausaFragment">@drawable/icono_pausa_fragment_claro</item>
         <item name="iconoPlayFragment">@drawable/icono_play_fragment_claro</item>
         <item name="iconoSiguienteCancionFragment">
@@ -124,6 +125,7 @@
         <item name="iconoFavoritosLleno">@drawable/icono_favoritos_lleno_oscuro</item>
         <item name="iconoCancionAnteriorFragment">@drawable/icono_cancion_anterior_fragment_oscuro
         </item>
+        <item name="iconoMenuPuntosPlaylist">@drawable/icono_menu_puntos_oscuro</item>
         <item name="iconoPausaFragment">@drawable/icono_pausa_fragment_oscuro</item>
         <item name="iconoPlayFragment">@drawable/icono_play_fragment_oscuro</item>
         <item name="iconoSiguienteCancionFragment">
@@ -140,7 +142,7 @@
         <item name="iconoFlechaAbajo">@drawable/icono_flecha_abajo_oscuro</item>
         <item name="iconoFlechaDerecha">@drawable/icono_flecha_derecha_claro</item>
         <item name="iconoFlechaIzquierda">@drawable/icono_flecha_izquierda_oscuro</item>
-        <item name="iconoFlechaIzquierdaPlaylist">@drawable/icono_flecha_izquierda_playlist_claro
+        <item name="iconoFlechaIzquierdaPlaylist">@drawable/icono_flecha_izquierda_oscuro
         </item>
         <item name="iconoAceptar">@drawable/icono_aceptar_oscuro</item>
         <item name="iconoGithub">@drawable/icono_github_oscuro</item>
@@ -391,7 +393,7 @@
         <item name="android:textColor">?attr/colorTitulo</item>
     </style>
 
-    <style name="itemSnackbarCancion">
+    <style name="itemSnackbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:background">@drawable/fondo_item_seleccionable</item>
@@ -399,7 +401,7 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="tituloItemSnackbarCancion" parent="tituloRecyclerView">
+    <style name="tituloItemSnackbar" parent="tituloRecyclerView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_marginStart">24dp</item>
     </style>

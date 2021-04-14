@@ -17,7 +17,7 @@
         tools:targetApi="q">
         <activity android:name=".vista.activities.BuscarActivity"></activity>
         <activity
-            android:name=".vista.activities.AnadirCancionesActivity"
+            android:name=".vista.activities.SeleccionaCancionesActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".vista.activities.PlaylistActivity"
