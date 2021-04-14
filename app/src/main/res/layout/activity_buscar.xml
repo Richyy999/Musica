@@ -25,6 +25,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:inputType="text"
+        android:transitionName="@string/elementoCampoBuscar"
         app:layout_constraintBottom_toBottomOf="@+id/btnAtrasBuscar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnAtrasBuscar"

@@ -49,8 +49,6 @@ public class SeleccionaCancionesActivity extends AppCompatActivity implements Ad
 
     private AdaptadorAnadirCancion adaptador;
 
-    private AccesoFichero accesoFichero;
-
     private Ajustes ajustes;
 
     private String accion;
@@ -138,7 +136,7 @@ public class SeleccionaCancionesActivity extends AppCompatActivity implements Ad
         if (accion == null)
             salir();
 
-        accesoFichero = AccesoFichero.getInstance(this);
+        AccesoFichero accesoFichero = AccesoFichero.getInstance(this);
         ajustes = Ajustes.getInstance(this);
 
         if (accion.equals(ACCION_ANADIR))
@@ -200,6 +198,7 @@ public class SeleccionaCancionesActivity extends AppCompatActivity implements Ad
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             setTheme(R.style.TemaClaro);
         }
     }

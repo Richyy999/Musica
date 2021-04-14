@@ -23,6 +23,7 @@
     <View
         android:id="@+id/txtBuscar"
         style="@style/campoTextoConIcono"
+        android:transitionName="@string/elementoCampoBuscar"
         app:layout_constraintBottom_toBottomOf="@+id/btnAjustes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnAjustes"

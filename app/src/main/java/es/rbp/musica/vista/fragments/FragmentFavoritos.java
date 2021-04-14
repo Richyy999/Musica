@@ -111,7 +111,6 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
             Playlist playlist = accesoFichero.getPlaylistPorIndice(indicePlaylist);
             playlist.getCanciones().add(cancionSeleccionada.getDatos());
             accesoFichero.guardarPlaylist(playlist);
-            Log.d("FRAGMENT FAVORITOS", "Indice de playlist: " + indicePlaylist);
         }
 
         ((MainActivity) getActivity()).setSnackbarMusica(null);

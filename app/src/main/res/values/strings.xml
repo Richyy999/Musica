@@ -76,4 +76,5 @@
     <string name="opciones">Opciones</string>
     <string name="historialDeBusqueda">Historial de búsqueda</string>
     <string name="eliminarHistorial">Eliminar historial</string>
+    <string name="elementoCampoBuscar">nombreCampoBuscar</string>
 </resources>

@@ -3,7 +3,9 @@ package es.rbp.musica.vista.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Fragment carpetas;
 
     private TextView lblTituloFragment;
+
+    private View btnBuscar;
 
     private boolean carpetaAbierta;
 
@@ -89,11 +93,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnPlaylist:
                 cargarPlaylists();
                 break;
+            case R.id.txtBuscar:
+                abrirBuscar();
         }
     }
 
     public void setSnackbarMusica(SnackbarMusica snackbarMusica) {
         this.snackbarMusica = snackbarMusica;
+    }
+
+    private void abrirBuscar() {
+        Intent intent = new Intent(this, BuscarActivity.class);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, btnBuscar, ViewCompat.getTransitionName(btnBuscar));
+        startActivity(intent, options.toBundle());
     }
 
     private void abrirAjustes() {
@@ -127,6 +139,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         LinearLayout btnPlaylist = findViewById(R.id.btnPlaylist);
         btnPlaylist.setOnClickListener(this);
+
+        btnBuscar = findViewById(R.id.txtBuscar);
+        btnBuscar.setOnClickListener(this);
 
         lblTituloFragment = findViewById(R.id.lblTituloMenu);
         cargarFragmentCarpetas();
