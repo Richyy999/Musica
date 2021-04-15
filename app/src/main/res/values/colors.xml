@@ -48,6 +48,9 @@
     <color name="textoHistorialClaro">#1168BF</color>
     <color name="textoHistorialOscuro">#D0D0D0</color>
 
+    <color name="bordeHistorialClaro">#3F48CC</color>
+    <color name="bordeHistorialOscuro">#C2EDFF</color>
+
     <color name="fondoSwitchClaro">#0096FF</color>
     <color name="fondoSwitchOscuro">#0096FF</color>
 

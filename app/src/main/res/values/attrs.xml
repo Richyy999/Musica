@@ -46,6 +46,7 @@
     <attr name="colorFondoOpacityPane" format="color" />
 
     <attr name="colorTituloPlaylist" format="color" />
+    <attr name="colorBordeHistorial" format="color" />
 
     <attr name="iconoMenuPuntos" format="reference" />
     <attr name="iconoCarpeta" format="reference" />

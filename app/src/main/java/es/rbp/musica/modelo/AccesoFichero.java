@@ -42,6 +42,7 @@ public class AccesoFichero {
     private static final String RUTA_FICHERO_AJUSTES = "ajustes.properties";
     private static final String RUTA_CARPETAS_OCULTAS = "carpetasOcultas.txt";
     private static final String RUTA_FAVORITOS = "favoritos.txt";
+    private static final String RUTA_HISTORIAL = "historial.txt";
 
     private static final String EXTENSION_PLAYLISTS = ".obj";
 
@@ -54,6 +55,7 @@ public class AccesoFichero {
     private List<Cancion> todasCanciones;
 
     private List<String> favoritos;
+    private List<String> historial;
 
     private Context context;
 
@@ -239,7 +241,7 @@ public class AccesoFichero {
         }
     }
 
-    public void guardarFavoritos() {
+    private void guardarFavoritos() {
         File ficheroFavoritos = new File(context.getFilesDir(), RUTA_FAVORITOS);
         StringBuilder contenido = new StringBuilder();
         for (String estring : favoritos) {
@@ -386,5 +388,46 @@ public class AccesoFichero {
         ficheroPlaylist.delete();
 
         playlists.remove(playlist);
+    }
+
+    public List<String> getHistorial() {
+        if (historial == null)
+            leerHistorial();
+
+        return historial;
+    }
+
+    private void leerHistorial() {
+        historial = new ArrayList<>();
+        try {
+            File ficheroHistorial = new File(context.getFilesDir(), RUTA_HISTORIAL);
+            if (!ficheroHistorial.exists())
+                ficheroHistorial.createNewFile();
+
+            historial = Files.readAllLines(ficheroHistorial.toPath());
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
+    public void guardarHistorial(List<String> historial) {
+        File ficheroHistorial = new File(context.getFilesDir(), RUTA_HISTORIAL);
+        StringBuilder contenido = new StringBuilder();
+        for (String estring : historial) {
+            contenido.append(estring).append("\n");
+        }
+        try (FileOutputStream fos = new FileOutputStream(ficheroHistorial)) {
+            fos.write(contenido.toString().getBytes());
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+
+        this.historial = historial;
+    }
+
+    public void eliminarHistorial() {
+        historial.clear();
+
+        guardarHistorial(historial);
     }
 }

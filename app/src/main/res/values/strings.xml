@@ -77,4 +77,5 @@
     <string name="historialDeBusqueda">Historial de búsqueda</string>
     <string name="eliminarHistorial">Eliminar historial</string>
     <string name="elementoCampoBuscar">nombreCampoBuscar</string>
+    <string name="noHayHistorial">No hay historial</string>
 </resources>

@@ -36,6 +36,7 @@
         <item name="colorFondoOpacityPane">@color/fondoOpacityPaneClaro</item>
         <item name="colorFondoSeccionAjustesPulsado">@color/fondoSeccionAjustesPulsadoClaro</item>
         <item name="colorTituloPlaylist">@color/tituloPlaylistClaro</item>
+        <item name="colorBordeHistorial">@color/bordeHistorialClaro</item>
 
         <item name="iconoAnadirPlaylist">@drawable/icono_anadir_playlist_claro</item>
         <item name="iconoEliminar">@drawable/icono_eliminar_claro</item>
@@ -112,6 +113,7 @@
         <item name="colorFondoOpacityPane">@color/fondoOpacityPaneOscuro</item>
         <item name="colorFondoSeccionAjustesPulsado">@color/fondoSeccionAjustesPulsadoOscuro</item>
         <item name="colorTituloPlaylist">@color/tituloPlaylistOscuro</item>
+        <item name="colorBordeHistorial">@color/bordeHistorialOscuro</item>
 
         <item name="iconoAnadirPlaylist">@drawable/icono_anadir_playlist_oscuro</item>
         <item name="iconoEliminar">@drawable/icono_eliminar_oscuro</item>
