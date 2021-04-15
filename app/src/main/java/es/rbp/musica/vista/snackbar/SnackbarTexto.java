@@ -63,8 +63,10 @@ public class SnackbarTexto extends Dialog implements SnackbarMusica, View.OnClic
                 accion.realizarAccion(texto);
                 ocultar();
             }
-        } else if (v.getId() != R.id.contenedorSnackbarTexto)
+        } else if (v.getId() != R.id.contenedorSnackbarTexto) {
+            accion.realizarAccion(null);
             ocultar();
+        }
     }
 
     @Override

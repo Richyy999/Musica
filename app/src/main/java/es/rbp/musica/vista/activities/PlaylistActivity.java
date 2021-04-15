@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.transition.Explode;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -82,7 +84,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
                 startActivityForResult(intent, CODIGO_REQUEST_PLAYLIST);
                 break;
             case R.id.btnAtrasPlaylist:
-                finishAfterTransition();
+                finish();
                 break;
             case R.id.imgPlaylist:
                 mostrarToast(R.string.mantenParaCambiarImagen);
@@ -104,22 +106,26 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public boolean onLongClick(View v) {
+        Vibrator vibrador = getSystemService(Vibrator.class);
+        vibrador.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
+
         if (v.getId() == R.id.lblNombrePlaylist)
             cambiarNombrePlaylist();
         else if (v.getId() == R.id.imgPlaylist)
             elegirImagen();
-        Vibrator vibrador = getSystemService(Vibrator.class);
-        vibrador.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
+
         return false;
     }
 
     @Override
     public void realizarAccion(String texto) {
-        playlist.setNombre(texto);
+        if (texto != null) {
+            playlist.setNombre(texto);
 
-        accesoFichero.guardarPlaylist(playlist);
+            accesoFichero.guardarPlaylist(playlist);
 
-        actualizarNombrePlaylist();
+            actualizarNombrePlaylist();
+        }
     }
 
     @Override
@@ -205,7 +211,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
             snackbarMusica.ocultar();
             snackbarMusica = null;
         } else
-            finishAfterTransition();
+            finish();
     }
 
     private void mostrarMenu() {
@@ -230,9 +236,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void cambiarNombrePlaylist() {
-        SnackbarTexto snackbarTexto = new SnackbarTexto(this, this, R.string.nombreDeLaPlaylist, R.string.introduceNombrePlaylist);
-        snackbarMusica = snackbarTexto;
-        snackbarTexto.show();
+        new SnackbarTexto(this, this, R.string.nombreDeLaPlaylist, R.string.introduceNombrePlaylist).show();
     }
 
     private void mostrarToast(int idTexto) {

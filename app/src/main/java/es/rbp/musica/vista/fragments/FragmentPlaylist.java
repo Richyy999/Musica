@@ -33,7 +33,7 @@ import static es.rbp.musica.modelo.entidad.Playlist.EXTRA_PLAYLIST;
 
 public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, AdaptadorPlaylists.OnPlaylistClick, View.OnClickListener {
 
-    private static final String TAG = "Fragment playlist";
+    private static final String TAG = "FRAGMENT PLAYLISTS";
 
     private List<Playlist> playlists;
 
@@ -42,8 +42,6 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
     private RecyclerView recyclerView;
 
     private AccesoFichero accesoFichero;
-
-    private View root;
 
     public FragmentPlaylist() {
         accesoFichero = AccesoFichero.getInstance(getContext());
@@ -55,14 +53,7 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_playlist, container, false);
-        return root;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
+        View root = inflater.inflate(R.layout.fragment_playlist, container, false);
         Collections.sort(playlists);
         recyclerView = root.findViewById(R.id.recyclerViewPlaylist);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -75,6 +66,13 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
 
         ImageView btnAnadirPlailist = root.findViewById(R.id.btnCrearPlaylist);
         btnAnadirPlailist.setOnClickListener(this);
+        return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adaptador.notifyDataSetChanged();
     }
 
     @Override
@@ -86,14 +84,16 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
     @Override
     public void realizarAccion(String texto) {
         try {
-            Playlist nuevaPlaylist = accesoFichero.crearPlaylist(texto, Ajustes.getInstance(getContext()));
-            playlists.add(nuevaPlaylist);
-            accesoFichero.guardarPlaylist(nuevaPlaylist);
+            if (texto != null) {
+                Playlist nuevaPlaylist = accesoFichero.crearPlaylist(texto, Ajustes.getInstance(getContext()));
+                playlists.add(nuevaPlaylist);
+                accesoFichero.guardarPlaylist(nuevaPlaylist);
 
-            adaptador.notifyItemInserted(playlists.size() - 1);
-            adaptador.notifyDataSetChanged();
+                adaptador.notifyItemInserted(playlists.size() - 1);
+                adaptador.notifyDataSetChanged();
 
-            recyclerView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
