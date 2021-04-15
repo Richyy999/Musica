@@ -11,8 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.transition.Explode;
-import android.transition.Fade;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
