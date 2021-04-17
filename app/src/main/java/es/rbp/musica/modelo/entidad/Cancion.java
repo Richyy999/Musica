@@ -125,7 +125,7 @@ public class Cancion implements Serializable, Comparable<Cancion> {
     public int compareTo(Cancion o) {
         Ajustes ajustes = Ajustes.getInstance(null);
         if (ajustes.isUtilizarNombreDeArchivo())
-            return getNombreArchivo().compareTo(o.getNombreArchivo());
+            return getNombreArchivo().toLowerCase().compareTo(o.getNombreArchivo().toLowerCase());
         else
             return getNombre().toLowerCase().compareTo(o.getNombre().toLowerCase());
     }
