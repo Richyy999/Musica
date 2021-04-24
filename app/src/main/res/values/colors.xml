@@ -98,8 +98,8 @@
     <color name="fondoOpacityPaneClaro">#45000000</color>
     <color name="fondoOpacityPaneOscuro">#45000000</color>
 
-    <color name="fondoSeccionAjustesPulsadoClaro">#EDEDED</color>
-    <color name="fondoSeccionAjustesPulsadoOscuro">#343434</color>
+    <color name="fondoSeccionAjustesPulsadoClaro">#D0D0D0</color>
+    <color name="fondoSeccionAjustesPulsadoOscuro">#565656</color>
 
     <color name="textoBotonReproducirPlaylistAleatorio">#3F48CC</color>
 </resources>

@@ -319,8 +319,9 @@
 
     <style name="seccionGrandeAjustes">
         <item name="android:animateLayoutChanges">true</item>
-        <item name="android:background">@drawable/fondo_item_seleccionable</item>
+        <item name="android:background">@drawable/fondo_ripple</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:clickable">true</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
@@ -329,6 +330,7 @@
     <style name="seccionPequenaAjustes" parent="seccionGrandeAjustes">
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:paddingTop">0dp</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:paddingBottom">0dp</item>
     </style>
 

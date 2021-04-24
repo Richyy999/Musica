@@ -114,7 +114,7 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
         cancionSeleccionada = cancionesFiltradas.get(indice);
         snackbar = new SnackbarCancion(this, findViewById(android.R.id.content), this, cancionSeleccionada, ajustes);
 
-        if (!query.isEmpty() && !historial.contains(query))
+        if (query != null && !query.isEmpty() && !historial.contains(query))
             historial.add(0, query);
 
         accesoFichero.guardarHistorial(historial);
