@@ -33,7 +33,7 @@ import static es.rbp.musica.modelo.AccesoFichero.REQUEST_PERMISO_LECTURA;
 /**
  * @author Ricardo Bordería Pi
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AnadirSnackbarMusica {
 
     private SnackbarMusica snackbarMusica;
 
@@ -98,7 +98,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void setSnackbarMusica(SnackbarMusica snackbarMusica) {
+    @Override
+    public void anadirSnackbarMusica(SnackbarMusica snackbarMusica) {
         this.snackbarMusica = snackbarMusica;
     }
 

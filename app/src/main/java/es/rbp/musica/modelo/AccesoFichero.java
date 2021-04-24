@@ -14,14 +14,19 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
-import es.rbp.musica.modelo.entidad.Cancion;
-import es.rbp.musica.modelo.entidad.Playlist;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.Stack;
 
 import java.nio.file.Files;
-import java.util.Properties;
+
+import es.rbp.musica.modelo.entidad.Cancion;
+import es.rbp.musica.modelo.entidad.Cola;
+import es.rbp.musica.modelo.entidad.Playlist;
 
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_FILTRO_DURACION;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_FILTRO_TAMANO;
@@ -31,20 +36,54 @@ import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_ULTIMO_FILTRO_DURACION;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_ULTIMO_FILTRO_TAMANO;
 import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_UTILIZAR_NOMBRE_DE_ARCHIVO;
 
+import static es.rbp.musica.modelo.AudioUtils.filtrarCancionPorNombre;
+import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorNombres;
+
+import static es.rbp.musica.modelo.entidad.Cola.COLA_VACIA;
+import static es.rbp.musica.modelo.entidad.Cola.PROPIEDAD_CANCION_ACTUAL;
+import static es.rbp.musica.modelo.entidad.Cola.PROPIEDAD_CANCION_ANTERIOR;
+import static es.rbp.musica.modelo.entidad.Cola.PROPIEDAD_INDICE;
+import static es.rbp.musica.modelo.entidad.Cola.PROPIEDAD_MODO_REPETICION;
+import static es.rbp.musica.modelo.entidad.Cola.PROPIEDAD_MODO_REPRODUCCION;
+import static es.rbp.musica.modelo.entidad.Cola.PROPIEDAD_PROGRESO_ACTUAL;
+import static es.rbp.musica.modelo.entidad.Cola.PROPIEDAD_SIGUIENTE_CANCION;
+import static es.rbp.musica.modelo.entidad.Cola.PROPIEDAD_SIGUIENTE_INDICE;
+
+/**
+ * @author Ricardo Bordería Pi
+ * <p>
+ * Esta clase se dedica al manejo de ficheros, la persistencia de los datos de la app y contiene toda la información de la aplicación.
+ * Contiene instancias de:
+ * <li>
+ *     <ul>{@link AccesoFichero#playlists}</ul>
+ *     <ul>{@link AccesoFichero#todasCanciones}</ul>
+ *     <ul>{@link AccesoFichero#favoritos}</ul>
+ *     <ul>{@link AccesoFichero#historial}</ul>
+ *     <ul>{@link AccesoFichero#cola}</ul>
+ * </li>
+ */
 public class AccesoFichero {
 
     public static final int REQUEST_PERMISO_LECTURA = 1;
 
     private static final String CARPETA_PLAYLISTS = "playlists/";
 
+    private static final String EXTENSION_PLAYLISTS = ".obj";
+
     private static final String CARPETA_IMAGENES_PLAYLIST = CARPETA_PLAYLISTS + "img/";
+
+    private static final String CARPETA_COLA = "cola/";
+
+    private static final String RUTA_COLA = CARPETA_COLA + "cola.properties";
+    private static final String RUTA_LISTA_CANCIONES = CARPETA_COLA + "listaCanciones.txt";
+    private static final String RUTA_INDICES = CARPETA_COLA + "indices.txt";
+    private static final String RUTA_SIGUIENTES_INDICES = CARPETA_COLA + "siguientesIndices.txt";
+    private static final String RUTA_INDICES_ANTERIORES = CARPETA_COLA + "indicesAnteriores.txt";
 
     private static final String RUTA_FICHERO_AJUSTES = "ajustes.properties";
     private static final String RUTA_CARPETAS_OCULTAS = "carpetasOcultas.txt";
     private static final String RUTA_FAVORITOS = "favoritos.txt";
     private static final String RUTA_HISTORIAL = "historial.txt";
-
-    private static final String EXTENSION_PLAYLISTS = ".obj";
 
     private static final String TAG = "ACCESO FICHERO";
 
@@ -58,6 +97,8 @@ public class AccesoFichero {
     private List<String> historial;
 
     private Context context;
+
+    private Cola cola;
 
     private AccesoFichero(Context context) {
         this.context = context.getApplicationContext();
@@ -241,6 +282,9 @@ public class AccesoFichero {
         }
     }
 
+    /**
+     * Guarda los favoritos en el fichero
+     */
     private void guardarFavoritos() {
         File ficheroFavoritos = new File(context.getFilesDir(), RUTA_FAVORITOS);
         StringBuilder contenido = new StringBuilder();
@@ -254,16 +298,31 @@ public class AccesoFichero {
         }
     }
 
+    /**
+     * Añade un favorito a la lista
+     *
+     * @param favorito nuevo favorito
+     */
     public void anadirFavorito(String favorito) {
         favoritos.add(favorito);
         guardarFavoritos();
     }
 
+    /**
+     * Elimina un favorito de la lista
+     *
+     * @param favorito favorito a eliminar
+     */
     public void eliminarFavorito(String favorito) {
         favoritos.remove(favorito);
         guardarFavoritos();
     }
 
+    /**
+     * Devuelve las playlists, si no existen las lee
+     *
+     * @return todas las playlists creadas
+     */
     public List<Playlist> getPlaylists() {
         if (playlists == null)
             leerPlaylists();
@@ -271,6 +330,14 @@ public class AccesoFichero {
         return playlists;
     }
 
+    /**
+     * Crea una {@link Playlist} nueva y actualiza el número de playlists creadas
+     *
+     * @param nombrePlaylist Nombre de la nueva {@link Playlist}
+     * @param ajustes        Instancia de {@link Ajustes} para actualizar el número de playlists creadas
+     * @return La {@link Playlist} creada
+     * @throws IOException En caso de error al guardar los {@link Ajustes}
+     */
     public Playlist crearPlaylist(String nombrePlaylist, Ajustes ajustes) throws IOException {
         Playlist nuevaPlaylist = new Playlist(nombrePlaylist, ajustes.getNombreFicheroNuevaPLaylist());
         ajustes.setNumPlaylists(ajustes.getNumPlaylists() + 1);
@@ -280,6 +347,9 @@ public class AccesoFichero {
         return nuevaPlaylist;
     }
 
+    /**
+     * Lee las playlists de los ficheros
+     */
     private void leerPlaylists() {
         playlists = new ArrayList<>();
         File carpetaPlaylist = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
@@ -311,6 +381,12 @@ public class AccesoFichero {
             Log.i(TAG, "Ficheros playlist = null");
     }
 
+    /**
+     * Devuelve la {@link Playlist} con el ínide indicado
+     *
+     * @param indice Índice de la {@link Playlist}
+     * @return {@link Playlist} del índice indicado
+     */
     public Playlist getPlaylistPorIndice(int indice) {
         if (playlists == null)
             leerPlaylists();
@@ -318,6 +394,11 @@ public class AccesoFichero {
         return playlists.get(indice);
     }
 
+    /**
+     * Añade una {@link Playlist} y la guarda
+     *
+     * @param playlist {@link Playlist} nueva
+     */
     public void guardarPlaylist(Playlist playlist) {
         File carpetaPlaylist = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
         File ficheroPlaylist = new File(carpetaPlaylist, playlist.getNombreFichero() + EXTENSION_PLAYLISTS);
@@ -330,6 +411,12 @@ public class AccesoFichero {
         }
     }
 
+    /**
+     * Almacena en un fichero la imagen de la {@link Playlist} en un fichero
+     *
+     * @param playlist {@link Playlist} que contiene la imagen
+     * @param uri      {@link Uri} de la imagen
+     */
     public void guardarImagenPlaylist(Playlist playlist, Uri uri) {
         File carpetaImagenes = new File(context.getFilesDir().getAbsolutePath() + "/" + CARPETA_IMAGENES_PLAYLIST);
         if (!carpetaImagenes.exists())
@@ -352,6 +439,12 @@ public class AccesoFichero {
         }
     }
 
+    /**
+     * Devuelve el {@link File} que contiene la imagen de la {@link Playlist}
+     *
+     * @param playlist {@link Playlist} que contiene la imagen
+     * @return Un {@link File} con la imagen de la {@link Playlist}
+     */
     public File getImagenPlaylist(Playlist playlist) {
         File carpetaImagenes = new File(context.getFilesDir().getAbsolutePath() + "/" + CARPETA_IMAGENES_PLAYLIST);
         if (!carpetaImagenes.exists())
@@ -369,6 +462,12 @@ public class AccesoFichero {
         return ficherioImagen;
     }
 
+    /**
+     * Busca una {@link Playlist} con el índice indicado
+     *
+     * @param indice Índice de la {@link Playlist}
+     * @return {@link Playlist} del índice indicado
+     */
     public Playlist buscarPlaylistPorIndice(int indice) {
         if (playlists == null)
             leerPlaylists();
@@ -381,6 +480,11 @@ public class AccesoFichero {
         }
     }
 
+    /**
+     * Elimina una {@link Playlist} de la lista
+     *
+     * @param playlist {@link Playlist} a eliminar
+     */
     public void eliminarPlaylist(Playlist playlist) {
         File carpetaPlaylist = new File(context.getFilesDir(), CARPETA_PLAYLISTS);
         File ficheroPlaylist = new File(carpetaPlaylist, playlist.getNombreFichero() + EXTENSION_PLAYLISTS);
@@ -390,6 +494,11 @@ public class AccesoFichero {
         playlists.remove(playlist);
     }
 
+    /**
+     * Devuelve el historial de búsqueda de {@link es.rbp.musica.vista.activities.BuscarActivity}, si no existe, lo lee
+     *
+     * @return historial de {@link es.rbp.musica.vista.activities.BuscarActivity}
+     */
     public List<String> getHistorial() {
         if (historial == null)
             leerHistorial();
@@ -397,6 +506,9 @@ public class AccesoFichero {
         return historial;
     }
 
+    /**
+     * Lee el historial de {@link es.rbp.musica.vista.activities.BuscarActivity}
+     */
     private void leerHistorial() {
         historial = new ArrayList<>();
         try {
@@ -410,6 +522,11 @@ public class AccesoFichero {
         }
     }
 
+    /**
+     * Guarda el historial de búsqueda de {@link es.rbp.musica.vista.activities.BuscarActivity}
+     *
+     * @param historial Historial de búsqueda
+     */
     public void guardarHistorial(List<String> historial) {
         File ficheroHistorial = new File(context.getFilesDir(), RUTA_HISTORIAL);
         StringBuilder contenido = new StringBuilder();
@@ -425,9 +542,214 @@ public class AccesoFichero {
         this.historial = historial;
     }
 
+    /**
+     * Elimina el historial de {@link es.rbp.musica.vista.activities.BuscarActivity}
+     */
     public void eliminarHistorial() {
         historial.clear();
 
         guardarHistorial(historial);
+    }
+
+    /**
+     * Devuelve la {@link Cola}. Si no existe, la lee
+     *
+     * @return Instancia de {@link Cola}
+     */
+    public Cola getCola() {
+        if (cola == null) {
+            try {
+                cola = leerCola();
+            } catch (IOException e) {
+                Log.e(TAG, e.toString());
+                cola = COLA_VACIA;
+            }
+        }
+
+        return cola;
+    }
+
+    /**
+     * Lee la {@link Cola} almacenada en los ficheros
+     *
+     * @return Una {@link Cola} con los datos de los ficheros. {@link Cola#COLA_VACIA} si ocurre algún error
+     * @throws IOException En caso de algún error con los ficheros
+     */
+    private Cola leerCola() throws IOException {
+        boolean todoCorrecto = true;
+        File ficheroCola = new File(context.getFilesDir(), RUTA_COLA);
+        if (!ficheroCola.exists()) {
+            ficheroCola.createNewFile();
+            Log.i(TAG, "Fichero cola no existe");
+            todoCorrecto = false;
+        }
+
+        File ficheroCanciones = new File(context.getFilesDir(), RUTA_LISTA_CANCIONES);
+        if (!ficheroCanciones.exists()) {
+            ficheroCanciones.createNewFile();
+            Log.i(TAG, "Fichero canciones no existe");
+            todoCorrecto = false;
+        }
+
+        File ficheroIndices = new File(context.getFilesDir(), RUTA_INDICES);
+        if (!ficheroIndices.exists()) {
+            ficheroIndices.createNewFile();
+            Log.i(TAG, "Fichero índices no existe");
+            todoCorrecto = false;
+        }
+
+        File ficheroSiguientesIndices = new File(context.getFilesDir(), RUTA_SIGUIENTES_INDICES);
+        if (!ficheroSiguientesIndices.exists()) {
+            ficheroSiguientesIndices.createNewFile();
+            Log.i(TAG, "Fichero siguientes índices no existe");
+            todoCorrecto = false;
+        }
+
+        File ficheroIndicesAnteriores = new File(context.getFilesDir(), RUTA_INDICES_ANTERIORES);
+        if (!ficheroIndicesAnteriores.exists()) {
+            ficheroIndicesAnteriores.createNewFile();
+            Log.i(TAG, "Fichero índices anteriores no existe");
+            todoCorrecto = false;
+        }
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(ficheroCola));
+
+        if (!properties.containsKey(PROPIEDAD_CANCION_ANTERIOR) || !properties.containsKey(PROPIEDAD_CANCION_ACTUAL) || !properties.containsKey(PROPIEDAD_SIGUIENTE_CANCION)
+                || !properties.containsKey(PROPIEDAD_INDICE) || !properties.containsKey(PROPIEDAD_SIGUIENTE_INDICE) || !properties.containsKey(PROPIEDAD_MODO_REPRODUCCION)
+                || !properties.containsKey(PROPIEDAD_MODO_REPETICION) || !properties.containsKey(PROPIEDAD_PROGRESO_ACTUAL))
+            return COLA_VACIA;
+
+        String cancionAnteriorStr = properties.getProperty(PROPIEDAD_CANCION_ANTERIOR);
+        String cancionActualStr = properties.getProperty(PROPIEDAD_CANCION_ACTUAL);
+        String siguienteCancionStr = properties.getProperty(PROPIEDAD_SIGUIENTE_CANCION);
+        String indiceStr = properties.getProperty(PROPIEDAD_INDICE);
+        String siguienteIndiceStr = properties.getProperty(PROPIEDAD_SIGUIENTE_INDICE);
+        String modoReproduccionStr = properties.getProperty(PROPIEDAD_MODO_REPRODUCCION);
+        String modoRepeticionStr = properties.getProperty(PROPIEDAD_MODO_REPETICION);
+        String progresoActualStr = properties.getProperty(PROPIEDAD_PROGRESO_ACTUAL);
+
+        List<String> listaCancionesStr = Files.readAllLines(ficheroCanciones.toPath());
+        List<String> listaIndices = Files.readAllLines(ficheroIndices.toPath());
+        List<String> listaSiguientesIndices = Files.readAllLines(ficheroSiguientesIndices.toPath());
+        List<String> listaIndicesAnteriores = Files.readAllLines(ficheroIndicesAnteriores.toPath());
+
+        if (!todoCorrecto)
+            return COLA_VACIA;
+
+        List<Cancion> listaCanciones = filtrarCancionesPorNombres(todasCanciones, listaCancionesStr);
+        Set<Integer> indices = new HashSet<>();
+        for (String indice : listaIndices) {
+            indices.add(Integer.parseInt(indice));
+        }
+        Set<Integer> siguientesIndices = new HashSet<>();
+        for (String siguienteIndice : listaSiguientesIndices) {
+            siguientesIndices.add(Integer.parseInt(siguienteIndice));
+        }
+        Stack<Integer> indicesAnteriores = new Stack<>();
+        for (String indiceAnterior : listaIndicesAnteriores) {
+            indicesAnteriores.push(Integer.parseInt(indiceAnterior));
+        }
+
+        Cancion cancionAnterior = filtrarCancionPorNombre(todasCanciones, cancionAnteriorStr);
+        Cancion cancionActual = filtrarCancionPorNombre(todasCanciones, cancionActualStr);
+        Cancion siguienteCancion = filtrarCancionPorNombre(todasCanciones, siguienteCancionStr);
+
+        int indice = Integer.parseInt(indiceStr);
+        int siguienteIndice = Integer.parseInt(siguienteIndiceStr);
+
+        int modoReproduccion = Integer.parseInt(modoReproduccionStr);
+        int modoRepeticion = Integer.parseInt(modoRepeticionStr);
+
+        int progresoActual = Integer.parseInt(progresoActualStr);
+
+        return new Cola(listaCanciones, indices, siguientesIndices, indicesAnteriores, cancionAnterior, cancionActual, siguienteCancion, indice, siguienteIndice,
+                modoReproduccion, modoRepeticion, progresoActual);
+    }
+
+    /**
+     * Actualiza la {@link AccesoFichero#cola} y la guarda en los distintos ficheros
+     *
+     * @param cola {@link Cola} a guardar
+     */
+    public void guardarCola(Cola cola) {
+        this.cola = cola;
+
+        List<Cancion> listaCanciones = cola.getListaCanciones();
+        Set<Integer> indices = cola.getIndices();
+        Set<Integer> siguientesIndices = cola.getSiguientesIndices();
+        Stack<Integer> indicesAnteriores = cola.getIndicesAnteriores();
+        Cancion cancionAnterior = cola.getCancionAnterior();
+        Cancion cancionActual = cola.getCancionActual();
+        Cancion siguienteCancion = cola.getSiguienteCancion();
+        int indice = cola.getIndice();
+        int siguienteIndice = cola.getSiguienteIndice();
+        int modoReproduccion = cola.getModoReproduccion();
+        int modoRepeticion = cola.getModoRepeticion();
+        int progresoActual = cola.getProgresoActual();
+
+        StringBuilder listaCancionesStr = new StringBuilder();
+        for (Cancion cancion : listaCanciones) {
+            listaCancionesStr.append(cancion.getDatos()).append("\n");
+        }
+        try (FileOutputStream fos = new FileOutputStream(new File(context.getFilesDir(), RUTA_LISTA_CANCIONES))) {
+            fos.write(listaCancionesStr.toString().getBytes());
+            fos.flush();
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+
+        StringBuilder indicesStr = new StringBuilder();
+        for (Integer index : indices) {
+            indicesStr.append(index).append("\n");
+        }
+        try (FileOutputStream fos = new FileOutputStream(new File(context.getFilesDir(), RUTA_INDICES))) {
+            fos.write(indicesStr.toString().getBytes());
+            fos.flush();
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+
+        StringBuilder siguientesIndicesStr = new StringBuilder();
+        for (Integer siguienteIndex : siguientesIndices) {
+            siguientesIndicesStr.append(siguienteIndex).append("\n");
+        }
+        try (FileOutputStream fos = new FileOutputStream(new File(context.getFilesDir(), RUTA_SIGUIENTES_INDICES))) {
+            fos.write(siguientesIndicesStr.toString().getBytes());
+            fos.flush();
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+
+        StringBuilder indicesAnterioresStr = new StringBuilder();
+        for (Integer indexAnterior : indicesAnteriores) {
+            indicesAnterioresStr.append(indexAnterior).append("\n");
+        }
+        try (FileOutputStream fos = new FileOutputStream(new File(context.getFilesDir(), RUTA_INDICES_ANTERIORES))) {
+            fos.write(indicesStr.toString().getBytes());
+            fos.flush();
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+        try {
+            File ficheroCola = new File(context.getFilesDir(), RUTA_COLA);
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(ficheroCola));
+
+            properties.setProperty(PROPIEDAD_CANCION_ANTERIOR, cancionAnterior.getDatos());
+            properties.setProperty(PROPIEDAD_CANCION_ACTUAL, cancionActual.getDatos());
+            properties.setProperty(PROPIEDAD_SIGUIENTE_CANCION, siguienteCancion.getDatos());
+
+            properties.setProperty(PROPIEDAD_INDICE, String.valueOf(indice));
+            properties.setProperty(PROPIEDAD_SIGUIENTE_INDICE, String.valueOf(siguienteIndice));
+
+            properties.setProperty(PROPIEDAD_MODO_REPRODUCCION, String.valueOf(modoReproduccion));
+            properties.setProperty(PROPIEDAD_MODO_REPETICION, String.valueOf(modoRepeticion));
+
+            properties.setProperty(PROPIEDAD_PROGRESO_ACTUAL, String.valueOf(progresoActual));
+
+            properties.store(new FileOutputStream(ficheroCola), "");
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
     }
 }

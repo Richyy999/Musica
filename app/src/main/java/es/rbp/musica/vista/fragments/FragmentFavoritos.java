@@ -19,9 +19,8 @@ import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
 import es.rbp.musica.modelo.entidad.Playlist;
-import es.rbp.musica.vista.activities.MainActivity;
+import es.rbp.musica.vista.activities.AnadirSnackbarMusica;
 import es.rbp.musica.vista.adaptadores.AdaptadorCanciones;
-import es.rbp.musica.vista.adaptadores.AdaptadorSnackbarPlaylist;
 import es.rbp.musica.vista.snackbar.SnackbarCancion;
 import es.rbp.musica.vista.snackbar.SnackbarMusica;
 import es.rbp.musica.vista.snackbar.SnackbarPlaylists;
@@ -66,7 +65,7 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
         cancionSeleccionada = canciones.get(indice);
         SnackbarMusica snackbarMusica = new SnackbarCancion(getActivity(), getActivity().findViewById(android.R.id.content),
                 this, cancionSeleccionada, Ajustes.getInstance(getContext()));
-        ((MainActivity) getActivity()).setSnackbarMusica(snackbarMusica);
+        ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(snackbarMusica);
     }
 
     @Override
@@ -79,14 +78,14 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
         switch (accion) {
             case SnackbarCancion.ACCION_ANADIR_A_FAVORITOS:
                 accesoFichero.anadirFavorito(cancionSeleccionada.getDatos());
-                ((MainActivity) getActivity()).setSnackbarMusica(null);
+                ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(null);
                 break;
             case SnackbarCancion.ACCION_ELIMINAR_DE_FAVORITOS:
                 accesoFichero.eliminarFavorito(cancionSeleccionada.getDatos());
-                ((MainActivity) getActivity()).setSnackbarMusica(null);
+                ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(null);
                 break;
             case SnackbarCancion.ACCION_OCULTAR:
-                ((MainActivity) getActivity()).setSnackbarMusica(null);
+                ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(null);
                 break;
             case SnackbarCancion.ACCION_ANADIR_A_LA_PLAYLIST:
                 Log.d("FragmentPLaylists", "añadir playlist");
@@ -113,13 +112,13 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
             accesoFichero.guardarPlaylist(playlist);
         }
 
-        ((MainActivity) getActivity()).setSnackbarMusica(null);
+        ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(null);
     }
 
     private void mostrarPlaylists() {
         List<Playlist> playlists = accesoFichero.getPlaylists();
         SnackbarMusica snackbarMusica = new SnackbarPlaylists(getActivity(), getActivity().findViewById(android.R.id.content), this, playlists);
-        ((MainActivity) getActivity()).setSnackbarMusica(snackbarMusica);
+        ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(snackbarMusica);
     }
 
     private void actualizarRecyclerView() {

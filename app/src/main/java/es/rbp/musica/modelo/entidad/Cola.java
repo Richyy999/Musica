@@ -1,47 +1,171 @@
 package es.rbp.musica.modelo.entidad;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 
+import es.rbp.musica.modelo.AccesoFichero;
+
+/**
+ * @author Ricardo Bordería Pi
+ * <p>
+ * Esta clase contiene toda la información necesaria para reproducir música. Contiene la lista de {@link Cancion} que se van a reproducir, el orden
+ * en que se van a reproducir las canciones, si se van a reproducir en bucle o se van a reproducir una única vez. Proporciona la canción que
+ * se está reproduciendo actualmente, la canción que se reproducirá cuando la {@link Cola#cancionActual} se termine y la canción que se reprodujo anteriormente.
+ */
 public class Cola implements Serializable {
 
     public static final long serialVersionUID = 2L;
 
+    /**
+     * Indica que las {@link Cancion} se reproducirán linealmente
+     */
     public static final int REPRODUCCION_LINEAL = 0;
+    /**
+     * Indica que las {@link Cancion} se reproducirán aleatoriamente
+     */
     public static final int REPRODUCCION_ALEATORIA = 1;
 
+    /**
+     * Indica que la reproducción empzará de nuevo cuando se haya reproducido la {@link Cola#listaCanciones}
+     */
     public static final int REPETICION_EN_BUCLE = 2;
+    /**
+     * Indica que la reproducción se detendrá cuando se haya reproducido la {@link Cola#listaCanciones}
+     */
     public static final int REPETICION_UNA_VEZ = 3;
 
-    public static final Cola COLA_NUEVA = new Cola();
+    /**
+     * Propiedad del archivo que referencia a la {@link Cola#cancionActual}
+     */
+    public static final String PROPIEDAD_CANCION_ACTUAL = "cancionActual";
+    /**
+     * Propiedad del archivo que referencia a la {@link Cola#cancionAnterior}
+     */
+    public static final String PROPIEDAD_CANCION_ANTERIOR = "cancionAnterior";
+    /**
+     * Propiedad del archivo que referencia a la {@link Cola#siguienteCancion}
+     */
+    public static final String PROPIEDAD_SIGUIENTE_CANCION = "siguienteCancion";
+    /**
+     * Propiedad del archivo que referencia al {@link Cola#indice}
+     */
+    public static final String PROPIEDAD_INDICE = "indice";
+    /**
+     * Propiedad del archivo que referencia al {@link Cola#siguienteIndice}
+     */
+    public static final String PROPIEDAD_SIGUIENTE_INDICE = "siguienteIndice";
+    /**
+     * Propiedad del archivo que referencia al {@link Cola#modoReproduccion}
+     */
+    public static final String PROPIEDAD_MODO_REPRODUCCION = "modoReproduccion";
+    /**
+     * Propiedad del archivo que referencia al {@link Cola#modoRepeticion}
+     */
+    public static final String PROPIEDAD_MODO_REPETICION = "modoRepeticion";
+    /**
+     * Propiedad del archivo que referencia al {@link Cola#progresoActual}
+     */
+    public static final String PROPIEDAD_PROGRESO_ACTUAL = "progresoActual";
 
+    /**
+     * {@link Cola} sin datos
+     */
+    public static final Cola COLA_VACIA = new Cola();
+
+    /**
+     * Indica que se ha alcanzado el límite de índices que se pueden generar
+     */
     private static final int SIN_INDICE = -1;
 
+    /**
+     * {@link List} con las {@link Cancion} que se reproducirán
+     */
     private List<Cancion> listaCanciones;
 
+    /**
+     * {@link Set} que contiene los índices para la {@link Cola#REPRODUCCION_ALEATORIA}
+     */
     private Set<Integer> indices;
+    /**
+     * {@link Set} que contiene los siguientes índices para la {@link Cola#REPRODUCCION_ALEATORIA}
+     */
     private Set<Integer> siguientesIndices;
 
+    /**
+     * {@link Stack} que contiene los índices anteriores para la {@link Cola#REPRODUCCION_ALEATORIA}
+     */
     private Stack<Integer> indicesAnteriores;
 
+    /**
+     * {@link Cancion} anterior a la {@link Cola#cancionActual}
+     */
     private Cancion cancionActual;
+    /**
+     * {@link Cancion} que se está reproduciendo actualmente
+     */
     private Cancion cancionAnterior;
+    /**
+     * {@link Cancion} que se reproducirá después de la {@link Cola#cancionActual}
+     */
     private Cancion siguienteCancion;
 
+    /**
+     * Índice de la {@link Cola#listaCanciones} que corresponde a la {@link Cola#cancionActual}
+     */
     private int indice;
+    /**
+     * Índice de la {@link Cola#listaCanciones} que corresponde a la {@link Cola#siguienteCancion}
+     */
     private int siguienteIndice;
 
+    /**
+     * Modo en el que se reproducirán la {@link Cola#listaCanciones}
+     * <p>
+     * Puede ser {@link Cola#REPRODUCCION_LINEAL} o {@link Cola#REPRODUCCION_ALEATORIA}
+     */
     private int modoReproduccion;
+    /**
+     * Modo en el que se repetirá o no la {@link Cola#listaCanciones}
+     * <p>
+     * Puede ser {@link Cola#REPETICION_UNA_VEZ} o {@link Cola#REPETICION_EN_BUCLE}
+     */
     private int modoRepeticion;
 
+    /**
+     * Progreso de la {@link Cola#cancionActual} cuando se detuvo la reproducción
+     */
     private int progresoActual;
 
+    /**
+     * Constructor privado para instanciar {@link Cola#COLA_VACIA}
+     */
     private Cola() {
     }
 
+    /**
+     * Constructor para crear la cola. Para obtener una instancia de la clase, utilizar {@link AccesoFichero#getCola()}.
+     * Este constructor está pensado para que {@link AccesoFichero} pueda instanciar la clase y seguir el patrón Singleton.
+     *
+     * @param listaCanciones    {@link List} con las {@link Cancion} que reproducirá la {@link Cola}
+     * @param indices           {@link Set} que contiene los índices para la {@link Cola#REPRODUCCION_ALEATORIA}
+     * @param siguientesIndices {@link Set} que contiene los siguientes índices para la {@link Cola#REPRODUCCION_ALEATORIA}
+     * @param indicesAnteriores {@link Stack} que contiene l    os índices anteriores para la {@link Cola#REPRODUCCION_ALEATORIA}
+     * @param cancionAnterior   {@link Cola#cancionAnterior}
+     * @param cancionActual     {@link Cola#cancionActual}
+     * @param siguienteCancion  {@link Cola#siguienteCancion}
+     * @param indice            Índice de la {@link Cola#cancionActual}
+     * @param siguienteIndice   Ínice de la {@link Cola#siguienteCancion}
+     * @param modoReproduccion  {@link Cola#REPRODUCCION_LINEAL} para reproducir las {@link Cancion} por orden.
+     *                          {@link Cola#REPRODUCCION_ALEATORIA} para reproducir las {@link Cancion} en orden aleatorio
+     * @param modoRepeticion    {@link Cola#REPETICION_UNA_VEZ} para terminar la reproducción al llegar al final de la {@link Cola}.
+     *                          {@link Cola#REPETICION_EN_BUCLE} para reproducir la {@link Cola} en bucle
+     * @param progresoActual    {@link Cola#progresoActual}
+     */
     public Cola(List<Cancion> listaCanciones, Set<Integer> indices, Set<Integer> siguientesIndices, Stack<Integer> indicesAnteriores,
                 Cancion cancionAnterior, Cancion cancionActual, Cancion siguienteCancion, int indice, int siguienteIndice, int modoReproduccion, int modoRepeticion,
                 int progresoActual) {
@@ -63,6 +187,40 @@ public class Cola implements Serializable {
         this.modoRepeticion = modoRepeticion;
 
         this.progresoActual = progresoActual;
+    }
+
+    /**
+     * Crea una {@link Cola} con los datos indicados
+     *
+     * @param listaCanciones   {@link List} con las {@link Cancion} a reproducir
+     * @param modoReproduccion {@link Cola#REPRODUCCION_LINEAL} para reproducir las {@link Cancion} por orden.
+     *                         {@link Cola#REPRODUCCION_ALEATORIA} para reproducir las {@link Cancion} en orden aleatorio
+     * @param modoRepeticion   {@link Cola#REPETICION_UNA_VEZ} para terminar la reproducción al llegar al final de la {@link Cola}.
+     *                         {@link Cola#REPETICION_EN_BUCLE} para reproducir la {@link Cola} en bucle
+     * @param indice           Índice de la {@link Cancion} que encabeza la {@link Cola}
+     */
+    public void crearCola(List<Cancion> listaCanciones, int modoReproduccion, int modoRepeticion, int indice) {
+        this.listaCanciones = new ArrayList<>();
+        this.modoReproduccion = modoReproduccion;
+        this.modoRepeticion = modoRepeticion;
+
+        for (int i = 0; i < listaCanciones.size(); i++) {
+            if (i == indice)
+                this.listaCanciones.add(0, listaCanciones.get(i));
+            else
+                this.listaCanciones.add(listaCanciones.get(i));
+        }
+
+        this.indices = new HashSet<>();
+        this.siguientesIndices = new HashSet<>();
+
+        this.indicesAnteriores = new Stack<>();
+
+        this.siguientesIndices.add(indice);
+        this.siguienteIndice = generarSiguienteIndiceAleatorio(siguientesIndices);
+        this.siguientesIndices.add(siguienteIndice);
+        this.siguienteCancion = listaCanciones.get(siguienteIndice);
+        this.cancionAnterior = null;
     }
 
     /**
@@ -119,7 +277,7 @@ public class Cola implements Serializable {
                 this.siguienteCancion = listaCanciones.get(siguienteIndice);
                 return null;
             } else {
-                this.indicesAnteriores.add(indice);
+                this.indicesAnteriores.push(indice);
                 this.indice = this.siguienteIndice;
                 this.indices.add(indice);
                 this.cancionAnterior = this.cancionActual;
@@ -310,6 +468,15 @@ public class Cola implements Serializable {
     }
 
     /**
+     * Guarda el progreso de la canción actual
+     *
+     * @param progresoActual progreso de la canción actual
+     */
+    public void setProgresoActual(int progresoActual) {
+        this.progresoActual = progresoActual;
+    }
+
+    /**
      * Devuelve el progreso de la canción actual
      *
      * @return progreso de la canción actual
@@ -318,13 +485,44 @@ public class Cola implements Serializable {
         return progresoActual;
     }
 
-    /**
-     * Guarda el progreso de la canción actual
-     *
-     * @param progresoActual progreso de la canción actual
-     */
-    public void setProgresoActual(int progresoActual) {
-        this.progresoActual = progresoActual;
+    public List<Cancion> getListaCanciones() {
+        return listaCanciones;
+    }
+
+    public Set<Integer> getIndices() {
+        return indices;
+    }
+
+    public Set<Integer> getSiguientesIndices() {
+        return siguientesIndices;
+    }
+
+    public Stack<Integer> getIndicesAnteriores() {
+        return indicesAnteriores;
+    }
+
+    public Cancion getCancionAnterior() {
+        return cancionAnterior;
+    }
+
+    public Cancion getSiguienteCancion() {
+        return siguienteCancion;
+    }
+
+    public int getIndice() {
+        return indice;
+    }
+
+    public int getSiguienteIndice() {
+        return siguienteIndice;
+    }
+
+    public int getModoReproduccion() {
+        return modoReproduccion;
+    }
+
+    public int getModoRepeticion() {
+        return modoRepeticion;
     }
 
     /**

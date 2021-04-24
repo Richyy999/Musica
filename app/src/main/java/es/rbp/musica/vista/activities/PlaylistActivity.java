@@ -43,7 +43,7 @@ import static es.rbp.musica.modelo.entidad.Playlist.INDICE_POR_DEFECTO;
 import static es.rbp.musica.vista.activities.SeleccionaCancionesActivity.EXTRA_CANCIONES_ANADIDAS;
 
 public class PlaylistActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, SnackbarTexto.Accion,
-        SnackbarCancion.Accion, SnackbarMenuPlaylist.Accion, AdaptadorCanciones.OnCancionClick {
+        SnackbarCancion.Accion, SnackbarMenuPlaylist.Accion, AdaptadorCanciones.OnCancionClick, AnadirSnackbarMusica {
 
     public static final int CODIGO_REQUEST_PLAYLIST = 10;
     public static final int CODIGO_REQUEST_CAMBIAR_IMAGEN = 11;
@@ -164,6 +164,11 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(int indice) {
 
+    }
+
+    @Override
+    public void anadirSnackbarMusica(SnackbarMusica snackbarMusica) {
+        this.snackbarMusica = snackbarMusica;
     }
 
     @Override
