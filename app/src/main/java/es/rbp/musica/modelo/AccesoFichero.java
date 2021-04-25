@@ -577,6 +577,10 @@ public class AccesoFichero {
      */
     private Cola leerCola() throws IOException {
         boolean todoCorrecto = true;
+        File carpetaCola = new File(context.getFilesDir(), CARPETA_COLA);
+        if (!carpetaCola.exists())
+            carpetaCola.mkdir();
+
         File ficheroCola = new File(context.getFilesDir(), RUTA_COLA);
         if (!ficheroCola.exists()) {
             ficheroCola.createNewFile();
@@ -619,6 +623,9 @@ public class AccesoFichero {
                 || !properties.containsKey(PROPIEDAD_MODO_REPETICION) || !properties.containsKey(PROPIEDAD_PROGRESO_ACTUAL))
             return COLA_VACIA;
 
+        if (!todoCorrecto)
+            return COLA_VACIA;
+
         String cancionAnteriorStr = properties.getProperty(PROPIEDAD_CANCION_ANTERIOR);
         String cancionActualStr = properties.getProperty(PROPIEDAD_CANCION_ACTUAL);
         String siguienteCancionStr = properties.getProperty(PROPIEDAD_SIGUIENTE_CANCION);
@@ -633,10 +640,11 @@ public class AccesoFichero {
         List<String> listaSiguientesIndices = Files.readAllLines(ficheroSiguientesIndices.toPath());
         List<String> listaIndicesAnteriores = Files.readAllLines(ficheroIndicesAnteriores.toPath());
 
-        if (!todoCorrecto)
-            return COLA_VACIA;
+        if (todasCanciones == null)
+            leerCanciones();
 
         List<Cancion> listaCanciones = filtrarCancionesPorNombres(todasCanciones, listaCancionesStr);
+
         Set<Integer> indices = new HashSet<>();
         for (String indice : listaIndices) {
             indices.add(Integer.parseInt(indice));
@@ -672,8 +680,6 @@ public class AccesoFichero {
      * @param cola {@link Cola} a guardar
      */
     public void guardarCola(Cola cola) {
-        this.cola = cola;
-
         List<Cancion> listaCanciones = cola.getListaCanciones();
         Set<Integer> indices = cola.getIndices();
         Set<Integer> siguientesIndices = cola.getSiguientesIndices();
@@ -735,9 +741,15 @@ public class AccesoFichero {
             Properties properties = new Properties();
             properties.load(new FileInputStream(ficheroCola));
 
-            properties.setProperty(PROPIEDAD_CANCION_ANTERIOR, cancionAnterior.getDatos());
+            try {
+                properties.setProperty(PROPIEDAD_CANCION_ANTERIOR, cancionAnterior.getDatos());
+                properties.setProperty(PROPIEDAD_SIGUIENTE_CANCION, siguienteCancion.getDatos());
+            } catch (NullPointerException e) {
+                Log.e(TAG, e.toString());
+                properties.setProperty(PROPIEDAD_CANCION_ANTERIOR, "null");
+                properties.setProperty(PROPIEDAD_SIGUIENTE_CANCION, "null");
+            }
             properties.setProperty(PROPIEDAD_CANCION_ACTUAL, cancionActual.getDatos());
-            properties.setProperty(PROPIEDAD_SIGUIENTE_CANCION, siguienteCancion.getDatos());
 
             properties.setProperty(PROPIEDAD_INDICE, String.valueOf(indice));
             properties.setProperty(PROPIEDAD_SIGUIENTE_INDICE, String.valueOf(siguienteIndice));
@@ -748,6 +760,8 @@ public class AccesoFichero {
             properties.setProperty(PROPIEDAD_PROGRESO_ACTUAL, String.valueOf(progresoActual));
 
             properties.store(new FileOutputStream(ficheroCola), "");
+            this.cola = cola;
+            Log.i(TAG, "Cola guardada: " + cola);
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }

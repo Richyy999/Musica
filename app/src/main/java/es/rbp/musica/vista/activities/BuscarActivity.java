@@ -26,6 +26,7 @@ import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
+import es.rbp.musica.modelo.entidad.Cola;
 import es.rbp.musica.modelo.entidad.Playlist;
 import es.rbp.musica.vista.adaptadores.AdaptadorCanciones;
 import es.rbp.musica.vista.adaptadores.AdaptadorHistorial;
@@ -150,6 +151,23 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
                         mostrarPlaylists();
                     }
                 }, 400);
+                break;
+            case SnackbarCancion.ACCION_ANADIR_A_LA_COLA:
+                Cola cola = accesoFichero.getCola();
+                if (cola == Cola.COLA_VACIA)
+                    cola.crearCola(cancionSeleccionada);
+                else
+                    cola.anadirALaCola(cancionSeleccionada);
+                accesoFichero.guardarCola(cola);
+                break;
+            case SnackbarCancion.ACCION_REPRODUCIR_SIGUIENTE:
+                Cola cola1 = accesoFichero.getCola();
+                if (cola1 == Cola.COLA_VACIA)
+                    cola1.crearCola(cancionSeleccionada);
+                else
+                    cola1.reproducirSiguiente(cancionSeleccionada);
+                accesoFichero.guardarCola(cola1);
+                snackbar = null;
                 break;
         }
     }

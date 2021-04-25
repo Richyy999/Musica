@@ -64,6 +64,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btnPlayPausaFragment" />
 
     <TextView
+        android:id="@+id/lblAlbumFragmentCola"
         style="@style/subtituloFragment"
         android:text="@string/album_desconocido"
         app:layout_constraintBottom_toTopOf="@id/seekbarFragment"

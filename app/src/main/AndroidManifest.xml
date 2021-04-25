@@ -16,6 +16,9 @@
         android:theme="@style/TemaClaro"
         tools:targetApi="q">
         <activity
+            android:name=".vista.activities.ReproductorActivity"
+            android:theme="@style/AnimacionAbajoArribaClaro" />
+        <activity
             android:name=".vista.activities.BuscarActivity"
             android:screenOrientation="portrait" />
         <activity

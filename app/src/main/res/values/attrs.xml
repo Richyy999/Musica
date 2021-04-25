@@ -48,6 +48,13 @@
     <attr name="colorTituloPlaylist" format="color" />
     <attr name="colorBordeHistorial" format="color" />
 
+    <attr name="iconoBucleActivado" format="reference" />
+    <attr name="iconoBucleDesactivado" format="reference" />
+    <attr name="iconoAleatorioActivado" format="reference" />
+    <attr name="iconoAleatorioDesactivado" format="reference" />
+    <attr name="iconoColaActivity" format="reference" />
+    <attr name="iconoGuardarCola" format="reference" />
+
     <attr name="iconoMenuPuntos" format="reference" />
     <attr name="iconoCarpeta" format="reference" />
     <attr name="iconoAjustes" format="reference" />

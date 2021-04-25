@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorFondoApp"
+    android:paddingTop="24dp"
+    tools:context=".vista.activities.ReproductorActivity">
+
+    <ImageView
+        android:id="@+id/btnAtrasReproductor"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/descIconoFlechaAbajo"
+        android:src="?attr/iconoFlechaAbajo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblNombreCancionReproductor"
+        style="@style/tituloActivityMarquee"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="72dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnAtrasReproductor"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imgCancion"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
+        android:contentDescription="@string/descImagenCancion"
+        android:src="@drawable/imagen_playlist"
+        app:layout_constraintBottom_toTopOf="@+id/seekbarReproductor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblNombreCancionReproductor"
+        app:riv_corner_radius="12dp" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/seekbarReproductor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:progressDrawable="@drawable/seekbar_fragment"
+        android:thumbTint="?attr/colorThumbSeekbar"
+        app:layout_constraintBottom_toTopOf="@+id/btnPlayPausaActivity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/lblTempoActual"
+        style="@style/nombreIcono"
+        android:layout_marginStart="24dp"
+        android:text="@string/tiempoPorDefecto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekbarReproductor" />
+
+    <TextView
+        android:id="@+id/lblTiempoTotal"
+        style="@style/nombreIcono"
+        android:layout_marginEnd="24dp"
+        android:text="@string/tiempoPorDefecto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekbarReproductor" />
+
+    <ImageView
+        android:id="@+id/btnPlayPausaActivity"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="64dp"
+        android:contentDescription="@string/descIconoPlayPausaActivity"
+        android:src="?attr/iconoPausaActivity"
+        app:layout_constraintBottom_toTopOf="@+id/layoutBotonesReproductor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnCancionAnteriorActivity"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="32dp"
+        android:contentDescription="@string/descIconoCancionAnteriorFragment"
+        android:src="?attr/iconoCancionAnteriorActivity"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlayPausaActivity"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlayPausaActivity"
+        app:layout_constraintTop_toTopOf="@+id/btnPlayPausaActivity" />
+
+    <ImageView
+        android:id="@+id/btnSiguienteCancionActivity"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="32dp"
+        android:contentDescription="@string/descIconoCancionAnteriorFragment"
+        android:src="?attr/iconoSiguienteCancionActivity"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlayPausaActivity"
+        app:layout_constraintStart_toEndOf="@+id/btnPlayPausaActivity"
+        app:layout_constraintTop_toTopOf="@+id/btnPlayPausaActivity" />
+
+    <LinearLayout
+        android:id="@+id/layoutBotonesReproductor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/btnBucle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="32dp"
+            android:contentDescription="@string/descIconoBucle"
+            android:src="?attr/iconoBucleDesactivado" />
+
+        <ImageView
+            android:id="@+id/btnAleatorio"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:contentDescription="@string/descIconoAleatorio"
+            android:src="?attr/iconoAleatorioActivado" />
+
+        <ImageView
+            android:id="@+id/btnFavoritoReproductor"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:contentDescription="@string/descIconoFavoritos"
+            android:src="?attr/iconoFavoritosVacio" />
+
+        <ImageView
+            android:id="@+id/btnColaReproductor"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="32dp"
+            android:contentDescription="@string/descIconoCola"
+            android:src="?attr/iconoColaActivity" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,9 @@
 package es.rbp.musica.modelo.entidad;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -81,6 +85,11 @@ public class Cola implements Serializable {
      * Indica que se ha alcanzado el límite de índices que se pueden generar
      */
     private static final int SIN_INDICE = -1;
+
+    /**
+     * TAG para el log
+     */
+    private static final String TAG = "COLA";
 
     /**
      * {@link List} con las {@link Cancion} que se reproducirán
@@ -187,6 +196,25 @@ public class Cola implements Serializable {
         this.modoRepeticion = modoRepeticion;
 
         this.progresoActual = progresoActual;
+
+        Log.d(TAG, "Índice = " + this.indice);
+        Log.d(TAG, "Modo reproduccion: " + this.modoReproduccion);
+        Log.d(TAG, "Modo repeticion: " + this.modoRepeticion);
+
+        if (this.siguienteCancion != null)
+            Log.d(TAG, "Siguiente cancion: " + this.siguienteCancion);
+        else
+            Log.d(TAG, "Siguiente cancion: null");
+
+        if (this.cancionActual != null)
+            Log.d(TAG, "Cancion actual: " + this.cancionActual);
+        else
+            Log.d(TAG, "Cancion actual: null");
+
+        if (this.cancionAnterior != null)
+            Log.d(TAG, "Cancion anterior: " + this.cancionAnterior);
+        else
+            Log.d(TAG, "Cancion anterior: null");
     }
 
     /**
@@ -200,27 +228,51 @@ public class Cola implements Serializable {
      * @param indice           Índice de la {@link Cancion} que encabeza la {@link Cola}
      */
     public void crearCola(List<Cancion> listaCanciones, int modoReproduccion, int modoRepeticion, int indice) {
-        this.listaCanciones = new ArrayList<>();
-        this.modoReproduccion = modoReproduccion;
-        this.modoRepeticion = modoRepeticion;
+        if (listaCanciones.size() == 1)
+            crearCola(listaCanciones.get(0));
+        else {
+            this.listaCanciones = new ArrayList<>();
+            this.modoReproduccion = modoReproduccion;
+            this.modoRepeticion = modoRepeticion;
 
-        for (int i = 0; i < listaCanciones.size(); i++) {
-            if (i == indice)
-                this.listaCanciones.add(0, listaCanciones.get(i));
-            else
-                this.listaCanciones.add(listaCanciones.get(i));
+            for (int i = 0; i < listaCanciones.size(); i++) {
+                if (i == indice)
+                    this.listaCanciones.add(0, listaCanciones.get(i));
+                else
+                    this.listaCanciones.add(listaCanciones.get(i));
+            }
+
+            this.indice = 0;
+
+            this.indices = new HashSet<>();
+            this.siguientesIndices = new HashSet<>();
+
+            this.indicesAnteriores = new Stack<>();
+
+            if (modoReproduccion == REPRODUCCION_ALEATORIA) {
+                this.siguientesIndices.add(this.indice);
+                this.siguienteIndice = generarSiguienteIndiceAleatorio(siguientesIndices);
+                this.siguientesIndices.add(siguienteIndice);
+                this.siguienteCancion = this.listaCanciones.get(siguienteIndice);
+            } else if (modoReproduccion == REPRODUCCION_LINEAL) {
+                this.siguienteCancion = this.listaCanciones.get(this.indice + 1);
+            }
+
+            this.cancionActual = this.listaCanciones.get(this.indice);
+            this.cancionAnterior = null;
         }
+    }
 
+    public void crearCola(Cancion cancion) {
+        this.listaCanciones = new ArrayList<>();
+        this.modoReproduccion = REPRODUCCION_LINEAL;
+        this.modoRepeticion = REPETICION_EN_BUCLE;
+        this.listaCanciones.add(cancion);
+        this.cancionActual = cancion;
+        this.indice = 0;
         this.indices = new HashSet<>();
         this.siguientesIndices = new HashSet<>();
-
         this.indicesAnteriores = new Stack<>();
-
-        this.siguientesIndices.add(indice);
-        this.siguienteIndice = generarSiguienteIndiceAleatorio(siguientesIndices);
-        this.siguientesIndices.add(siguienteIndice);
-        this.siguienteCancion = listaCanciones.get(siguienteIndice);
-        this.cancionAnterior = null;
     }
 
     /**
@@ -244,7 +296,7 @@ public class Cola implements Serializable {
             } else {
                 this.indice++;
                 this.cancionAnterior = this.cancionActual;
-                this.cancionActual = this.siguienteCancion;
+                this.cancionActual = this.listaCanciones.get(indice);
                 if (indice == listaCanciones.size() - 1)
                     this.siguienteCancion = null;
                 else
@@ -291,6 +343,24 @@ public class Cola implements Serializable {
             }
         }
 
+        Log.d(TAG, "Índice = " + this.indice);
+        Log.d(TAG, "Modo reproduccion: " + this.modoReproduccion);
+        Log.d(TAG, "Modo repeticion: " + this.modoRepeticion);
+
+        if (this.siguienteCancion != null)
+            Log.d(TAG, "Siguiente cancion: " + this.siguienteCancion);
+        else
+            Log.d(TAG, "Siguiente cancion: null");
+
+        if (this.cancionActual != null)
+            Log.d(TAG, "Cancion actual: " + this.cancionActual);
+        else
+            Log.d(TAG, "Cancion actual: null");
+
+        if (this.cancionAnterior != null)
+            Log.d(TAG, "Cancion anterior: " + this.cancionAnterior);
+        else
+            Log.d(TAG, "Cancion anterior: null");
         return this.cancionActual;
     }
 
@@ -304,14 +374,23 @@ public class Cola implements Serializable {
             return null;
 
         if (modoReproduccion == REPRODUCCION_LINEAL) {
+            if (indice == 0) {
+                this.cancionAnterior = null;
+                return null;
+            }
             this.indice--;
             this.siguienteCancion = this.cancionActual;
             this.cancionActual = this.cancionAnterior;
-            if (indice == 0)
+            if (indice <= 0) {
                 this.cancionAnterior = null;
-            else
+                this.indice = 0;
+            } else
                 this.cancionAnterior = listaCanciones.get(indice - 1);
         } else if (modoReproduccion == REPRODUCCION_ALEATORIA) {
+            if (indices.size() == 0) {
+                this.cancionAnterior = null;
+                return null;
+            }
             this.siguientesIndices.remove(siguienteIndice);
             this.siguienteIndice = this.indice;
             this.siguienteCancion = this.cancionActual;
@@ -324,6 +403,24 @@ public class Cola implements Serializable {
                 this.cancionAnterior = listaCanciones.get(indicesAnteriores.pop());
         }
 
+        Log.d(TAG, "Índice = " + this.indice);
+        Log.d(TAG, "Modo reproduccion: " + this.modoReproduccion);
+        Log.d(TAG, "Modo repeticion: " + this.modoRepeticion);
+
+        if (this.siguienteCancion != null)
+            Log.d(TAG, "Siguiente cancion: " + this.siguienteCancion);
+        else
+            Log.d(TAG, "Siguiente cancion: null");
+
+        if (this.cancionActual != null)
+            Log.d(TAG, "Cancion actual: " + this.cancionActual);
+        else
+            Log.d(TAG, "Cancion actual: null");
+
+        if (this.cancionAnterior != null)
+            Log.d(TAG, "Cancion anterior: " + this.cancionAnterior);
+        else
+            Log.d(TAG, "Cancion anterior: null");
         return this.cancionActual;
     }
 
@@ -523,6 +620,24 @@ public class Cola implements Serializable {
 
     public int getModoRepeticion() {
         return modoRepeticion;
+    }
+
+    @Override
+    public String toString() {
+        return "Cola{" +
+                "listaCanciones=" + listaCanciones +
+                "\n, indices=" + indices +
+                ", siguientesIndices=" + siguientesIndices +
+                ", indicesAnteriores=" + indicesAnteriores +
+                ", cancionActual=" + cancionActual +
+                ", cancionAnterior=" + cancionAnterior +
+                ", siguienteCancion=" + siguienteCancion +
+                ", indice=" + indice +
+                ", siguienteIndice=" + siguienteIndice +
+                ", modoReproduccion=" + modoReproduccion +
+                ", modoRepeticion=" + modoRepeticion +
+                ", progresoActual=" + progresoActual +
+                '}';
     }
 
     /**

@@ -38,6 +38,13 @@
         <item name="colorTituloPlaylist">@color/tituloPlaylistClaro</item>
         <item name="colorBordeHistorial">@color/bordeHistorialClaro</item>
 
+        <item name="iconoBucleActivado">@drawable/icono_bucle_activado_claro</item>
+        <item name="iconoBucleDesactivado">@drawable/icono_bucle_desactivado_claro</item>
+        <item name="iconoAleatorioActivado">@drawable/icono_aleatorio_activado_claro</item>
+        <item name="iconoAleatorioDesactivado">@drawable/icono_aleatorio_desactivado_claro</item>
+        <item name="iconoColaActivity">@drawable/icono_mostrar_cola_activity_claro</item>
+        <item name="iconoGuardarCola">@drawable/icono_guardar_claro</item>
+
         <item name="iconoAnadirPlaylist">@drawable/icono_anadir_playlist_claro</item>
         <item name="iconoEliminar">@drawable/icono_eliminar_claro</item>
         <item name="iconoEliminarPlaylist">@drawable/icono_eliminar_blanco</item>
@@ -115,6 +122,13 @@
         <item name="colorTituloPlaylist">@color/tituloPlaylistOscuro</item>
         <item name="colorBordeHistorial">@color/bordeHistorialOscuro</item>
 
+        <item name="iconoBucleActivado">@drawable/icono_bucle_activado_oscuro</item>
+        <item name="iconoBucleDesactivado">@drawable/icono_bucle_desactivado_oscuro</item>
+        <item name="iconoAleatorioActivado">@drawable/icono_aleatorio_activado_oscuro</item>
+        <item name="iconoAleatorioDesactivado">@drawable/icono_aleatorio_desactivado_oscuro</item>
+        <item name="iconoColaActivity">@drawable/icono_mostrar_cola_oscuro</item>
+        <item name="iconoGuardarCola">@drawable/icono_guardar_oscuro</item>
+
         <item name="iconoAnadirPlaylist">@drawable/icono_anadir_playlist_oscuro</item>
         <item name="iconoEliminar">@drawable/icono_eliminar_oscuro</item>
         <item name="iconoEliminarPlaylist">@drawable/icono_eliminar_oscuro</item>
@@ -154,6 +168,21 @@
         <item name="iconoCrearPlaylist">@drawable/icono_anadir_oscuro</item>
     </style>
 
+    <style name="AnimacionAbajoArribaClaro" parent="TemaClaro">
+        <item name="android:windowAnimationStyle">@style/DeAbajoHaciaArriba</item>
+    </style>
+
+    <style name="AnimacionAbajoArribaOscuro" parent="TemaOscuro">
+        <item name="android:windowAnimationStyle">@style/DeAbajoHaciaArriba</item>
+    </style>
+
+    <style name="DeAbajoHaciaArriba" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/entra_hacia_abajo</item>
+        <item name="android:activityOpenExitAnimation">@anim/sale_hacia_abajo</item>
+        <item name="android:activityCloseEnterAnimation">@anim/entra_hacia_arriba</item>
+        <item name="android:activityCloseExitAnimation">@anim/sale_hacia_arriba</item>
+    </style>
+
     <style name="campoTexto">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">40dp</item>
@@ -177,13 +206,17 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="nombreIconoSnackbarCola" parent="nombreIcono">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="tituloMenu">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">24dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:textColor">?attr/colorTituloMenu</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
     </style>
 
     <style name="subtituloFragment">
@@ -260,6 +293,17 @@
         <item name="android:textColor">?attr/colorTituloActivity</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="tituloActivityMarquee" parent="tituloActivity">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:freezesText">true</item>
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="tituloSnackbar" parent="tituloActivity">
@@ -400,7 +444,7 @@
     <style name="itemSnackbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
-        <item name="android:background">@drawable/fondo_item_seleccionable</item>
+        <item name="android:background">@drawable/fondo_ripple</item>
         <item name="android:gravity">center_vertical|start</item>
         <item name="android:orientation">horizontal</item>
     </style>
