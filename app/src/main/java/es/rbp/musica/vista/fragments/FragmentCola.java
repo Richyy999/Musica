@@ -75,13 +75,13 @@ public class FragmentCola extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         int id = v.getId();
         if (id == root.getId()) {
-            if (cola != Cola.COLA_VACIA) {
+            if (cola.getListaCanciones().size() > 0) {
                 Intent intent = new Intent(context, ReproductorActivity.class);
                 startActivity(intent);
             }
         } else if (id == R.id.btnMostrarColaFragment) {
-            if (!cola.equals(Cola.COLA_VACIA)) {
-                SnackbarCola snackbarCola = new SnackbarCola(getActivity(), getActivity().findViewById(android.R.id.content), cola.getListaCanciones());
+            if (cola.getListaCanciones().size() > 0) {
+                SnackbarCola snackbarCola = new SnackbarCola(getActivity(), getActivity().findViewById(android.R.id.content), ajustes, cola);
                 ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(snackbarCola);
             }
         }
@@ -96,7 +96,7 @@ public class FragmentCola extends Fragment implements View.OnClickListener {
 
         lblNombre = root.findViewById(R.id.lblNombreCancionFragment);
         lblNombre.setSelected(true);
-        if (cola != Cola.COLA_VACIA) {
+        if (cola.getListaCanciones().size() > 0) {
             if (ajustes.isUtilizarNombreDeArchivo())
                 lblNombre.setText(cancionActual.getNombreArchivo());
             else

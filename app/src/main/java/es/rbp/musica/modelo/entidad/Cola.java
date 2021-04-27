@@ -77,11 +77,6 @@ public class Cola implements Serializable {
     public static final String PROPIEDAD_PROGRESO_ACTUAL = "progresoActual";
 
     /**
-     * {@link Cola} sin datos
-     */
-    public static final Cola COLA_VACIA = new Cola();
-
-    /**
      * Indica que se ha alcanzado el límite de índices que se pueden generar
      */
     private static final int SIN_INDICE = -1;
@@ -151,9 +146,17 @@ public class Cola implements Serializable {
     private int progresoActual;
 
     /**
-     * Constructor privado para instanciar {@link Cola#COLA_VACIA}
+     * Constructor para crear {@link Cola} con valores por defecto
      */
-    private Cola() {
+    public Cola() {
+        this.listaCanciones = new ArrayList<>();
+
+        this.indices = new HashSet<>();
+        this.siguientesIndices = new HashSet<>();
+        this.indicesAnteriores = new Stack<>();
+
+        this.modoReproduccion = REPRODUCCION_LINEAL;
+        this.modoRepeticion = REPETICION_EN_BUCLE;
     }
 
     /**

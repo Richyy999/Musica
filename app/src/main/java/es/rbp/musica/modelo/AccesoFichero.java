@@ -39,7 +39,6 @@ import static es.rbp.musica.modelo.Ajustes.PROPIEDAD_UTILIZAR_NOMBRE_DE_ARCHIVO;
 import static es.rbp.musica.modelo.AudioUtils.filtrarCancionPorNombre;
 import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorNombres;
 
-import static es.rbp.musica.modelo.entidad.Cola.COLA_VACIA;
 import static es.rbp.musica.modelo.entidad.Cola.PROPIEDAD_CANCION_ACTUAL;
 import static es.rbp.musica.modelo.entidad.Cola.PROPIEDAD_CANCION_ANTERIOR;
 import static es.rbp.musica.modelo.entidad.Cola.PROPIEDAD_INDICE;
@@ -562,7 +561,7 @@ public class AccesoFichero {
                 cola = leerCola();
             } catch (IOException e) {
                 Log.e(TAG, e.toString());
-                cola = COLA_VACIA;
+                cola = new Cola();
             }
         }
 
@@ -572,7 +571,7 @@ public class AccesoFichero {
     /**
      * Lee la {@link Cola} almacenada en los ficheros
      *
-     * @return Una {@link Cola} con los datos de los ficheros. {@link Cola#COLA_VACIA} si ocurre algún error
+     * @return Una {@link Cola} con los datos de los ficheros. Una {@link Cola} con datos por defecto y sin canciones si ocurre algún error
      * @throws IOException En caso de algún error con los ficheros
      */
     private Cola leerCola() throws IOException {
@@ -621,10 +620,10 @@ public class AccesoFichero {
         if (!properties.containsKey(PROPIEDAD_CANCION_ANTERIOR) || !properties.containsKey(PROPIEDAD_CANCION_ACTUAL) || !properties.containsKey(PROPIEDAD_SIGUIENTE_CANCION)
                 || !properties.containsKey(PROPIEDAD_INDICE) || !properties.containsKey(PROPIEDAD_SIGUIENTE_INDICE) || !properties.containsKey(PROPIEDAD_MODO_REPRODUCCION)
                 || !properties.containsKey(PROPIEDAD_MODO_REPETICION) || !properties.containsKey(PROPIEDAD_PROGRESO_ACTUAL))
-            return COLA_VACIA;
+            return new Cola();
 
         if (!todoCorrecto)
-            return COLA_VACIA;
+            return new Cola();
 
         String cancionAnteriorStr = properties.getProperty(PROPIEDAD_CANCION_ANTERIOR);
         String cancionActualStr = properties.getProperty(PROPIEDAD_CANCION_ACTUAL);

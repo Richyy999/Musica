@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -66,6 +67,10 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Window ventana = getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+            ventana.setDecorFitsSystemWindows(false);
+
+        getWindow().setStatusBarColor(getColor(android.R.color.transparent));
         ventana.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         ventana.setEnterTransition(new Fade());
         ventana.setExitTransition(new Fade());
@@ -154,7 +159,7 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case SnackbarCancion.ACCION_ANADIR_A_LA_COLA:
                 Cola cola = accesoFichero.getCola();
-                if (cola == Cola.COLA_VACIA)
+                if (cola.getListaCanciones().size() == 0)
                     cola.crearCola(cancionSeleccionada);
                 else
                     cola.anadirALaCola(cancionSeleccionada);
@@ -162,7 +167,7 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case SnackbarCancion.ACCION_REPRODUCIR_SIGUIENTE:
                 Cola cola1 = accesoFichero.getCola();
-                if (cola1 == Cola.COLA_VACIA)
+                if (cola1.getListaCanciones().size() == 0)
                     cola1.crearCola(cancionSeleccionada);
                 else
                     cola1.reproducirSiguiente(cancionSeleccionada);

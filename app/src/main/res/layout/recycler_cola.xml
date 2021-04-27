@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="54dp"
+    android:background="@drawable/fondo_ripple"
+    android:clickable="true"
+    android:paddingStart="0dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="24dp">
+
+    <ImageView
+        android:id="@+id/btnEliminarDeCola"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:contentDescription="@string/descIconoMenuPuntos"
+        android:src="?attr/iconoEliminar"
+        app:layout_constraintBottom_toBottomOf="@id/lblArtistaCola"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/lblNombreCancionRecyclerCola" />
+
+    <TextView
+        android:id="@+id/lblNombreCancionRecyclerCola"
+        style="@style/tituloRecyclerView"
+        android:layout_marginStart="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnEliminarDeCola"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblArtistaCola"
+        style="@style/subtituloRecyclerView"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/separadorRecyclerCancion"
+        app:layout_constraintEnd_toStartOf="@+id/btnEliminarDeCola"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/separadorRecyclerCancion"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="4dp"
+        android:background="?attr/colorSeparador"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/lblArtistaCola" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

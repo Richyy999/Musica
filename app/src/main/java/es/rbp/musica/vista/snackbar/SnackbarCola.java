@@ -12,19 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.List;
-
 import es.rbp.musica.R;
-import es.rbp.musica.modelo.entidad.Cancion;
-import es.rbp.musica.vista.adaptadores.AdaptadorCanciones;
+import es.rbp.musica.modelo.Ajustes;
+import es.rbp.musica.modelo.entidad.Cola;
+import es.rbp.musica.vista.adaptadores.AdaptadorCola;
 
-public class SnackbarCola implements SnackbarMusica, View.OnClickListener, AdaptadorCanciones.OnCancionClick {
+public class SnackbarCola implements SnackbarMusica, View.OnClickListener, AdaptadorCola.OnCancionColaClick {
 
     private Snackbar snackbar;
 
     private View opacityPane;
 
-    public SnackbarCola(Activity activity, View view, List<Cancion> canciones) {
+    public SnackbarCola(Activity activity, View view, Ajustes ajustes, Cola cola) {
 
         this.snackbar = Snackbar.make(view, "", Snackbar.LENGTH_INDEFINITE);
 
@@ -64,7 +63,7 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
 
         RecyclerView recyclerView = vistaPersonalizada.findViewById(R.id.recyclerViewSnackbarCola);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        AdaptadorCanciones adaptador = new AdaptadorCanciones(canciones, this);
+        AdaptadorCola adaptador = new AdaptadorCola(cola.getListaCanciones(), this, ajustes, cola, activity);
         recyclerView.setAdapter(adaptador);
 
         layout.addView(vistaPersonalizada);
@@ -104,12 +103,7 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
     }
 
     @Override
-    public void onMenuClicked(int indice) {
-
-    }
-
-    @Override
-    public void onClick(int indice) {
+    public void eliminarDeCola(int indice) {
 
     }
 

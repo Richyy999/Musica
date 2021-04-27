@@ -40,8 +40,8 @@
 
             <ImageView
                 android:id="@+id/btnBucleSnackbarCola"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginEnd="24dp"
                 android:contentDescription="@string/descIconoBucle"
                 android:src="?attr/iconoBucleDesactivado" />
@@ -49,8 +49,8 @@
 
             <ImageView
                 android:id="@+id/btnAleatorioSnackbarCola"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:contentDescription="@string/descIconoAleatorio"
@@ -59,8 +59,8 @@
 
             <ImageView
                 android:id="@+id/btnEliminarSnackbarCola"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:contentDescription="@string/descIconoEliminar"
@@ -69,8 +69,8 @@
 
             <ImageView
                 android:id="@+id/btnGuardarSnackbarCola"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:contentDescription="@string/descIconoGuardar"
@@ -78,8 +78,8 @@
 
             <ImageView
                 android:id="@+id/btnAnadirCancionesSnackbarCola"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="24dp"
                 android:contentDescription="@string/descIconoCrearPlaylist"
                 android:src="?attr/iconoCrearPlaylist" />
@@ -92,6 +92,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:overScrollMode="never"
             app:layout_constraintBottom_toTopOf="@+id/btnCerrarSnackbarCola"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
