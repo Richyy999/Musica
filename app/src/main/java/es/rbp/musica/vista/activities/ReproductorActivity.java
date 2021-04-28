@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,9 +27,11 @@ import es.rbp.musica.modelo.entidad.Cola;
 
 public class ReproductorActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Ajustes ajustes;
+    private RoundedImageView imgCancion;
 
-    private Cancion cancion;
+    private TextView lblNombreCancion;
+
+    private Ajustes ajustes;
 
     private Cola cola;
 
@@ -53,13 +56,13 @@ public class ReproductorActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.btnCancionAnteriorActivity:
-                cancion = cola.cancionAnterior();
+                Cancion cancion = cola.cancionAnterior();
                 if (cancion != null)
                     cargarVista();
                 break;
             case R.id.btnSiguienteCancionActivity:
-                cancion = cola.siguienteCancion();
-                if (cancion != null)
+                Cancion cancion2 = cola.siguienteCancion();
+                if (cancion2 != null)
                     cargarVista();
                 break;
         }
@@ -71,28 +74,34 @@ public class ReproductorActivity extends AppCompatActivity implements View.OnCli
             setTheme(R.style.AnimacionAbajoArribaOscuro);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                WindowInsetsController wic = getWindow().getDecorView().getWindowInsetsController();
+                wic.setSystemBarsAppearance(WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS, WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS);
+            } else
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             setTheme(R.style.AnimacionAbajoArribaClaro);
         }
     }
 
-    private void cargarVista() {
-        cancion = cola.getCancionActual();
-
-        ImageView btnAtras = findViewById(R.id.btnAtrasReproductor);
-        btnAtras.setOnClickListener(this);
-
-        RoundedImageView imgCancion = findViewById(R.id.imgCancion);
+    private void actualizarVista(Cancion cancion) {
         Bitmap imagenCancion = cancion.getImagenAlbum(this);
         Glide.with(this).load(imagenCancion).into(imgCancion);
 
-        TextView lblNombreCancion = findViewById(R.id.lblNombreCancionReproductor);
-        lblNombreCancion.setSelected(true);
         if (ajustes.isUtilizarNombreDeArchivo())
             lblNombreCancion.setText(cancion.getNombreArchivo());
         else
             lblNombreCancion.setText(cancion.getNombre());
+    }
+
+    private void cargarVista() {
+        ImageView btnAtras = findViewById(R.id.btnAtrasReproductor);
+        btnAtras.setOnClickListener(this);
+
+        imgCancion = findViewById(R.id.imgCancion);
+
+        lblNombreCancion = findViewById(R.id.lblNombreCancionReproductor);
+        lblNombreCancion.setSelected(true);
 
         ImageView btnCancionAnterior = findViewById(R.id.btnCancionAnteriorActivity);
         btnCancionAnterior.setOnClickListener(this);
