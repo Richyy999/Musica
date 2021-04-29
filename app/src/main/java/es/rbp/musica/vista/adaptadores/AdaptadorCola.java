@@ -77,7 +77,7 @@ public class AdaptadorCola extends RecyclerView.Adapter<AdaptadorCola.MyHolder> 
     public void onBindViewHolder(@NonNull AdaptadorCola.MyHolder holder, int position) {
         Cancion cancion = canciones.get(position);
 
-        if (cola.getCancionActual().getDatos().equals(cancion.getDatos())) {
+        if (cola.getIndice() == position) {
             if (ajustes.isModoOscuro())
                 holder.lblNombreCancion.setTextColor(context.getResources().getColor(R.color.textoCancionActualOscuro, null));
             else

@@ -2,8 +2,6 @@ package es.rbp.musica.modelo.entidad;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -146,7 +144,12 @@ public class Cola implements Serializable {
     private int progresoActual;
 
     /**
-     * Constructor para crear {@link Cola} con valores por defecto
+     * Boolean que indica si la {@link Cola#cancionActual} se está reproduciendo o no
+     */
+    private boolean estaReproduciendo;
+
+    /**
+     * Constructor para crear {@link Cola} con valores por defecto. Para obtener una instancia de la clase utilizar {@link AccesoFichero#getCola()}
      */
     public Cola() {
         this.listaCanciones = new ArrayList<>();
@@ -221,69 +224,17 @@ public class Cola implements Serializable {
     }
 
     /**
-     * Crea una {@link Cola} con los datos indicados
-     *
-     * @param listaCanciones   {@link List} con las {@link Cancion} a reproducir
-     * @param modoReproduccion {@link Cola#REPRODUCCION_LINEAL} para reproducir las {@link Cancion} por orden.
-     *                         {@link Cola#REPRODUCCION_ALEATORIA} para reproducir las {@link Cancion} en orden aleatorio
-     * @param modoRepeticion   {@link Cola#REPETICION_UNA_VEZ} para terminar la reproducción al llegar al final de la {@link Cola}.
-     *                         {@link Cola#REPETICION_EN_BUCLE} para reproducir la {@link Cola} en bucle
-     * @param indice           Índice de la {@link Cancion} que encabeza la {@link Cola}
-     */
-    public void crearCola(List<Cancion> listaCanciones, int modoReproduccion, int modoRepeticion, int indice) {
-        if (listaCanciones.size() == 1)
-            crearCola(listaCanciones.get(0));
-        else {
-            this.listaCanciones = new ArrayList<>();
-            this.modoReproduccion = modoReproduccion;
-            this.modoRepeticion = modoRepeticion;
-
-            for (int i = 0; i < listaCanciones.size(); i++) {
-                if (i == indice)
-                    this.listaCanciones.add(0, listaCanciones.get(i));
-                else
-                    this.listaCanciones.add(listaCanciones.get(i));
-            }
-
-            this.indice = 0;
-
-            this.indices = new HashSet<>();
-            this.siguientesIndices = new HashSet<>();
-
-            this.indicesAnteriores = new Stack<>();
-
-            if (modoReproduccion == REPRODUCCION_ALEATORIA) {
-                this.siguientesIndices.add(this.indice);
-                this.siguienteIndice = generarSiguienteIndiceAleatorio(siguientesIndices);
-                this.siguientesIndices.add(siguienteIndice);
-                this.siguienteCancion = this.listaCanciones.get(siguienteIndice);
-            } else if (modoReproduccion == REPRODUCCION_LINEAL) {
-                this.siguienteCancion = this.listaCanciones.get(this.indice + 1);
-            }
-
-            this.cancionActual = this.listaCanciones.get(this.indice);
-            this.cancionAnterior = null;
-        }
-    }
-
-    public void crearCola(Cancion cancion) {
-        this.listaCanciones = new ArrayList<>();
-        this.modoReproduccion = REPRODUCCION_LINEAL;
-        this.modoRepeticion = REPETICION_EN_BUCLE;
-        this.listaCanciones.add(cancion);
-        this.cancionActual = cancion;
-        this.indice = 0;
-        this.indices = new HashSet<>();
-        this.siguientesIndices = new HashSet<>();
-        this.indicesAnteriores = new Stack<>();
-    }
-
-    /**
      * Busca la {@link Cola#siguienteCancion}, actualiza la {@link Cola#cancionAnterior}, la {@link Cola#cancionActual} y el {@link Cola#indice}.
      *
      * @return Devuelve la siguiente canción o null si se ha llegado al final de la reproducción.
      */
     public Cancion siguienteCancion() {
+        if (listaCanciones.size() == 1) {
+            if (modoRepeticion == REPETICION_EN_BUCLE)
+                return cancionActual;
+            else if (modoRepeticion == REPETICION_UNA_VEZ)
+                return null;
+        }
         if (modoReproduccion == REPRODUCCION_LINEAL) {
             if (indice == listaCanciones.size() - 1 && modoRepeticion == REPETICION_EN_BUCLE) {
                 this.cancionAnterior = this.cancionActual;
@@ -338,15 +289,28 @@ public class Cola implements Serializable {
                 this.cancionAnterior = this.cancionActual;
                 this.cancionActual = this.siguienteCancion;
                 this.siguienteIndice = generarSiguienteIndiceAleatorio(siguientesIndices);
-                this.siguientesIndices.add(siguienteIndice);
                 if (siguienteIndice == SIN_INDICE)
                     this.siguienteCancion = null;
-                else
+                else {
                     this.siguienteCancion = listaCanciones.get(siguienteIndice);
+                    this.siguientesIndices.add(siguienteIndice);
+                }
             }
         }
 
         Log.d(TAG, "Índice = " + this.indice);
+        Log.d(TAG, "Tamaño Índices: " + this.indices.size());
+        for (Integer indice : indices) {
+            Log.d(TAG, "Índice actual: " + indice);
+        }
+        Log.d(TAG, "Tamaño Índices anteriores: " + this.indicesAnteriores.size());
+        for (Integer indiceAnterior : indicesAnteriores) {
+            Log.d(TAG, "Índice anterior: " + indiceAnterior);
+        }
+        Log.d(TAG, "Tamaño Siguientes índices: " + this.siguientesIndices.size());
+        for (Integer siguienteIndice : siguientesIndices) {
+            Log.d(TAG, "Siguiente índice: " + siguienteIndice);
+        }
         Log.d(TAG, "Modo reproduccion: " + this.modoReproduccion);
         Log.d(TAG, "Modo repeticion: " + this.modoRepeticion);
 
@@ -375,6 +339,13 @@ public class Cola implements Serializable {
     public Cancion cancionAnterior() {
         if (cancionAnterior == null)
             return null;
+
+        if (listaCanciones.size() == 1) {
+            if (modoRepeticion == REPETICION_EN_BUCLE)
+                return cancionActual;
+            else if (modoRepeticion == REPETICION_UNA_VEZ)
+                return null;
+        }
 
         if (modoReproduccion == REPRODUCCION_LINEAL) {
             if (indice == 0) {
@@ -407,6 +378,18 @@ public class Cola implements Serializable {
         }
 
         Log.d(TAG, "Índice = " + this.indice);
+        Log.d(TAG, "Tamaño Índices: " + this.indices.size());
+        for (Integer indice : indices) {
+            Log.d(TAG, "Índice actual: " + indice);
+        }
+        Log.d(TAG, "Tamaño Índices anteriores: " + this.indicesAnteriores.size());
+        for (Integer indiceAnterior : indicesAnteriores) {
+            Log.d(TAG, "Índice anterior: " + indiceAnterior);
+        }
+        Log.d(TAG, "Tamaño Siguientes índices: " + this.siguientesIndices.size());
+        for (Integer siguienteIndice : siguientesIndices) {
+            Log.d(TAG, "Siguiente índice: " + siguienteIndice);
+        }
         Log.d(TAG, "Modo reproduccion: " + this.modoReproduccion);
         Log.d(TAG, "Modo repeticion: " + this.modoRepeticion);
 
@@ -428,6 +411,17 @@ public class Cola implements Serializable {
     }
 
     /**
+     * Elimina todas las canciones de la {@link Cola} y reestablece los índices
+     */
+    public void eliminarCola() {
+        this.listaCanciones.clear();
+
+        this.indices.clear();
+        this.siguientesIndices.clear();
+        this.indicesAnteriores.clear();
+    }
+
+    /**
      * Cambia el modo de repetición
      *
      * @param modoRepeticion Debe ser {@link Cola#REPETICION_EN_BUCLE} o {@link Cola#REPETICION_UNA_VEZ}
@@ -445,9 +439,6 @@ public class Cola implements Serializable {
         if (this.modoReproduccion != modoReproduccion) {
             this.modoReproduccion = modoReproduccion;
             if (modoReproduccion == REPRODUCCION_LINEAL) {
-                indices.clear();
-                indicesAnteriores.clear();
-                siguientesIndices.clear();
                 if (indice == 0)
                     this.cancionAnterior = null;
                 else
@@ -459,6 +450,10 @@ public class Cola implements Serializable {
                     this.siguienteCancion = listaCanciones.get(indice + 1);
 
             } else if (modoReproduccion == REPRODUCCION_ALEATORIA) {
+                indices.clear();
+                indicesAnteriores.clear();
+                siguientesIndices.clear();
+                this.indices.add(indice);
                 this.siguientesIndices.add(indice);
                 this.siguienteIndice = generarSiguienteIndiceAleatorio(siguientesIndices);
                 this.siguientesIndices.add(siguienteIndice);
@@ -550,7 +545,7 @@ public class Cola implements Serializable {
     }
 
     /**
-     * Elimina una {@link Cancion} de {@link Cola#listaCanciones}
+     * Elimina una {@link Cancion} de la {@link Cola#listaCanciones}
      *
      * @param indice índice de la {@link Cancion} a eliminar
      */
@@ -574,6 +569,15 @@ public class Cola implements Serializable {
      */
     public void setProgresoActual(int progresoActual) {
         this.progresoActual = progresoActual;
+    }
+
+    /**
+     * Actualiza el valor de {@link Cola#estaReproduciendo}
+     *
+     * @param estaReproduciendo true si se está reproduciendo la {@link Cola#cancionActual}, false en cas contrario
+     */
+    public void setEstaReproduciendo(boolean estaReproduciendo) {
+        this.estaReproduciendo = estaReproduciendo;
     }
 
     /**
@@ -623,6 +627,10 @@ public class Cola implements Serializable {
 
     public int getModoRepeticion() {
         return modoRepeticion;
+    }
+
+    public boolean seEstaReproduciendo() {
+        return estaReproduciendo;
     }
 
     @Override

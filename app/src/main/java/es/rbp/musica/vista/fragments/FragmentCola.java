@@ -27,7 +27,7 @@ import es.rbp.musica.vista.activities.AnadirSnackbarMusica;
 import es.rbp.musica.vista.activities.ReproductorActivity;
 import es.rbp.musica.vista.snackbar.SnackbarCola;
 
-public class FragmentCola extends Fragment implements View.OnClickListener {
+public class FragmentCola extends Fragment implements View.OnClickListener, SnackbarCola.Accion {
 
     private View root;
 
@@ -81,10 +81,15 @@ public class FragmentCola extends Fragment implements View.OnClickListener {
             }
         } else if (id == R.id.btnMostrarColaFragment) {
             if (cola.getListaCanciones().size() > 0) {
-                SnackbarCola snackbarCola = new SnackbarCola(getActivity(), getActivity().findViewById(android.R.id.content), ajustes, cola);
+                SnackbarCola snackbarCola = new SnackbarCola(getActivity(), getActivity().findViewById(android.R.id.content), ajustes, cola, this);
                 ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(snackbarCola);
             }
         }
+    }
+
+    @Override
+    public void realizarAccionCola(int accion) {
+
     }
 
     private void cargarVista() {

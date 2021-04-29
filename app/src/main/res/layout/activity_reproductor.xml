@@ -55,7 +55,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/lblTempoActual"
+        android:id="@+id/lblTiempoActual"
         style="@style/nombreIcono"
         android:layout_marginStart="24dp"
         android:text="@string/tiempoPorDefecto"

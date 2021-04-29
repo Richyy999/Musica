@@ -61,6 +61,15 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (muestraFavoritos) {
+            canciones = accesoFichero.getFavoritos();
+            actualizarRecyclerView();
+        }
+    }
+
+    @Override
     public void onMenuClicked(int indice) {
         cancionSeleccionada = canciones.get(indice);
         SnackbarMusica snackbarMusica = new SnackbarCancion(getActivity(), getActivity().findViewById(android.R.id.content),
