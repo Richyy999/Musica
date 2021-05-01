@@ -72,6 +72,14 @@ public class FragmentCola extends Fragment implements View.OnClickListener, Snac
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        cancionActual = cola.getCancionActual();
+        actualizarVista();
+        actualizarSeekbar(cola.getProgresoActual());
+    }
+
+    @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == root.getId()) {
@@ -92,6 +100,25 @@ public class FragmentCola extends Fragment implements View.OnClickListener, Snac
 
     }
 
+    private void actualizarSeekbar(int progreso) {
+        seekBar.setMax(cancionActual.getDuracion());
+        seekBar.setProgress(progreso);
+    }
+
+    private void actualizarVista() {
+        if (cancionActual != null) {
+            lblAlbum.setText(cancionActual.getAlbum());
+            Glide.with(context).load(cancionActual.getImagenAlbum(getContext())).into(imgCancion);
+        }
+
+        if (cola.getListaCanciones().size() > 0) {
+            if (ajustes.isUtilizarNombreDeArchivo())
+                lblNombre.setText(cancionActual.getNombreArchivo());
+            else
+                lblNombre.setText(cancionActual.getNombre());
+        }
+    }
+
     private void cargarVista() {
         root.setOnClickListener(this);
 
@@ -101,21 +128,10 @@ public class FragmentCola extends Fragment implements View.OnClickListener, Snac
 
         lblNombre = root.findViewById(R.id.lblNombreCancionFragment);
         lblNombre.setSelected(true);
-        if (cola.getListaCanciones().size() > 0) {
-            if (ajustes.isUtilizarNombreDeArchivo())
-                lblNombre.setText(cancionActual.getNombreArchivo());
-            else
-                lblNombre.setText(cancionActual.getNombre());
-        }
 
         lblAlbum = root.findViewById(R.id.lblAlbumFragmentCola);
 
         imgCancion = root.findViewById(R.id.imgAlbumFragment);
-
-        if (cancionActual != null) {
-            lblAlbum.setText(cancionActual.getAlbum());
-            Glide.with(context).load(cancionActual.getImagenAlbum(getContext())).into(imgCancion);
-        }
 
         btnCancionAnterior = root.findViewById(R.id.btnCancionAnteriorFragment);
         btnCancionAnterior.setOnClickListener(this);

@@ -90,4 +90,7 @@
     <string name="guardarCola">Guardar cola</string>
     <string name="descIconoGuardar"><![CDATA[Icono de guardar, hecho por: https://www.flaticon.com/free-icon/download_3580085?term=save&page=1&position=3&page=1&position=3&related_id=3580085&origin=search]]></string>
     <string name="cerrar">Cerrar</string>
+    <string name="restablecerAplicacion">Restablecer aplicación</string>
+    <string name="subtituloRestablecerAplicacion">Restablecer todos los datos de la aplicación a sus valores de fábrica</string>
+    <string name="mensajeDialogRestablecerAplicacion">¿Desea restablecer todos los datos de la aplicación a sus valores de fábrica?</string>
 </resources>

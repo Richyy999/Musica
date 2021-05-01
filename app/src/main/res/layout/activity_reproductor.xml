@@ -25,6 +25,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="72dp"
+        android:gravity="center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnAtrasReproductor"
         app:layout_constraintTop_toTopOf="parent" />

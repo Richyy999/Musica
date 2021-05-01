@@ -340,9 +340,10 @@
     </style>
 
     <style name="subtituloAjustes">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginEnd">24dp</item>
         <item name="android:textColor">?attr/colorSubtitulo</item>
         <item name="android:textSize">12sp</item>
     </style>

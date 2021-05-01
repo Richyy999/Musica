@@ -302,7 +302,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/seccionGrandeNombreArchivos">
 
                 <TextView
-                    android:id="@+id/lblRetablecer"
+                    android:id="@+id/lblRestablecer"
                     style="@style/ajuste"
                     android:text="@string/restablecerAjustes"
                     app:layout_constraintStart_toStartOf="parent"
@@ -312,7 +312,30 @@
                     style="@style/subtituloAjustes"
                     android:text="@string/subtituloRestablecer"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/lblRetablecer" />
+                    app:layout_constraintTop_toBottomOf="@+id/lblRestablecer" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/seccionGrandeRestablecerAplicacion"
+                style="@style/seccionGrandeAjustes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seccionGrandeRestablecer">
+
+                <TextView
+                    android:id="@+id/lblRestablecerAplicacion"
+                    style="@style/ajuste"
+                    android:text="@string/restablecerAplicacion"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    style="@style/subtituloAjustes"
+                    android:text="@string/subtituloRestablecerAplicacion"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lblRestablecerAplicacion" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -321,7 +344,7 @@
                 style="@style/tituloAjustes"
                 android:text="@string/acercaDe"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seccionGrandeRestablecer" />
+                app:layout_constraintTop_toBottomOf="@+id/seccionGrandeRestablecerAplicacion" />
 
             <TextView
                 android:id="@+id/lblVersion"

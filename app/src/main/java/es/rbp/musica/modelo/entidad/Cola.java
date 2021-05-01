@@ -41,6 +41,11 @@ public class Cola implements Serializable {
      */
     public static final int REPETICION_UNA_VEZ = 3;
 
+    public static final int RESULTADO_COLA_ELIMINADA = -1;
+    public static final int RESULTADO_COLA_TERMINADA = -2;
+    public static final int RESULTADO_CANCION_ACTUAL_ELIMINADA = -3;
+    public static final int RESULTADO_SIN_CAMBIOS = -4;
+
     /**
      * Propiedad del archivo que referencia a la {@link Cola#cancionActual}
      */
@@ -104,11 +109,11 @@ public class Cola implements Serializable {
     private Stack<Integer> indicesAnteriores;
 
     /**
-     * {@link Cancion} anterior a la {@link Cola#cancionActual}
+     * {@link Cancion} que se está reproduciendo actualmente
      */
     private Cancion cancionActual;
     /**
-     * {@link Cancion} que se está reproduciendo actualmente
+     * {@link Cancion} anterior a la {@link Cola#cancionActual}
      */
     private Cancion cancionAnterior;
     /**
@@ -128,13 +133,21 @@ public class Cola implements Serializable {
     /**
      * Modo en el que se reproducirán la {@link Cola#listaCanciones}
      * <p>
-     * Puede ser {@link Cola#REPRODUCCION_LINEAL} o {@link Cola#REPRODUCCION_ALEATORIA}
+     * Puede ser:
+     * <ul>
+     *     <li>{@link Cola#REPRODUCCION_LINEAL}</li>
+     *     <li>{@link Cola#REPRODUCCION_ALEATORIA}</li>
+     * </ul>
      */
     private int modoReproduccion;
     /**
      * Modo en el que se repetirá o no la {@link Cola#listaCanciones}
      * <p>
-     * Puede ser {@link Cola#REPETICION_UNA_VEZ} o {@link Cola#REPETICION_EN_BUCLE}
+     * Puede ser:
+     * <ul>
+     *     <li>{@link Cola#REPETICION_UNA_VEZ}</li>
+     *     <li>{@link Cola#REPETICION_EN_BUCLE}</li>
+     * </ul>
      */
     private int modoRepeticion;
 
@@ -157,6 +170,9 @@ public class Cola implements Serializable {
         this.indices = new HashSet<>();
         this.siguientesIndices = new HashSet<>();
         this.indicesAnteriores = new Stack<>();
+
+        this.indice = 0;
+        this.siguienteIndice = SIN_INDICE;
 
         this.modoReproduccion = REPRODUCCION_LINEAL;
         this.modoRepeticion = REPETICION_EN_BUCLE;
@@ -416,6 +432,13 @@ public class Cola implements Serializable {
     public void eliminarCola() {
         this.listaCanciones.clear();
 
+        this.indice = 0;
+        this.siguienteIndice = SIN_INDICE;
+
+        this.cancionActual = null;
+        this.cancionAnterior = null;
+        this.siguienteCancion = null;
+
         this.indices.clear();
         this.siguientesIndices.clear();
         this.indicesAnteriores.clear();
@@ -464,6 +487,34 @@ public class Cola implements Serializable {
     }
 
     /**
+     * Elimina la {@link Cola} actual y crea una nueva con las canciones indicadas, empezando por la canción en el índice indicado
+     *
+     * @param canciones     {@link List} de {@link Cancion} con las canciones de la nueva {@link Cola}
+     * @param indiceCancion Índice que indica cuál es la primera {@link Cancion} de la nueva {@link Cola}
+     */
+    public void crearCola(List<Cancion> canciones, int indiceCancion) {
+        eliminarCola();
+        for (int i = 0; i < canciones.size(); i++) {
+            if (i != indiceCancion)
+                listaCanciones.add(canciones.get(i));
+        }
+
+        this.listaCanciones.add(0, canciones.get(indiceCancion));
+        this.cancionActual = canciones.get(indiceCancion);
+    }
+
+    /**
+     * Elimina la {@link Cola} actual y crea una nueva con la {@link Cancion} indicada
+     *
+     * @param cancion {@link Cancion} con la que se crea la nueva cola
+     */
+    public void crearCola(Cancion cancion) {
+        eliminarCola();
+        this.listaCanciones.add(cancion);
+        this.cancionActual = cancion;
+    }
+
+    /**
      * Añade una {@link Cancion} a la {@link Cola} en una posición que no se ha reproducido todavía
      *
      * @param cancion {@link Cancion} a añadir a la {@link Cola}
@@ -473,6 +524,8 @@ public class Cola implements Serializable {
         int indice;
         if (modoReproduccion == REPRODUCCION_LINEAL) {
             indice = r.nextInt((this.listaCanciones.size() + 1) - this.indice) + this.indice;
+            if (indice == 0 && listaCanciones.size() == 1)
+                indice++;
             this.listaCanciones.add(indice, cancion);
         } else if (modoReproduccion == REPRODUCCION_ALEATORIA) {
             do {
@@ -545,16 +598,89 @@ public class Cola implements Serializable {
     }
 
     /**
-     * Elimina una {@link Cancion} de la {@link Cola#listaCanciones}
+     * Elimina una {@link Cancion} de la {@link Cola#listaCanciones} y devuelve el resultado de la operación
      *
      * @param indice índice de la {@link Cancion} a eliminar
+     * @return Resultado de la operación.
+     * <p>
+     * Puede ser:
+     * <p>
+     * <ul>
+     *     <li>{@link Cola#RESULTADO_COLA_ELIMINADA}</li>
+     *     <li>{@link Cola#RESULTADO_CANCION_ACTUAL_ELIMINADA}</li>
+     *     <li>{@link Cola#RESULTADO_COLA_TERMINADA}</li>
+     *     <li>{@link Cola#RESULTADO_SIN_CAMBIOS}</li>
+     * </ul>
      */
-    public void eliminarCancion(int indice) {
-        listaCanciones.remove(indice);
+    public int eliminarCancion(int indice) {
+        if (listaCanciones.size() == 1) {
+            eliminarCola();
+            return RESULTADO_COLA_ELIMINADA;
+        }
+
+        if (modoReproduccion == REPRODUCCION_LINEAL) {
+            // Si la canción que se elimina es la primera y la canción actual
+            if (indice == 0 && indice == this.indice) {
+                listaCanciones.remove(indice);
+                this.cancionActual = this.siguienteCancion;
+                this.siguienteCancion = listaCanciones.get(1);
+                return RESULTADO_CANCION_ACTUAL_ELIMINADA;
+                // Si la canción que se elimina es la primera canción, pero no es la canción actual
+            } else if (indice == 0) {
+                listaCanciones.remove(indice);
+                this.indice--;
+                if (this.indice == 0)
+                    this.cancionAnterior = null;
+                else
+                    this.cancionAnterior = listaCanciones.get(this.indice - 1);
+                // Si la canción que se elimina es la última y la canción actual
+            } else if (indice == listaCanciones.size() - 1 && indice == this.indice) {
+                listaCanciones.remove(indice);
+                this.indice = 0;
+                this.cancionActual = listaCanciones.get(indice);
+                this.siguienteCancion = listaCanciones.get(indice + 1);
+                if (modoRepeticion == REPETICION_UNA_VEZ) {
+                    this.cancionAnterior = null;
+                    return RESULTADO_COLA_TERMINADA;
+                } else if (modoRepeticion == REPETICION_EN_BUCLE) {
+                    this.cancionAnterior = this.cancionActual;
+                    return RESULTADO_CANCION_ACTUAL_ELIMINADA;
+                }
+                // Si la canción que se elimina es la última canción, pero no es la canción actual
+            } else if (indice == listaCanciones.size() - 1) {
+                listaCanciones.remove(indice);
+                if (this.indice == listaCanciones.size() - 1)
+                    this.siguienteCancion = null;
+                else
+                    this.siguienteCancion = listaCanciones.get(this.indice + 1);
+                // Si la canción que se elimina está en medio de la cola y es anterior a la canción actual
+            } else if (indice < this.indice) {
+                listaCanciones.remove(indice);
+                this.indice--;
+                this.cancionAnterior = listaCanciones.get(this.indice - 1);
+                // Si la canción que se elimina está en medio de la cola y es posterior a la canción actual
+            } else if (indice > this.indice) {
+                listaCanciones.remove(indice);
+                this.siguienteCancion = listaCanciones.get(this.indice + 1);
+                // Si la canción que se elimina está en el medio de la cola y es la canción actual
+            } else {
+                listaCanciones.remove(indice);
+                this.cancionActual = this.siguienteCancion;
+                if (this.indice == listaCanciones.size() - 1)
+                    this.siguienteCancion = null;
+                else
+                    this.siguienteCancion = listaCanciones.get(indice + 1);
+                return RESULTADO_CANCION_ACTUAL_ELIMINADA;
+            }
+        } else if (modoReproduccion == REPRODUCCION_ALEATORIA) {
+
+        }
+
+        return RESULTADO_SIN_CAMBIOS;
     }
 
     /**
-     * Debuelve la canción que se está reproduciendo
+     * Devuelve la canción que se está reproduciendo
      *
      * @return Canción que se está reproduciendo
      */

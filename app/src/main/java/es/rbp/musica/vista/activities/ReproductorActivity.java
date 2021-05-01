@@ -178,6 +178,7 @@ public class ReproductorActivity extends AppCompatActivity implements View.OnCli
                 break;
             case SnackbarCola.ACCION_ELIMINAR_COLA:
                 cola.eliminarCola();
+                accesoFichero.guardarCola(cola);
                 finish();
                 break;
             case SnackbarCola.ACCION_ANADIR_CANCIONES:
@@ -186,9 +187,10 @@ public class ReproductorActivity extends AppCompatActivity implements View.OnCli
                 startActivityForResult(intent, SnackbarCola.CODIGO_REQUEST_SNACKBAR_COLA);
                 break;
         }
-
-        actualizarBotones(cola.getCancionActual());
-        actualizarProgreso(cola.getProgresoActual());
+        if (accion != SnackbarCola.ACCION_ELIMINAR_COLA) {
+            actualizarBotones(cola.getCancionActual());
+            actualizarProgreso(cola.getProgresoActual());
+        }
     }
 
     /**

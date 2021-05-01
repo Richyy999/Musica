@@ -18,6 +18,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import es.rbp.musica.R;
+import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.vista.snackbar.SnackbarMusica;
 import es.rbp.musica.vista.snackbar.SnackbarOkCancelar;
@@ -29,6 +30,9 @@ import static es.rbp.musica.vista.snackbar.SnackbarOkCancelar.ACCION_OK;
 
 public class AjustesActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener,
         SeekBar.OnSeekBarChangeListener, SnackbarOkCancelar.Accion {
+
+    private static final int ACCION_RESTABLECER_AJUSTES = 0;
+    private static final int ACCION_RESTABLECER_APLICACION = 1;
 
     private SnackbarMusica snackbarMusica;
 
@@ -54,6 +58,9 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
     private ConstraintLayout seccionGrandeCarpetas;
     private ConstraintLayout seccionGrandeRestablecer;
     private ConstraintLayout seccionGrandeUtilizarNombreDeArchivo;
+    private ConstraintLayout seccionGrandeRestablecerAplicacion;
+
+    private int accion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +73,6 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ajustes);
         cargarVista();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        ajustes.guardarAjustes(AjustesActivity.this);
     }
 
     @Override
@@ -120,9 +121,11 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
         else if (v.getId() == seccionGrandeModoOscuro.getId())
             switchModoOscuro.setChecked(!switchModoOscuro.isChecked());
         else if (v.getId() == seccionGrandeRestablecer.getId())
-            mostrarDialog();
+            mostrarDialogRestablecer();
         else if (v.getId() == seccionGrandeUtilizarNombreDeArchivo.getId())
             switchUtilizarNombreDeArchivo.setChecked(!switchUtilizarNombreDeArchivo.isChecked());
+        else if (v.getId() == seccionGrandeRestablecerAplicacion.getId())
+            mostrarDialogRestablecerAplicacion();
     }
 
     @Override
@@ -157,12 +160,23 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
     @Override
     public void realizarAccion(int accion) {
         if (accion == ACCION_OK) {
-            ajustes.restablecerAjustes(this);
+            if (this.accion == ACCION_RESTABLECER_AJUSTES) {
+                ajustes.restablecerAjustes(this);
 
-            Intent intent = new Intent(this, AjustesActivity.class);
-            startActivity(intent);
-            finish();
+                Intent intent = new Intent(this, AjustesActivity.class);
+                startActivity(intent);
+                finish();
+            } else if (this.accion == ACCION_RESTABLECER_APLICACION)
+                restablecerAplicacion();
         }
+    }
+
+    private void restablecerAplicacion() {
+        AccesoFichero accesoFichero = AccesoFichero.getInstance(this);
+        accesoFichero.eliminarFicheros();
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+        finish();
     }
 
     private void volver() {
@@ -247,6 +261,9 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
         seccionGrandeUtilizarNombreDeArchivo = findViewById(R.id.seccionGrandeNombreArchivos);
         seccionGrandeUtilizarNombreDeArchivo.setOnClickListener(this);
 
+        seccionGrandeRestablecerAplicacion = findViewById(R.id.seccionGrandeRestablecerAplicacion);
+        seccionGrandeRestablecerAplicacion.setOnClickListener(this);
+
         ImageView btnVolver = findViewById(R.id.btnVolverAjustes);
         btnVolver.setOnClickListener(this);
     }
@@ -277,8 +294,15 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
         startActivity(intent);
     }
 
-    private void mostrarDialog() {
+    private void mostrarDialogRestablecerAplicacion() {
+        this.snackbarMusica = new SnackbarOkCancelar(this, findViewById(android.R.id.content), this,
+                R.string.restablecerAplicacion, R.string.mensajeDialogRestablecerAplicacion);
+        accion = ACCION_RESTABLECER_APLICACION;
+    }
+
+    private void mostrarDialogRestablecer() {
         snackbarMusica = new SnackbarOkCancelar(this, findViewById(android.R.id.content),
                 this, R.string.restablecerAjustes, R.string.mensajeDialogRestablecerAjustes);
+        accion = ACCION_RESTABLECER_AJUSTES;
     }
 }

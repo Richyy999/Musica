@@ -43,6 +43,8 @@ import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorQuery;
 public class BuscarActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher, AdaptadorCanciones.OnCancionClick,
         SnackbarCancion.Accion, SnackbarPlaylists.Accion, AdaptadorHistorial.OnHistorialClicked {
 
+    private static final String TAG = "BUSCAR ACTIVITY";
+
     private List<Cancion> todasCanciones;
     private List<Cancion> cancionesFiltradas;
 
@@ -119,6 +121,7 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onMenuClicked(int indice) {
         cancionSeleccionada = cancionesFiltradas.get(indice);
+        Log.i(TAG, "Canción seleccionada: " + cancionSeleccionada.getDatos());
         snackbar = new SnackbarCancion(this, findViewById(android.R.id.content), this, cancionSeleccionada, ajustes);
 
         if (query != null && !query.isEmpty() && !historial.contains(query))
@@ -160,12 +163,18 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case SnackbarCancion.ACCION_ANADIR_A_LA_COLA:
                 Cola cola = accesoFichero.getCola();
-                cola.anadirALaCola(cancionSeleccionada);
+                if (cola.getListaCanciones().size() == 0)
+                    cola.crearCola(cancionSeleccionada);
+                else
+                    cola.anadirALaCola(cancionSeleccionada);
                 accesoFichero.guardarCola(cola);
                 break;
             case SnackbarCancion.ACCION_REPRODUCIR_SIGUIENTE:
                 Cola cola1 = accesoFichero.getCola();
-                cola1.reproducirSiguiente(cancionSeleccionada);
+                if (cola1.getListaCanciones().size() == 0)
+                    cola1.crearCola(cancionSeleccionada);
+                else
+                    cola1.reproducirSiguiente(cancionSeleccionada);
                 accesoFichero.guardarCola(cola1);
                 snackbar = null;
                 break;

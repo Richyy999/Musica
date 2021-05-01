@@ -765,4 +765,23 @@ public class AccesoFichero {
             Log.e(TAG, e.toString());
         }
     }
+
+    public void eliminarFicheros() {
+        eliminarArchivos(context.getFilesDir());
+        eliminarArchivos(context.getCacheDir());
+    }
+
+    private void eliminarArchivos(File carpeta) {
+        File[] ficheros = carpeta.listFiles();
+        for (File file : ficheros) {
+            if (file.isDirectory() && file.listFiles().length > 0)
+                eliminarArchivos(file);
+            else {
+                if (file.delete())
+                    Log.d(TAG, "Eliminado: " + file.getAbsolutePath());
+                else
+                    Log.d(TAG, "No se ha eliminado: " + file.getAbsolutePath());
+            }
+        }
+    }
 }
