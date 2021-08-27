@@ -5,4 +5,6 @@ import es.rbp.musica.vista.snackbar.SnackbarMusica;
 public interface AnadirSnackbarMusica {
 
     void anadirSnackbarMusica(SnackbarMusica snackbarMusica);
+
+    void cerrar();
 }

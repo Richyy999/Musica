@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import es.rbp.musica.R;
-import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
 import es.rbp.musica.modelo.entidad.Cola;
@@ -22,12 +21,12 @@ public class AdaptadorCola extends RecyclerView.Adapter<AdaptadorCola.MyHolder> 
 
     public static class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private OnCancionColaClick onCancionColaClick;
+        private final OnCancionColaClick onCancionColaClick;
 
-        private TextView lblNombreCancion;
-        private TextView lblArtista;
+        private final TextView lblNombreCancion;
+        private final TextView lblArtista;
 
-        private ImageView imgEliminar;
+        private final ImageView imgEliminar;
 
         public MyHolder(@NonNull View itemView, OnCancionColaClick onCancionColaClick) {
             super(itemView);
@@ -44,19 +43,19 @@ public class AdaptadorCola extends RecyclerView.Adapter<AdaptadorCola.MyHolder> 
         @Override
         public void onClick(View v) {
             if (v.getId() == imgEliminar.getId())
-                onCancionColaClick.eliminarDeCola(getAdapterPosition());
+                onCancionColaClick.eliminarDeCola(getBindingAdapterPosition());
         }
     }
 
-    private List<Cancion> canciones;
+    private final List<Cancion> canciones;
 
-    private OnCancionColaClick onCancionColaClick;
+    private final OnCancionColaClick onCancionColaClick;
 
-    private Ajustes ajustes;
+    private final Ajustes ajustes;
 
-    private Cola cola;
+    private final Cola cola;
 
-    private Context context;
+    private final Context context;
 
     public AdaptadorCola(List<Cancion> canciones, OnCancionColaClick onCancionColaClick, Ajustes ajustes, Cola cola, Context context) {
         this.canciones = canciones;

@@ -97,11 +97,38 @@ public class FragmentCola extends Fragment implements View.OnClickListener, Snac
 
     @Override
     public void realizarAccionCola(int accion) {
+        if (accion == SnackbarCola.ACCION_OCULTAR)
+            ((AnadirSnackbarMusica) getActivity()).cerrar();
+        else if (accion == SnackbarCola.ACCION_ELIMINAR_COLA) {
+            cola.eliminarCola();
+            AccesoFichero.getInstance(getContext()).guardarCola(cola);
+            reiniciarVista();
+            ((AnadirSnackbarMusica) getActivity()).cerrar();
+        } else if (accion == SnackbarCola.ACCION_GUARDAR_COLA) {
+            ((AnadirSnackbarMusica) getActivity()).cerrar();
+        } else if (accion == SnackbarCola.ACCION_ANADIR_CANCIONES) {
+            ((AnadirSnackbarMusica) getActivity()).cerrar();
+        }
+    }
 
+    private void reiniciarVista() {
+        seekBar.setProgress(0);
+
+        lblNombre.setText(R.string.app_name);
+
+        lblAlbum.setText(R.string.album_desconocido);
+
+        imgCancion.setImageResource(R.drawable.imagen_playlist);
+
+        if (ajustes.isModoOscuro())
+            btnPlayPause.setImageResource(R.drawable.icono_play_fragment_oscuro);
+        else
+            btnPlayPause.setImageResource(R.drawable.icono_play_fragment_claro);
     }
 
     private void actualizarSeekbar(int progreso) {
-        seekBar.setMax(cancionActual.getDuracion());
+        if (cancionActual != null)
+            seekBar.setMax(cancionActual.getDuracion());
         seekBar.setProgress(progreso);
     }
 

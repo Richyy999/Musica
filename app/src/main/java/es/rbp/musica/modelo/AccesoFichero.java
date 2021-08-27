@@ -213,6 +213,7 @@ public class AccesoFichero {
      */
     private void leerCanciones() {
         String seleccion = MediaStore.Audio.Media.IS_MUSIC + " != 0";
+
         String[] proyeccion = {
                 MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.TITLE,
@@ -222,13 +223,32 @@ public class AccesoFichero {
                 MediaStore.Audio.Media.SIZE
         };
 
-        Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, proyeccion, seleccion, null, null);
+        Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, proyeccion, seleccion,
+                null, null);
+        todasCanciones = new ArrayList<>();
         if (cursor != null && cursor.moveToFirst()) {
-            todasCanciones = new ArrayList<>();
+            int indiceAlbum = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);
+            int indiceTitle = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
+            int indiceArtista = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+            int indiceDatos = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+            int indiceDuracion = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
+            int indiceTamano = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE);
+
             do {
-                if (new File(cursor.getString(3)).exists()) {
-                    Cancion cancion = new Cancion(cursor.getString(0), cursor.getString(1), cursor.getString(2),
-                            cursor.getString(3), cursor.getString(4), cursor.getString(5));
+                String datos = cursor.getString(indiceDatos);
+                if (new File(datos).exists()) {
+                    String album = cursor.getString(indiceAlbum);
+                    String nombre = cursor.getString(indiceTitle);
+                    String artista = cursor.getString(indiceArtista);
+                    String duracion = cursor.getString(indiceDuracion);
+                    String tamano = cursor.getString(indiceTamano);
+
+                    if (duracion == null) {
+                        duracion = "0";
+                        Log.d("SIN_DURACION", datos);
+                    }
+
+                    Cancion cancion = new Cancion(album, nombre, artista, datos, duracion, tamano);
 
                     if (cancion.getArtista().equals(Cancion.UNKNOWN))
                         cancion.setArtista(Cancion.ARTISTA_DESCONOCIDO);
@@ -237,6 +257,7 @@ public class AccesoFichero {
                         cancion.setAlbum(Cancion.ALBUM_DESCONOCIDO);
 
                     todasCanciones.add(cancion);
+                    Log.d(TAG, cancion.toString());
                 }
             } while (cursor.moveToNext());
             cursor.close();
@@ -562,6 +583,8 @@ public class AccesoFichero {
             } catch (IOException e) {
                 Log.e(TAG, e.toString());
                 cola = new Cola();
+            } finally {
+                guardarCola(cola);
             }
         }
 
@@ -669,8 +692,11 @@ public class AccesoFichero {
 
         int progresoActual = Integer.parseInt(progresoActualStr);
 
-        return new Cola(listaCanciones, indices, siguientesIndices, indicesAnteriores, cancionAnterior, cancionActual, siguienteCancion, indice, siguienteIndice,
+        Cola cola = new Cola(listaCanciones, indices, siguientesIndices, indicesAnteriores, cancionAnterior, cancionActual, siguienteCancion, indice, siguienteIndice,
                 modoReproduccion, modoRepeticion, progresoActual);
+
+        Log.i(TAG, cola.toString());
+        return cola;
     }
 
     /**
@@ -743,12 +769,13 @@ public class AccesoFichero {
             try {
                 properties.setProperty(PROPIEDAD_CANCION_ANTERIOR, cancionAnterior.getDatos());
                 properties.setProperty(PROPIEDAD_SIGUIENTE_CANCION, siguienteCancion.getDatos());
+                properties.setProperty(PROPIEDAD_CANCION_ACTUAL, cancionActual.getDatos());
             } catch (NullPointerException e) {
                 Log.e(TAG, e.toString());
                 properties.setProperty(PROPIEDAD_CANCION_ANTERIOR, "null");
                 properties.setProperty(PROPIEDAD_SIGUIENTE_CANCION, "null");
+                properties.setProperty(PROPIEDAD_CANCION_ACTUAL, "null");
             }
-            properties.setProperty(PROPIEDAD_CANCION_ACTUAL, cancionActual.getDatos());
 
             properties.setProperty(PROPIEDAD_INDICE, String.valueOf(indice));
             properties.setProperty(PROPIEDAD_SIGUIENTE_INDICE, String.valueOf(siguienteIndice));
@@ -769,6 +796,7 @@ public class AccesoFichero {
     public void eliminarFicheros() {
         eliminarArchivos(context.getFilesDir());
         eliminarArchivos(context.getCacheDir());
+        accesoFichero = null;
     }
 
     private void eliminarArchivos(File carpeta) {

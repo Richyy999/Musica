@@ -22,12 +22,26 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
 
     public static final int CODIGO_REQUEST_SNACKBAR_COLA = 20;
 
+    /**
+     * Se debe ocultar el Snackbar
+     */
     public static final int ACCION_OCULTAR = 0;
+    /**
+     * Se debe guardar la cola en una playlist
+     */
     public static final int ACCION_GUARDAR_COLA = 1;
+    /**
+     * Se deben eliminar las canciones de la cola
+     */
     public static final int ACCION_ELIMINAR_COLA = 2;
+    /**
+     * Se deben añadir canciones a la canción
+     */
     public static final int ACCION_ANADIR_CANCIONES = 3;
 
     private Accion accion;
+
+    private AdaptadorCola adaptador;
 
     private Snackbar snackbar;
 
@@ -85,19 +99,14 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
 
         RecyclerView recyclerView = vistaPersonalizada.findViewById(R.id.recyclerViewSnackbarCola);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        AdaptadorCola adaptador = new AdaptadorCola(cola.getListaCanciones(), this, ajustes, cola, activity);
+        adaptador = new AdaptadorCola(cola.getListaCanciones(), this, ajustes, cola, activity);
         recyclerView.setAdapter(adaptador);
 
         layout.addView(vistaPersonalizada);
         layout.setPadding(0, 0, 0, 0);
 
         this.snackbar.show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mostrarOpacityPane();
-            }
-        }, 300);
+        new Handler().postDelayed(this::mostrarOpacityPane, 300);
         actualizarBotones();
     }
 
@@ -106,47 +115,36 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
         AlphaAnimation animacion = new AlphaAnimation(255, 0);
         animacion.setDuration(300);
         this.opacityPane.startAnimation(animacion);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                opacityPane.setVisibility(View.GONE);
-                snackbar.dismiss();
-            }
+        new Handler().postDelayed(() -> {
+            opacityPane.setVisibility(View.GONE);
+            snackbar.dismiss();
         }, 300);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnCerrarSnackbarCola:
-            case R.id.opacityPaneSnackbarCola:
-                accion.realizarAccionCola(ACCION_OCULTAR);
-                ocultar();
-                break;
-            case R.id.btnBucleSnackbarCola:
-                cambiarModoRepeticion();
-                break;
-            case R.id.btnAleatorioSnackbarCola:
-                cambiarModoReproduccion();
-                break;
-            case R.id.btnEliminarSnackbarCola:
-                accion.realizarAccionCola(ACCION_ELIMINAR_COLA);
-                ocultar();
-                break;
-            case R.id.btnGuardarSnackbarCola:
-                accion.realizarAccionCola(ACCION_GUARDAR_COLA);
-                ocultar();
-                break;
-            case R.id.btnAnadirCancionesSnackbarCola:
-                accion.realizarAccionCola(ACCION_ANADIR_CANCIONES);
-                ocultar();
-                break;
-        }
+        int id = v.getId();
+        if (id == R.id.btnCerrarSnackbarCola)
+            accion.realizarAccionCola(ACCION_OCULTAR);
+        else if (id == R.id.opacityPaneSnackbarCola)
+            accion.realizarAccionCola(ACCION_OCULTAR);
+        else if (id == R.id.btnBucleSnackbarCola)
+            cambiarModoRepeticion();
+        else if (id == R.id.btnAleatorioSnackbarCola)
+            cambiarModoReproduccion();
+        else if (id == R.id.btnEliminarSnackbarCola)
+            accion.realizarAccionCola(ACCION_ELIMINAR_COLA);
+        else if (id == R.id.btnGuardarSnackbarCola)
+            accion.realizarAccionCola(ACCION_GUARDAR_COLA);
+        else if (id == R.id.btnAnadirCancionesSnackbarCola)
+            accion.realizarAccionCola(ACCION_ANADIR_CANCIONES);
     }
 
     @Override
     public void eliminarDeCola(int indice) {
-
+        int res = cola.eliminarCancion(indice);
+        adaptador.notifyItemRemoved(indice);
+        adaptador.notifyItemRangeChanged(indice, cola.getListaCanciones().size());
     }
 
     /**
@@ -207,7 +205,22 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
         this.opacityPane.setAlpha(1);
     }
 
+    /**
+     * Gestiona las acciones realizadas desde el snackbar
+     */
     public interface Accion {
+
+        /**
+         * Indica que se ha realizado una acción
+         *
+         * @param accion acción realizada. Puede ser:
+         *               <ul>
+         *                  <li>{@link SnackbarCola#ACCION_OCULTAR}</li>
+         *                  <li>{@link SnackbarCola#ACCION_ELIMINAR_COLA}</li>
+         *                  <li>{@link SnackbarCola#ACCION_GUARDAR_COLA}</li>
+         *                  <li>{@link SnackbarCola#ACCION_ANADIR_CANCIONES}</li>
+         *               </ul>
+         */
         void realizarAccionCola(int accion);
     }
 }

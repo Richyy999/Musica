@@ -6,6 +6,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Ajustes implements Serializable {
@@ -27,8 +28,10 @@ public class Ajustes implements Serializable {
     public static final String PROPIEDAD_UTILIZAR_NOMBRE_DE_ARCHIVO = "utilizarNombreDeArchivo";
     public static final String PROPIEDAD_NUMERO_PLAYLISTS = "numereoDePlaylists";
 
+    private static final String[] CARPETAS_OCULTAS_POR_DEFECTO = {"/storage/emulated/0/WhatsApp/Media/WhatsApp Audio",
+            "/storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Audio"};
+
     private static final String TAG = "AJUSTES";
-    private static final String CARPETAS_OCULTAS_POR_DEFECTO = "/storage/emulated/0/WhatsApp/Media/WhatsApp Audio";
 
     private static final int FILTRO_TAMANO_POR_DEFECTO = 512;
     private static final int FILTRO_DURACION_POR_DEFECTO = 30;
@@ -115,7 +118,7 @@ public class Ajustes implements Serializable {
         ajustes.utilizarNombreDeArchivo = UTILIZAR_NOMBRE_DE_ARCHIVO_POR_DEFECTO;
 
         ajustes.carpetasOcultas = new ArrayList<>();
-        ajustes.carpetasOcultas.add(CARPETAS_OCULTAS_POR_DEFECTO);
+        ajustes.carpetasOcultas.addAll(Arrays.asList(CARPETAS_OCULTAS_POR_DEFECTO));
 
         ajustes.filtroTanamoActual = FILTRO_TAMANO_POR_DEFECTO;
         ajustes.filtroDuracionActual = FILTRO_DURACION_POR_DEFECTO;
@@ -164,7 +167,7 @@ public class Ajustes implements Serializable {
         this.ultimoFiltroDuracion = FILTRO_DURACION_POR_DEFECTO;
 
         this.carpetasOcultas = new ArrayList<>();
-        this.carpetasOcultas.add(CARPETAS_OCULTAS_POR_DEFECTO);
+        ajustes.carpetasOcultas.addAll(Arrays.asList(CARPETAS_OCULTAS_POR_DEFECTO));
 
         this.utilizarNombreDeArchivo = UTILIZAR_NOMBRE_DE_ARCHIVO_POR_DEFECTO;
 

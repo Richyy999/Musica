@@ -174,8 +174,8 @@ public class AjustesActivity extends AppCompatActivity implements CompoundButton
     private void restablecerAplicacion() {
         AccesoFichero accesoFichero = AccesoFichero.getInstance(this);
         accesoFichero.eliminarFicheros();
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
         finish();
     }
 

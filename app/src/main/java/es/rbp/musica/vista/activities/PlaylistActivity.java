@@ -177,6 +177,12 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
+    public void cerrar() {
+        this.snackbarMusica.ocultar();
+        this.snackbarMusica = null;
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODIGO_REQUEST_PLAYLIST) {
