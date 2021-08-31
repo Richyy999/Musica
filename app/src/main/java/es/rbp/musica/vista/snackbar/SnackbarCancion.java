@@ -89,12 +89,7 @@ public class SnackbarCancion implements SnackbarMusica, View.OnClickListener {
         layout.setPadding(0, 0, 0, 0);
 
         this.snackbar.show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mostrarOpacityPane();
-            }
-        }, 300);
+        new Handler().postDelayed(this::mostrarOpacityPane, 300);
     }
 
     @Override
@@ -102,31 +97,24 @@ public class SnackbarCancion implements SnackbarMusica, View.OnClickListener {
         switch (v.getId()) {
             case R.id.btnAnadirAPlaylist:
                 accion.realizarAccion(ACCION_ANADIR_A_LA_PLAYLIST);
-                ocultar();
                 break;
             case R.id.btnAnadirACola:
                 accion.realizarAccion(ACCION_ANADIR_A_LA_COLA);
-                ocultar();
                 break;
             case R.id.btnReproducirSiguiente:
                 accion.realizarAccion(ACCION_REPRODUCIR_SIGUIENTE);
-                ocultar();
                 break;
             case R.id.btnAnadirAFavoritos:
                 accion.realizarAccion(ACCION_ANADIR_A_FAVORITOS);
-                ocultar();
                 break;
             case R.id.btnEliminarFavoritos:
                 accion.realizarAccion(ACCION_ELIMINAR_DE_FAVORITOS);
-                ocultar();
                 break;
             case R.id.btnEliminarDePlaylist:
                 accion.realizarAccion(ACCION_ELIMINAR_DE_LA_PLAYLIST);
-                ocultar();
                 break;
             case R.id.opacityPaneSnackbarCancion:
                 accion.realizarAccion(ACCION_OCULTAR);
-                ocultar();
                 break;
         }
     }

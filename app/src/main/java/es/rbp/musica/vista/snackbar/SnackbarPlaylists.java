@@ -58,19 +58,13 @@ public class SnackbarPlaylists implements SnackbarMusica, View.OnClickListener, 
         layout.setPadding(0, 0, 0, 0);
 
         this.snackbar.show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mostrarOpacityPane();
-            }
-        }, 300);
+        new Handler().postDelayed(this::mostrarOpacityPane, 300);
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == opacityPane.getId()) {
             accion.onPlaylistSeleccionada(NINGUNA_PLAYLIST);
-            ocultar();
         }
     }
 
@@ -79,12 +73,9 @@ public class SnackbarPlaylists implements SnackbarMusica, View.OnClickListener, 
         AlphaAnimation animacion = new AlphaAnimation(255, 0);
         animacion.setDuration(300);
         this.opacityPane.startAnimation(animacion);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                opacityPane.setVisibility(View.GONE);
-                snackbar.dismiss();
-            }
+        new Handler().postDelayed(() -> {
+            opacityPane.setVisibility(View.GONE);
+            snackbar.dismiss();
         }, 300);
     }
 

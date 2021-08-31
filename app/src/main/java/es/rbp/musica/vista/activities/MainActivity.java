@@ -137,7 +137,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void abrirBuscar() {
         Intent intent = new Intent(this, BuscarActivity.class);
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, btnBuscar, ViewCompat.getTransitionName(btnBuscar));
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                btnBuscar, ViewCompat.getTransitionName(btnBuscar));
         startActivity(intent, options.toBundle());
     }
 

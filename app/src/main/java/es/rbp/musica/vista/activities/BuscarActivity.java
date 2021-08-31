@@ -43,7 +43,7 @@ import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorQuery;
 public class BuscarActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher, AdaptadorCanciones.OnCancionClick,
         SnackbarCancion.Accion, SnackbarPlaylists.Accion, AdaptadorHistorial.OnHistorialClicked {
 
-    private static final String TAG = "BUSCAR ACTIVITY";
+    private static final String TAG = "BUSCAR_ACTIVITY";
 
     private List<Cancion> todasCanciones;
     private List<Cancion> cancionesFiltradas;
@@ -129,7 +129,6 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
 
         accesoFichero.guardarHistorial(historial);
         adaptador.notifyItemInserted(historial.size() - 1);
-        adaptador.notifyDataSetChanged();
         recyclerViewHistorial.setVisibility(View.VISIBLE);
     }
 
@@ -143,13 +142,16 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
         switch (accion) {
             case SnackbarCancion.ACCION_ANADIR_A_FAVORITOS:
                 accesoFichero.anadirFavorito(cancionSeleccionada.getDatos());
+                snackbar.ocultar();
                 snackbar = null;
                 break;
             case SnackbarCancion.ACCION_ELIMINAR_DE_FAVORITOS:
                 accesoFichero.eliminarFavorito(cancionSeleccionada.getDatos());
+                snackbar.ocultar();
                 snackbar = null;
                 break;
             case SnackbarCancion.ACCION_OCULTAR:
+                snackbar.ocultar();
                 snackbar = null;
                 break;
             case SnackbarCancion.ACCION_ANADIR_A_LA_PLAYLIST:
@@ -163,6 +165,8 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
                 else
                     cola.anadirALaCola(cancionSeleccionada);
                 accesoFichero.guardarCola(cola);
+                snackbar.ocultar();
+                snackbar = null;
                 break;
             case SnackbarCancion.ACCION_REPRODUCIR_SIGUIENTE:
                 Cola cola1 = accesoFichero.getCola();
@@ -171,6 +175,7 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
                 else
                     cola1.reproducirSiguiente(cancionSeleccionada);
                 accesoFichero.guardarCola(cola1);
+                snackbar.ocultar();
                 snackbar = null;
                 break;
         }
@@ -183,6 +188,7 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
             playlist.getCanciones().add(cancionSeleccionada.getDatos());
             accesoFichero.guardarPlaylist(playlist);
         }
+        snackbar.ocultar();
         snackbar = null;
     }
 
@@ -193,6 +199,7 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void mostrarPlaylists() {
+        snackbar.ocultar();
         List<Playlist> playlists = accesoFichero.getPlaylists();
         snackbar = new SnackbarPlaylists(this, findViewById(android.R.id.content), this, playlists);
     }
@@ -233,10 +240,7 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
         recyclerView.setIndexTextSize(10);
         recyclerView.setIndexBarStrokeVisibility(false);
 
-        if (cancionesFiltradas.size() < 100)
-            recyclerView.setIndexBarVisibility(false);
-        else
-            recyclerView.setIndexBarVisibility(true);
+        recyclerView.setIndexBarVisibility(cancionesFiltradas.size() >= 100);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         AdaptadorCanciones adaptador = new AdaptadorCanciones(cancionesFiltradas, this);
@@ -264,6 +268,7 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 WindowInsetsController wic = getWindow().getDecorView().getWindowInsetsController();
+                assert wic != null;
                 wic.setSystemBarsAppearance(WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS, WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS);
             } else
                 getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
