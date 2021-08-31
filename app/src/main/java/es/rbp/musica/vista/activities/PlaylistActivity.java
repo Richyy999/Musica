@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -146,7 +147,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
                 accesoFichero.eliminarFavorito(cancionSeleccionada.getDatos());
                 break;
         }
-        snackbarMusica = null;
+        cerrar();
     }
 
     @Override
@@ -190,15 +191,9 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
             case SnackbarCola.ACCION_OCULTAR:
                 cerrar();
                 break;
-            case SnackbarCola.ACCION_ANADIR_CANCIONES:
-                cerrar();
-                break;
             case SnackbarCola.ACCION_ELIMINAR_COLA:
                 Cola cola = AccesoFichero.getInstance(this).getCola();
                 cola.eliminarCola();
-                cerrar();
-                break;
-            case SnackbarCola.ACCION_GUARDAR_COLA:
                 cerrar();
                 break;
         }

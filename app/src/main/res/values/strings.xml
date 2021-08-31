@@ -60,6 +60,7 @@
     <string name="descIconoEliminar"><![CDATA[Icono de eliminar, hecho por: https://www.flaticon.com/free-icon/delete_833262?term=delete&page=1&position=43&page=1&position=43&related_id=833262&origin=search]]></string>
     <string name="anadirCanciones">Añadir canciones</string>
     <string name="reproduccionAleatoria">Reproducción aleatoria</string>
+    <string name="reproduccionLinear">Reproducción lineal</string>
     <string name="eliminarCanciones">Eliminar canciones</string>
     <string name="elementoImagenPlaylist">imagenPlaylist</string>
     <string name="elementoNombrePlaylist">nombrePlaylist</string>
@@ -85,6 +86,7 @@
     <string name="descIconoPlayPausaActivity"><![CDATA[Icono de play pausa, hecho a partir de: https://www.flaticon.com/free-icon/pause_659916?term=pause&page=1&position=29&page=1&position=29&related_id=659916&origin=search y de https://www.flaticon.com/free-icon/play_727245?term=play&page=1&position=10&page=1&position=10&related_id=727245&origin=search]]></string>
     <string name="tiempoPorDefecto">00:00</string>
     <string name="noRepetir">No repetir</string>
+    <string name="repetirEnBucle">Repetir en bucle</string>
     <string name="modoAleatorio">Modo Aleatorio</string>
     <string name="eliminarCola">Eliminar cola</string>
     <string name="guardarCola">Guardar cola</string>

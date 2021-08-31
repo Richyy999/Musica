@@ -34,6 +34,7 @@ import es.rbp.musica.vista.snackbar.SnackbarMusica;
 
 import static es.rbp.musica.modelo.AudioUtils.esFavorito;
 import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorNombres;
+import static es.rbp.musica.modelo.AudioUtils.showToast;
 import static es.rbp.musica.vista.activities.SeleccionaCancionesActivity.EXTRA_CANCIONES_ANADIDAS;
 
 public class ReproductorActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, SnackbarCola.Accion {
@@ -174,6 +175,7 @@ public class ReproductorActivity extends AppCompatActivity implements View.OnCli
     public void realizarAccionCola(int accion) {
         switch (accion) {
             case SnackbarCola.ACCION_OCULTAR:
+                snackbarMusica.ocultar();
                 snackbarMusica = null;
                 break;
             case SnackbarCola.ACCION_ELIMINAR_COLA:
@@ -194,26 +196,34 @@ public class ReproductorActivity extends AppCompatActivity implements View.OnCli
     }
 
     /**
-     * Cambia el odo de reproducción de la {@link Cola}. Si el modo actual es {@link Cola#REPRODUCCION_LINEAL} cambia a {@link Cola#REPRODUCCION_ALEATORIA} y viceversa
+     * Cambia el odo de reproducción de la {@link Cola}. Si el modo actual es {@link Cola#REPRODUCCION_LINEAL} cambia a
+     * {@link Cola#REPRODUCCION_ALEATORIA} y viceversa
      */
     private void cambiarModoReproduccion() {
-        if (cola.getModoReproduccion() == Cola.REPRODUCCION_ALEATORIA)
+        if (cola.getModoReproduccion() == Cola.REPRODUCCION_ALEATORIA) {
             cola.cambiarModoReproduccion(Cola.REPRODUCCION_LINEAL);
-        else if (cola.getModoReproduccion() == Cola.REPRODUCCION_LINEAL)
+            showToast(this, R.string.reproduccionLinear);
+        } else if (cola.getModoReproduccion() == Cola.REPRODUCCION_LINEAL) {
             cola.cambiarModoReproduccion(Cola.REPRODUCCION_ALEATORIA);
-
+            showToast(this, R.string.reproduccionAleatoria);
+        }
+        accesoFichero.guardarCola(cola);
         actualizarBotones(cola.getCancionActual());
     }
 
     /**
-     * Cambia el modo de repetición de la {@link Cola}. Si el modo actual es {@link Cola#REPETICION_EN_BUCLE} cambia a {@link Cola#REPETICION_UNA_VEZ} y viceversa
+     * Cambia el modo de repetición de la {@link Cola}. Si el modo actual es {@link Cola#REPETICION_EN_BUCLE} cambia a
+     * {@link Cola#REPETICION_UNA_VEZ} y viceversa
      */
     private void cambiarModoRepeticion() {
-        if (cola.getModoRepeticion() == Cola.REPETICION_EN_BUCLE)
+        if (cola.getModoRepeticion() == Cola.REPETICION_EN_BUCLE) {
             cola.cambiarModoRepeticion(Cola.REPETICION_UNA_VEZ);
-        else if (cola.getModoRepeticion() == Cola.REPETICION_UNA_VEZ)
+            showToast(this, R.string.noRepetir);
+        } else if (cola.getModoRepeticion() == Cola.REPETICION_UNA_VEZ) {
             cola.cambiarModoRepeticion(Cola.REPETICION_EN_BUCLE);
-
+            showToast(this, R.string.repetirEnBucle);
+        }
+        accesoFichero.guardarCola(cola);
         actualizarBotones(cola.getCancionActual());
     }
 

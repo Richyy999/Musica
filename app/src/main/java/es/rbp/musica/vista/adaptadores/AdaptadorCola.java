@@ -81,6 +81,11 @@ public class AdaptadorCola extends RecyclerView.Adapter<AdaptadorCola.MyHolder> 
                 holder.lblNombreCancion.setTextColor(context.getResources().getColor(R.color.textoCancionActualOscuro, null));
             else
                 holder.lblNombreCancion.setTextColor(context.getResources().getColor(R.color.textoCancionActualClaro, null));
+        } else {
+            if (ajustes.isModoOscuro())
+                holder.lblNombreCancion.setTextColor(context.getResources().getColor(R.color.tituloOscuro, null));
+            else
+                holder.lblNombreCancion.setTextColor(context.getResources().getColor(R.color.tituloClaro, null));
         }
 
         if (ajustes.isUtilizarNombreDeArchivo())

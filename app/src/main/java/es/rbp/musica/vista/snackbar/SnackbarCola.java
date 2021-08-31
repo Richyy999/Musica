@@ -1,7 +1,11 @@
 package es.rbp.musica.vista.snackbar;
 
+import static es.rbp.musica.modelo.AudioUtils.showToast;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
@@ -14,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 
 import es.rbp.musica.R;
+import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cola;
 import es.rbp.musica.vista.adaptadores.AdaptadorCola;
@@ -140,11 +145,18 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
             accion.realizarAccionCola(ACCION_ANADIR_CANCIONES);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void eliminarDeCola(int indice) {
         int res = cola.eliminarCancion(indice);
         adaptador.notifyItemRemoved(indice);
         adaptador.notifyItemRangeChanged(indice, cola.getListaCanciones().size());
+        adaptador.notifyDataSetChanged();
+        if (res == Cola.RESULTADO_COLA_ELIMINADA)
+            accion.realizarAccionCola(ACCION_ELIMINAR_COLA);
+        else if (res == Cola.RESULTADO_COLA_TERMINADA)
+            accion.realizarAccionCola(ACCION_OCULTAR);
+        // Si se cambia la canción actual, es el servicio quen da el aviso para actualizar la vista
     }
 
     /**
@@ -177,11 +189,14 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
      * Cambia el modo de repetición de la {@link Cola}. Si el modo actual es {@link Cola#REPETICION_EN_BUCLE} cambia a {@link Cola#REPETICION_UNA_VEZ} y viceversa
      */
     private void cambiarModoRepeticion() {
-        if (cola.getModoRepeticion() == Cola.REPETICION_EN_BUCLE)
+        if (cola.getModoRepeticion() == Cola.REPETICION_EN_BUCLE) {
             cola.cambiarModoRepeticion(Cola.REPETICION_UNA_VEZ);
-        else if (cola.getModoRepeticion() == Cola.REPETICION_UNA_VEZ)
+            showToast(activity, R.string.noRepetir);
+        } else if (cola.getModoRepeticion() == Cola.REPETICION_UNA_VEZ) {
             cola.cambiarModoRepeticion(Cola.REPETICION_EN_BUCLE);
-
+            showToast(activity, R.string.repetirEnBucle);
+        }
+        AccesoFichero.getInstance(activity).guardarCola(cola);
         actualizarBotones();
     }
 
@@ -189,11 +204,14 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
      * Cambia el odo de reproducción de la {@link Cola}. Si el modo actual es {@link Cola#REPRODUCCION_LINEAL} cambia a {@link Cola#REPRODUCCION_ALEATORIA} y viceversa
      */
     private void cambiarModoReproduccion() {
-        if (cola.getModoReproduccion() == Cola.REPRODUCCION_ALEATORIA)
+        if (cola.getModoReproduccion() == Cola.REPRODUCCION_ALEATORIA) {
             cola.cambiarModoReproduccion(Cola.REPRODUCCION_LINEAL);
-        else if (cola.getModoReproduccion() == Cola.REPRODUCCION_LINEAL)
+            showToast(activity, R.string.reproduccionLinear);
+        } else if (cola.getModoReproduccion() == Cola.REPRODUCCION_LINEAL) {
             cola.cambiarModoReproduccion(Cola.REPRODUCCION_ALEATORIA);
-
+            showToast(activity, R.string.reproduccionAleatoria);
+        }
+        AccesoFichero.getInstance(activity).guardarCola(cola);
         actualizarBotones();
     }
 

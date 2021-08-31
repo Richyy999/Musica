@@ -143,7 +143,8 @@ public class FragmentCola extends Fragment implements View.OnClickListener, Snac
                 lblNombre.setText(cancionActual.getNombreArchivo());
             else
                 lblNombre.setText(cancionActual.getNombre());
-        }
+        } else
+            reiniciarVista();
     }
 
     private void cargarVista() {

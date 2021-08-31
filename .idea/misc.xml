@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudio/Workspace/Musica/app/src/main/res/layout/activity_playlist.xml" value="0.14130434782608695" />
         <entry key="..\:/AndroidStudio/Workspace/Musica/app/src/main/res/layout/fragment_cola.xml" value="0.13020833333333334" />
+        <entry key="..\:/AndroidStudio/Workspace/Musica/app/src/main/res/layout/recycler_cola.xml" value="0.14130434782608695" />
         <entry key="..\:/AndroidStudio/Workspace/Musica/app/src/main/res/layout/snackbar_cola.xml" value="0.14266304347826086" />
       </map>
     </option>

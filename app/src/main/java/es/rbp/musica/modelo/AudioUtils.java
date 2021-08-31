@@ -1,6 +1,8 @@
 package es.rbp.musica.modelo;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -158,5 +160,15 @@ public class AudioUtils {
         boolean esFavorito = accesoFichero.getFavoritos().contains(cancion);
         Log.i(TAG, "Es favorito: " + esFavorito);
         return esFavorito;
+    }
+
+    /**
+     * Muestra un Toast con el mensaje que contenga el ID
+     *
+     * @param context contexto de la aplicación
+     * @param resID   ID del texto a mostrar
+     */
+    public static void showToast(Context context, int resID) {
+        Toast.makeText(context, resID, Toast.LENGTH_SHORT).show();
     }
 }

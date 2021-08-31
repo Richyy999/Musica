@@ -84,7 +84,7 @@ public class AccesoFichero {
     private static final String RUTA_FAVORITOS = "favoritos.txt";
     private static final String RUTA_HISTORIAL = "historial.txt";
 
-    private static final String TAG = "ACCESO FICHERO";
+    private static final String TAG = "ACCESO_FICHERO";
 
     private static AccesoFichero accesoFichero;
 
