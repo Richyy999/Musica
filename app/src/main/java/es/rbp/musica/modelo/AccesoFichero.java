@@ -768,12 +768,23 @@ public class AccesoFichero {
 
             try {
                 properties.setProperty(PROPIEDAD_CANCION_ANTERIOR, cancionAnterior.getDatos());
-                properties.setProperty(PROPIEDAD_SIGUIENTE_CANCION, siguienteCancion.getDatos());
-                properties.setProperty(PROPIEDAD_CANCION_ACTUAL, cancionActual.getDatos());
+
             } catch (NullPointerException e) {
                 Log.e(TAG, e.toString());
                 properties.setProperty(PROPIEDAD_CANCION_ANTERIOR, "null");
+            }
+
+            try {
+                properties.setProperty(PROPIEDAD_SIGUIENTE_CANCION, siguienteCancion.getDatos());
+            } catch (NullPointerException e) {
+                Log.e(TAG, e.toString());
                 properties.setProperty(PROPIEDAD_SIGUIENTE_CANCION, "null");
+            }
+
+            try {
+                properties.setProperty(PROPIEDAD_CANCION_ACTUAL, cancionActual.getDatos());
+            } catch (NullPointerException e) {
+                Log.e(TAG, e.toString());
                 properties.setProperty(PROPIEDAD_CANCION_ACTUAL, "null");
             }
 
@@ -796,6 +807,10 @@ public class AccesoFichero {
     public void eliminarFicheros() {
         eliminarArchivos(context.getFilesDir());
         eliminarArchivos(context.getCacheDir());
+        logout();
+    }
+
+    public void logout() {
         accesoFichero = null;
     }
 

@@ -154,12 +154,7 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case SnackbarCancion.ACCION_ANADIR_A_LA_PLAYLIST:
                 Log.d("FragmentPLaylists", "añadir playlist");
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mostrarPlaylists();
-                    }
-                }, 400);
+                new Handler().postDelayed(this::mostrarPlaylists, 400);
                 break;
             case SnackbarCancion.ACCION_ANADIR_A_LA_COLA:
                 Cola cola = accesoFichero.getCola();

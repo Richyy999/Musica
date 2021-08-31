@@ -514,6 +514,14 @@ public class Cola implements Serializable {
         eliminarCola();
         this.listaCanciones.add(cancion);
         this.cancionActual = cancion;
+        if (this.modoReproduccion == REPRODUCCION_ALEATORIA) {
+            this.indices.add(this.indice);
+            this.siguientesIndices.add(this.indice);
+            this.siguienteIndice = generarSiguienteIndiceAleatorio(this.siguientesIndices);
+            this.siguientesIndices.add(this.siguienteIndice);
+            this.siguienteCancion = listaCanciones.get(this.siguienteIndice);
+        }
+        Log.d(TAG, "Cola creada " + cancion.toString());
     }
 
     /**
@@ -525,16 +533,22 @@ public class Cola implements Serializable {
         Random r = new Random();
         int indice;
         if (modoReproduccion == REPRODUCCION_LINEAL) {
-            indice = r.nextInt((this.listaCanciones.size() + 1) - this.indice) + this.indice;
-            if (indice == 0 && listaCanciones.size() == 1)
+            indice = r.nextInt((this.listaCanciones.size() + 1) - (this.indice + 1)) + (this.indice + 1);
+            if (indice == 0)
                 indice++;
             this.listaCanciones.add(indice, cancion);
+            if (listaCanciones.size() == 1)
+                cancionActual = listaCanciones.get(indice);
         } else if (modoReproduccion == REPRODUCCION_ALEATORIA) {
             do {
                 indice = r.nextInt(listaCanciones.size() + 1);
             } while (indices.contains(indice));
             this.listaCanciones.add(indice, cancion);
+            if (listaCanciones.size() == 1)
+                cancionActual = listaCanciones.get(indice);
         }
+
+        Log.d(TAG, "Canción añadida " + cancion.toString());
     }
 
     /**
@@ -572,9 +586,10 @@ public class Cola implements Serializable {
     public void reproducirSiguiente(Cancion cancion) {
         if (modoReproduccion == REPRODUCCION_LINEAL)
             listaCanciones.add(indice + 1, cancion);
-        else if (modoReproduccion == REPRODUCCION_ALEATORIA)
+        else if (modoReproduccion == REPRODUCCION_ALEATORIA) {
             listaCanciones.add(siguienteIndice, cancion);
-
+            siguienteCancion = cancion;
+        }
         this.siguienteCancion = cancion;
     }
 

@@ -148,7 +148,8 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
     }
 
     /**
-     * Actualiza el aspecto de los botones {@link SnackbarCola#btnBucle} y {@link SnackbarCola#btnAleatorio} en función del tema y de la configuración de la {@link Cola}
+     * Actualiza el aspecto de los botones {@link SnackbarCola#btnBucle} y {@link SnackbarCola#btnAleatorio} en
+     * función del tema y de la configuración de la {@link Cola}
      */
     private void actualizarBotones() {
         // Actualiza el icono de bucle en función del tema y del modo de repetición de la cola

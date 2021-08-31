@@ -174,6 +174,16 @@ public class Ajustes implements Serializable {
         guardarAjustes(context);
     }
 
+    public void logout(Context context) {
+        try {
+            AccesoFichero.getInstance(context).guardarAjustes(ajustes);
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        } finally {
+            ajustes = null;
+        }
+    }
+
     public List<String> getCarpetasOcultas() {
         return carpetasOcultas;
     }

@@ -30,9 +30,11 @@ import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
+import es.rbp.musica.modelo.entidad.Cola;
 import es.rbp.musica.modelo.entidad.Playlist;
 import es.rbp.musica.vista.adaptadores.AdaptadorCanciones;
 import es.rbp.musica.vista.snackbar.SnackbarCancion;
+import es.rbp.musica.vista.snackbar.SnackbarCola;
 import es.rbp.musica.vista.snackbar.SnackbarMenuPlaylist;
 import es.rbp.musica.vista.snackbar.SnackbarMusica;
 import es.rbp.musica.vista.snackbar.SnackbarTexto;
@@ -44,7 +46,7 @@ import static es.rbp.musica.modelo.entidad.Playlist.INDICE_POR_DEFECTO;
 import static es.rbp.musica.vista.activities.SeleccionaCancionesActivity.EXTRA_CANCIONES_ANADIDAS;
 
 public class PlaylistActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, SnackbarTexto.Accion,
-        SnackbarCancion.Accion, SnackbarMenuPlaylist.Accion, AdaptadorCanciones.OnCancionClick, AnadirSnackbarMusica {
+        SnackbarCancion.Accion, SnackbarMenuPlaylist.Accion, AdaptadorCanciones.OnCancionClick, SnackbarCola.Accion, AnadirSnackbarMusica {
 
     public static final int CODIGO_REQUEST_PLAYLIST = 10;
     public static final int CODIGO_REQUEST_CAMBIAR_IMAGEN = 11;
@@ -180,6 +182,26 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     public void cerrar() {
         this.snackbarMusica.ocultar();
         this.snackbarMusica = null;
+    }
+
+    @Override
+    public void realizarAccionCola(int accion) {
+        switch (accion) {
+            case SnackbarCola.ACCION_OCULTAR:
+                cerrar();
+                break;
+            case SnackbarCola.ACCION_ANADIR_CANCIONES:
+                cerrar();
+                break;
+            case SnackbarCola.ACCION_ELIMINAR_COLA:
+                Cola cola = AccesoFichero.getInstance(this).getCola();
+                cola.eliminarCola();
+                cerrar();
+                break;
+            case SnackbarCola.ACCION_GUARDAR_COLA:
+                cerrar();
+                break;
+        }
     }
 
     @Override
