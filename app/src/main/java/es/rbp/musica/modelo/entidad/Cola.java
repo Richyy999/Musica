@@ -384,6 +384,7 @@ public class Cola implements Serializable {
                 this.cancionAnterior = null;
                 return null;
             }
+            this.indicesAnteriores.pop();
             this.siguientesIndices.remove(siguienteIndice);
             this.siguienteIndice = this.indice;
             this.siguienteCancion = this.cancionActual;
@@ -393,7 +394,7 @@ public class Cola implements Serializable {
             if (this.indicesAnteriores.size() == 0)
                 this.cancionAnterior = null;
             else
-                this.cancionAnterior = listaCanciones.get(indicesAnteriores.pop());
+                this.cancionAnterior = listaCanciones.get(indicesAnteriores.peek());
         }
 
         Log.d(TAG, "Índice = " + this.indice);
@@ -523,9 +524,6 @@ public class Cola implements Serializable {
         if (this.modoReproduccion == REPRODUCCION_ALEATORIA) {
             this.indices.add(this.indice);
             this.siguientesIndices.add(this.indice);
-//            this.siguienteIndice = generarSiguienteIndiceAleatorio(this.siguientesIndices);
-//            this.siguientesIndices.add(this.siguienteIndice);
-//            this.siguienteCancion = listaCanciones.get(this.siguienteIndice);
         }
     }
 
@@ -725,8 +723,6 @@ public class Cola implements Serializable {
                 }
                 if (this.indice == listaCanciones.size())
                     this.indice--;
-
-                return RESULTADO_SIN_CAMBIOS;
             }
             // Si la canción es anterior a la canción actual
             else if (this.indicesAnteriores.contains(indice)) {
@@ -740,8 +736,6 @@ public class Cola implements Serializable {
                     this.cancionAnterior = null;
                 else
                     this.cancionAnterior = listaCanciones.get(this.indicesAnteriores.pop());
-
-                return RESULTADO_SIN_CAMBIOS;
             }
         }
 
