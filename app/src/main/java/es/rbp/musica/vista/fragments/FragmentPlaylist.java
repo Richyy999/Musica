@@ -33,7 +33,7 @@ import static es.rbp.musica.modelo.entidad.Playlist.EXTRA_PLAYLIST;
 
 public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, AdaptadorPlaylists.OnPlaylistClick, View.OnClickListener {
 
-    private static final String TAG = "FRAGMENT PLAYLISTS";
+    private static final String TAG = "FRAGMENT_PLAYLISTS";
 
     private List<Playlist> playlists;
 
@@ -41,7 +41,7 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
 
     private RecyclerView recyclerView;
 
-    private AccesoFichero accesoFichero;
+    private final AccesoFichero accesoFichero;
 
     public FragmentPlaylist() {
         accesoFichero = AccesoFichero.getInstance(getContext());
@@ -86,7 +86,6 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
         try {
             if (texto != null) {
                 Playlist nuevaPlaylist = accesoFichero.crearPlaylist(texto, Ajustes.getInstance(getContext()));
-                playlists.add(nuevaPlaylist);
                 accesoFichero.guardarPlaylist(nuevaPlaylist);
 
                 adaptador.notifyItemInserted(playlists.size() - 1);

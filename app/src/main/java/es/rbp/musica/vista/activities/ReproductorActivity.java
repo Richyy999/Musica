@@ -1,5 +1,7 @@
 package es.rbp.musica.vista.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -10,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowInsetsController;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,19 +33,25 @@ import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
 import es.rbp.musica.modelo.entidad.Cola;
+import es.rbp.musica.modelo.entidad.Playlist;
 import es.rbp.musica.vista.snackbar.SnackbarCola;
 import es.rbp.musica.vista.snackbar.SnackbarMusica;
+import es.rbp.musica.vista.snackbar.SnackbarTexto;
 
 import static es.rbp.musica.modelo.AudioUtils.esFavorito;
 import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorNombres;
+import static es.rbp.musica.modelo.AudioUtils.getDatosCanciones;
 import static es.rbp.musica.modelo.AudioUtils.showToast;
 import static es.rbp.musica.vista.activities.SeleccionaCancionesActivity.EXTRA_CANCIONES_ANADIDAS;
 
-public class ReproductorActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, SnackbarCola.Accion {
+public class ReproductorActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, SnackbarCola.Accion,
+        SnackbarTexto.Accion {
 
     private static final String TAG = "REPRODUCTOR ACTIVITY";
 
     private SnackbarMusica snackbarMusica;
+
+    private ActivityResultLauncher<Intent> anadirCanciones;
 
     private RoundedImageView imgCancion;
 
@@ -74,6 +84,29 @@ public class ReproductorActivity extends AppCompatActivity implements View.OnCli
         cola = AccesoFichero.getInstance(this).getCola();
         accesoFichero = AccesoFichero.getInstance(this);
         cargarVista();
+
+        anadirCanciones = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        assert data != null;
+                        String accion = data.getAction();
+                        String[] nombreCanciones = data.getStringArrayExtra(EXTRA_CANCIONES_ANADIDAS);
+                        assert accion != null;
+                        if (accion.equals(SeleccionaCancionesActivity.ACCION_ANADIR)) {
+                            List<String> listaNombreCanciones = new ArrayList<>();
+                            assert nombreCanciones != null;
+                            for (String nombreCancione : nombreCanciones) {
+                                Log.i(TAG, "Añadido: " + nombreCancione);
+                                listaNombreCanciones.add(nombreCancione);
+                            }
+                            cola.anadirALaCola(filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), listaNombreCanciones));
+                        } else {
+                            Log.i(TAG, "No se han añadido canciones");
+                        }
+                        snackbarMusica = new SnackbarCola(this, findViewById(android.R.id.content), ajustes, cola, this);
+                    }
+                });
     }
 
     @Override
@@ -88,22 +121,7 @@ public class ReproductorActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            snackbarMusica.ocultar();
-            String accion = data.getAction();
-            String[] nombreCanciones = data.getStringArrayExtra(EXTRA_CANCIONES_ANADIDAS);
-            if (accion.equals(SeleccionaCancionesActivity.ACCION_ANADIR)) {
-                List<String> listaNombreCanciones = new ArrayList<>();
-                for (int i = 0; i < nombreCanciones.length; i++) {
-                    Log.i(TAG, "Añadido: " + nombreCanciones[i]);
-                    listaNombreCanciones.add(nombreCanciones[i]);
-                }
-                cola.anadirALaCola(filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), listaNombreCanciones));
-            } else {
-                Log.i(TAG, "No se han añadido canciones");
-            }
-            snackbarMusica = new SnackbarCola(this, findViewById(android.R.id.content), ajustes, cola, this);
-        }
+
     }
 
     @Override
@@ -184,15 +202,39 @@ public class ReproductorActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case SnackbarCola.ACCION_ANADIR_CANCIONES:
+                snackbarMusica.ocultar();
                 Intent intent = new Intent(this, SeleccionaCancionesActivity.class);
                 intent.putExtra(SeleccionaCancionesActivity.EXTRA_MODO_SELECCION, SeleccionaCancionesActivity.ACCION_ANADIR);
-                startActivityForResult(intent, SnackbarCola.CODIGO_REQUEST_SNACKBAR_COLA);
+                anadirCanciones.launch(intent);
                 break;
+            case SnackbarCola.ACCION_GUARDAR_COLA:
+                snackbarMusica.ocultar();
+                new Handler().postDelayed(() -> {
+                    SnackbarTexto snackbarTexto = new SnackbarTexto(ReproductorActivity.this,
+                            ReproductorActivity.this, R.string.nombreDeLaPlaylist,
+                            R.string.introduceNombrePlaylist);
+                    snackbarTexto.show();
+                    snackbarMusica = snackbarTexto;
+                }, 400);
         }
         if (accion != SnackbarCola.ACCION_ELIMINAR_COLA) {
             actualizarBotones(cola.getCancionActual());
             actualizarProgreso(cola.getProgresoActual());
         }
+    }
+
+    @Override
+    public void realizarAccion(String texto) {
+        if (texto != null) {
+            try {
+                Playlist playlist = accesoFichero.crearPlaylist(texto, ajustes);
+                playlist.setCanciones(getDatosCanciones(cola.getListaCanciones()));
+                accesoFichero.guardarPlaylist(playlist);
+            } catch (IOException e) {
+                Log.e(TAG, e.toString());
+            }
+        }
+        snackbarMusica = null;
     }
 
     /**
@@ -323,6 +365,7 @@ public class ReproductorActivity extends AppCompatActivity implements View.OnCli
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 WindowInsetsController wic = getWindow().getDecorView().getWindowInsetsController();
+                assert wic != null;
                 wic.setSystemBarsAppearance(WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS, WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS);
             } else
                 getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

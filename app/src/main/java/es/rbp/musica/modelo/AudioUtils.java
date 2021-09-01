@@ -22,7 +22,7 @@ public class AudioUtils {
     /**
      * Identificador de la clase para el Log
      */
-    private static final String TAG = "AUDIO UTILS";
+    private static final String TAG = "AUDIO_UTILS";
 
     /**
      * Filtra las canciones según los filtros de {@link Ajustes}
@@ -170,5 +170,19 @@ public class AudioUtils {
      */
     public static void showToast(Context context, int resID) {
         Toast.makeText(context, resID, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Obtiene la ruta de las canciones indicadas
+     *
+     * @param canciones Lista de canciones para obtener su ruta
+     * @return Lista con las ruats de las canciones
+     */
+    public static List<String> getDatosCanciones(List<Cancion> canciones) {
+        List<String> listaCanciones = new ArrayList<>();
+        for (Cancion cancion : canciones) {
+            listaCanciones.add(cancion.getDatos());
+        }
+        return listaCanciones;
     }
 }

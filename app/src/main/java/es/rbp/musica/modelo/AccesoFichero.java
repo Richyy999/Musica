@@ -257,7 +257,6 @@ public class AccesoFichero {
                         cancion.setAlbum(Cancion.ALBUM_DESCONOCIDO);
 
                     todasCanciones.add(cancion);
-                    Log.d(TAG, cancion.toString());
                 }
             } while (cursor.moveToNext());
             cursor.close();
@@ -360,6 +359,7 @@ public class AccesoFichero {
      */
     public Playlist crearPlaylist(String nombrePlaylist, Ajustes ajustes) throws IOException {
         Playlist nuevaPlaylist = new Playlist(nombrePlaylist, ajustes.getNombreFicheroNuevaPLaylist());
+        this.playlists.add(nuevaPlaylist);
         ajustes.setNumPlaylists(ajustes.getNumPlaylists() + 1);
 
         guardarAjustes(ajustes);
