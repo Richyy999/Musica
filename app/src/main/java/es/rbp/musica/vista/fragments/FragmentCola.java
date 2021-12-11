@@ -141,6 +141,16 @@ public class FragmentCola extends Fragment implements View.OnClickListener, Snac
                 SnackbarCola snackbarCola = new SnackbarCola(getActivity(), getActivity().findViewById(android.R.id.content), ajustes, cola, this);
                 ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(snackbarCola);
             }
+        } else if (id == R.id.btnSiguienteCancionFragment) {
+            cancionActual = cola.siguienteCancion();
+            if (cancionActual != null) {
+                actualizarVista();
+            }
+        } else if (id == R.id.btnCancionAnteriorFragment) {
+            cancionActual = cola.getCancionAnterior();
+            if (cancionActual != null) {
+                actualizarVista();
+            }
         }
     }
 
@@ -216,6 +226,8 @@ public class FragmentCola extends Fragment implements View.OnClickListener, Snac
                 lblNombre.setText(cancionActual.getNombreArchivo());
             else
                 lblNombre.setText(cancionActual.getNombre());
+
+            seekBar.setProgress(cola.getProgresoActual());
         } else
             reiniciarVista();
     }
