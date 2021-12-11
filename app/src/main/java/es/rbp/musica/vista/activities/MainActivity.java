@@ -133,6 +133,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void cerrar() {
         this.snackbarMusica.ocultar();
         this.snackbarMusica = null;
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentPlaylist.FRAGMENT_TAG);
+        if (fragment != null)
+            cargarPlaylists();
     }
 
     private void abrirBuscar() {
@@ -234,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        transaction.replace(R.id.contenedorFragment, fragment);
+        transaction.replace(R.id.contenedorFragment, fragment, FragmentPlaylist.FRAGMENT_TAG);
         transaction.commit();
 
         carpetaAbierta = false;

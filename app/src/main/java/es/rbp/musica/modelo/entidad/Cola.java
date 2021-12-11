@@ -727,7 +727,7 @@ public class Cola implements Serializable {
             // Si la canción es anterior a la canción actual
             else if (this.indicesAnteriores.contains(indice)) {
                 listaCanciones.remove(indice);
-                this.indice--;
+                this.indice = listaCanciones.indexOf(cancionAnterior);
                 this.siguienteIndice--;
                 this.indicesAnteriores = eliminarIndice(this.indicesAnteriores, indice);
                 this.indices = eliminarIndice(this.indices, indice);
@@ -740,6 +740,36 @@ public class Cola implements Serializable {
         }
 
         return RESULTADO_SIN_CAMBIOS;
+    }
+
+    /**
+     * Cambia una Canción de sitio
+     *
+     * @param posicionInicial posición inicial de la canción
+     * @param posicionFinal   posición final de la canción
+     */
+    public void moverCancion(int posicionInicial, int posicionFinal) {
+        Log.d(TAG, "Posicion inicial: " + posicionInicial);
+        Log.d(TAG, "Posicion final: " + posicionFinal);
+        if (posicionInicial == posicionFinal)
+            return;
+
+        this.indice = listaCanciones.indexOf(this.cancionActual);
+
+        if (this.modoReproduccion == REPRODUCCION_ALEATORIA) {
+            if (this.indices.contains(posicionInicial)) {
+                this.indices.remove(posicionInicial);
+                this.indices.add(posicionFinal);
+            }
+            if (this.siguientesIndices.contains(posicionInicial)) {
+                this.siguientesIndices.remove(posicionInicial);
+                this.siguientesIndices.add(posicionFinal);
+            }
+            if (this.indicesAnteriores.contains(posicionInicial))
+                this.indicesAnteriores = reemplazarIndice(this.indicesAnteriores, posicionInicial, posicionFinal);
+
+            this.siguienteIndice = listaCanciones.indexOf(this.siguienteCancion);
+        }
     }
 
     /**
@@ -890,6 +920,25 @@ public class Cola implements Serializable {
             if (indiceActual > indice)
                 stackNueva.push(indiceActual - 1);
             else if (indiceActual < indice)
+                stackNueva.push(indiceActual);
+        }
+        return stackNueva;
+    }
+
+    /**
+     * Reemplaza un índice por otro
+     *
+     * @param stack           Stack a la cual reemplazar el índice
+     * @param posicionInicial índice orignal a reemplazar
+     * @param posicionFinal   índice que reemplaza al original
+     * @return Stack con los índices reemplazados
+     */
+    private Stack<Integer> reemplazarIndice(Stack<Integer> stack, int posicionInicial, int posicionFinal) {
+        Stack<Integer> stackNueva = new Stack<>();
+        for (int indiceActual : stack) {
+            if (indiceActual == posicionInicial)
+                stackNueva.push(posicionFinal);
+            else
                 stackNueva.push(indiceActual);
         }
         return stackNueva;

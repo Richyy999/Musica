@@ -33,6 +33,8 @@ import static es.rbp.musica.modelo.entidad.Playlist.EXTRA_PLAYLIST;
 
 public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, AdaptadorPlaylists.OnPlaylistClick, View.OnClickListener {
 
+    public static final String FRAGMENT_TAG = "FRAGMENT_PLAYLISTS_TAG";
+
     private static final String TAG = "FRAGMENT_PLAYLISTS";
 
     private List<Playlist> playlists;

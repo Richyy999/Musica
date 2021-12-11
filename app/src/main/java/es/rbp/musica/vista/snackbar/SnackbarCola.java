@@ -11,11 +11,17 @@ import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Collections;
+import java.util.Objects;
 
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
@@ -24,8 +30,6 @@ import es.rbp.musica.modelo.entidad.Cola;
 import es.rbp.musica.vista.adaptadores.AdaptadorCola;
 
 public class SnackbarCola implements SnackbarMusica, View.OnClickListener, AdaptadorCola.OnCancionColaClick {
-
-    public static final int CODIGO_REQUEST_SNACKBAR_COLA = 20;
 
     /**
      * Se debe ocultar el Snackbar
@@ -44,22 +48,78 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
      */
     public static final int ACCION_ANADIR_CANCIONES = 3;
 
-    private Accion accion;
+    private static final int SIN_POSICION = -1;
 
-    private AdaptadorCola adaptador;
+    private final Accion accion;
 
-    private Snackbar snackbar;
+    private final AdaptadorCola adaptador;
 
-    private View opacityPane;
+    private final Snackbar snackbar;
 
-    private ImageView btnBucle;
-    private ImageView btnAleatorio;
+    private final View opacityPane;
 
-    private Activity activity;
+    private final ImageView btnBucle;
+    private final ImageView btnAleatorio;
 
-    private Ajustes ajustes;
+    private final Activity activity;
 
-    private Cola cola;
+    private final Ajustes ajustes;
+
+    private final Cola cola;
+
+    private int posicionInicial;
+
+    private int posicionFinal;
+
+    private final ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
+
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
+
+            int posInicial = viewHolder.getBindingAdapterPosition();
+            if (posicionInicial == SIN_POSICION)
+                posicionInicial = posInicial;
+
+            posicionFinal = target.getBindingAdapterPosition();
+
+            Collections.swap(cola.getListaCanciones(), posInicial, posicionFinal);
+
+            Objects.requireNonNull(recyclerView.getAdapter()).notifyItemMoved(posInicial, posicionFinal);
+
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+
+        @Override
+        public void onSelectedChanged(@Nullable @org.jetbrains.annotations.Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
+            super.onSelectedChanged(viewHolder, actionState);
+            if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+                assert viewHolder != null;
+                viewHolder.itemView.setSelected(true);
+            }
+        }
+
+        @Override
+        public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            super.clearView(recyclerView, viewHolder);
+
+            viewHolder.itemView.setSelected(false);
+
+            cola.moverCancion(posicionInicial, posicionFinal);
+
+            posicionInicial = SIN_POSICION;
+        }
+
+        @Override
+        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG, ItemTouchHelper.UP | ItemTouchHelper.DOWN);
+        }
+    };
 
     public SnackbarCola(Activity activity, View view, Ajustes ajustes, Cola cola, Accion accion) {
         this.snackbar = Snackbar.make(view, "", Snackbar.LENGTH_INDEFINITE);
@@ -67,6 +127,8 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
         this.cola = cola;
         this.activity = activity;
         this.ajustes = Ajustes.getInstance(activity);
+        this.posicionInicial = SIN_POSICION;
+        this.posicionFinal = SIN_POSICION;
 
         View vistaPersonalizada = activity.getLayoutInflater().inflate(R.layout.snackbar_cola, null);
 
@@ -106,6 +168,9 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         adaptador = new AdaptadorCola(cola.getListaCanciones(), this, ajustes, cola, activity);
         recyclerView.setAdapter(adaptador);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         layout.addView(vistaPersonalizada);
         layout.setPadding(0, 0, 0, 0);

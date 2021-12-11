@@ -139,6 +139,7 @@ public class Ajustes implements Serializable {
     public void guardarAjustes(Context context) {
         AccesoFichero accesoFichero = AccesoFichero.getInstance(context);
         try {
+            ajustes = this;
             accesoFichero.guardarAjustes(ajustes);
         } catch (IOException e) {
             Log.e(TAG, e.toString());

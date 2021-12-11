@@ -52,7 +52,7 @@ public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.
 
         @Override
         public void onClick(View v) {
-            onPlaylistClick.onPlaylistClick(getAdapterPosition(), this);
+            onPlaylistClick.onPlaylistClick(getBindingAdapterPosition(), this);
         }
     }
 

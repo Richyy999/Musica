@@ -30,7 +30,7 @@ public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.
 
         @Override
         public void onClick(View v) {
-            onHistorialClicked.onHistorialClick(getAdapterPosition());
+            onHistorialClicked.onHistorialClick(getBindingAdapterPosition());
         }
     }
 

@@ -32,7 +32,7 @@ public class AdaptadorSnackbarPlaylist extends RecyclerView.Adapter<AdaptadorSna
 
         @Override
         public void onClick(View v) {
-            onPlaylistClicked.onPlaylistClick(getAdapterPosition());
+            onPlaylistClicked.onPlaylistClick(getBindingAdapterPosition());
         }
     }
 

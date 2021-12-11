@@ -20,12 +20,12 @@ public class AdaptadorAnadirCancion extends RecyclerView.Adapter<AdaptadorAnadir
 
     public static class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private OnCancionClick onCancionClick;
+        private final OnCancionClick onCancionClick;
 
-        private View circulo;
+        private final View circulo;
 
-        private TextView lblNombreCancion;
-        private TextView lblArtistaAlbum;
+        private final TextView lblNombreCancion;
+        private final TextView lblArtistaAlbum;
 
         public MyHolder(@NonNull View itemView, OnCancionClick onCancionClick) {
             super(itemView);
@@ -41,7 +41,7 @@ public class AdaptadorAnadirCancion extends RecyclerView.Adapter<AdaptadorAnadir
 
         @Override
         public void onClick(View v) {
-            onCancionClick.onCancionClick(getAdapterPosition());
+            onCancionClick.onCancionClick(getBindingAdapterPosition());
         }
     }
 

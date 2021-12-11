@@ -45,7 +45,7 @@ public class AdaptadorFiltrarCarpeta extends RecyclerView.Adapter<AdaptadorFiltr
 
         @Override
         public void onClick(View v) {
-            onCarpetaClick.onClick(getAdapterPosition());
+            onCarpetaClick.onClick(getBindingAdapterPosition());
         }
     }
 

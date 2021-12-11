@@ -46,9 +46,9 @@ public class AdaptadorCarpetas extends RecyclerView.Adapter<AdaptadorCarpetas.My
         @Override
         public void onClick(View v) {
             if (v.getId() == itemView.getId())
-                onCarpetaClicked.onClick(getAdapterPosition());
+                onCarpetaClicked.onClick(getBindingAdapterPosition());
             else if (v.getId() == btnOcultar.getId())
-                eliminarCanrpeta(getAdapterPosition());
+                eliminarCanrpeta(getBindingAdapterPosition());
         }
     }
 

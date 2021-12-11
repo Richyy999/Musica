@@ -49,9 +49,9 @@ public class AdaptadorCanciones extends RecyclerView.Adapter<AdaptadorCanciones.
         @Override
         public void onClick(View v) {
             if (v.getId() == btnPuntos.getId())
-                onCancionClick.onMenuClicked(getAdapterPosition());
+                onCancionClick.onMenuClicked(getBindingAdapterPosition());
             else if (v.getId() == itemView.getId())
-                onCancionClick.onClick(getAdapterPosition());
+                onCancionClick.onClick(getBindingAdapterPosition());
         }
     }
 
