@@ -101,6 +101,7 @@ public class ReproductorActivity extends AppCompatActivity implements View.OnCli
                                 listaNombreCanciones.add(nombreCancione);
                             }
                             cola.anadirALaCola(filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), listaNombreCanciones));
+                            accesoFichero.guardarCola(cola);
                         } else {
                             Log.i(TAG, "No se han añadido canciones");
                         }
@@ -116,12 +117,6 @@ public class ReproductorActivity extends AppCompatActivity implements View.OnCli
         actualizarBotones(cancion);
         actualizarProgreso(cola.getProgresoActual());
         actualizarCancion(cancion);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     @Override

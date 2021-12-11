@@ -617,16 +617,15 @@ public class Cola implements Serializable {
             return RESULTADO_COLA_ELIMINADA;
         }
 
+        listaCanciones.remove(indice);
         if (modoReproduccion == REPRODUCCION_LINEAL) {
             // Si la canción que se elimina es la primera y la canción actual
             if (indice == 0 && indice == this.indice) {
-                listaCanciones.remove(indice);
                 this.cancionActual = listaCanciones.get(this.indice);
                 this.siguienteCancion = listaCanciones.get(1);
                 return RESULTADO_CANCION_ACTUAL_ELIMINADA;
                 // Si la canción que se elimina es la primera canción, pero no es la canción actual
             } else if (indice == 0) {
-                listaCanciones.remove(indice);
                 this.indice--;
                 if (this.indice == 0)
                     this.cancionAnterior = null;
@@ -634,7 +633,6 @@ public class Cola implements Serializable {
                     this.cancionAnterior = listaCanciones.get(this.indice - 1);
                 // Si la canción que se elimina es la última y la canción actual
             } else if (indice == listaCanciones.size() - 1 && indice == this.indice) {
-                listaCanciones.remove(indice);
                 this.indice = 0;
                 this.cancionActual = listaCanciones.get(this.indice);
                 this.siguienteCancion = listaCanciones.get(this.indice + 1);
@@ -647,23 +645,19 @@ public class Cola implements Serializable {
                 }
                 // Si la canción que se elimina es la última canción, pero no es la canción actual
             } else if (indice == listaCanciones.size() - 1) {
-                listaCanciones.remove(indice);
                 if (this.indice == listaCanciones.size() - 1)
                     this.siguienteCancion = null;
                 else
                     this.siguienteCancion = listaCanciones.get(this.indice + 1);
                 // Si la canción que se elimina está en medio de la cola y es anterior a la canción actual
             } else if (indice < this.indice) {
-                listaCanciones.remove(indice);
                 this.indice--;
                 this.cancionAnterior = listaCanciones.get(this.indice - 1);
                 // Si la canción que se elimina está en medio de la cola y es posterior a la canción actual
             } else if (indice > this.indice) {
-                listaCanciones.remove(indice);
                 this.siguienteCancion = listaCanciones.get(this.indice + 1);
                 // Si la canción que se elimina está en el medio de la cola y es la canción actual
             } else {
-                listaCanciones.remove(indice);
                 this.cancionActual = this.siguienteCancion;
                 if (this.indice == listaCanciones.size() - 1)
                     this.siguienteCancion = null;
@@ -674,7 +668,6 @@ public class Cola implements Serializable {
         } else if (modoReproduccion == REPRODUCCION_ALEATORIA) {
             // Si es la canción actual y la última
             if (indice == this.indice && this.indices.size() == listaCanciones.size()) {
-                listaCanciones.remove(indice);
                 this.indices.clear();
                 this.siguientesIndices.clear();
                 this.siguienteIndice = generarSiguienteIndiceAleatorio(this.siguientesIndices);
@@ -698,7 +691,6 @@ public class Cola implements Serializable {
             }
             // Si es la canción actual
             else if (indice == this.indice) {
-                listaCanciones.remove(indice);
                 this.cancionActual = this.siguienteCancion;
                 this.indices = eliminarIndice(this.indices, indice);
                 this.indice = this.siguienteIndice - 1;
@@ -712,7 +704,6 @@ public class Cola implements Serializable {
             }
             // Si la canción es la siguiente canción
             else if (indice == this.siguienteIndice) {
-                listaCanciones.remove(indice);
                 this.siguientesIndices.remove(indice);
                 this.siguienteIndice = generarSiguienteIndiceAleatorio(this.siguientesIndices);
                 if (this.siguienteIndice == SIN_INDICE)
@@ -726,8 +717,7 @@ public class Cola implements Serializable {
             }
             // Si la canción es anterior a la canción actual
             else if (this.indicesAnteriores.contains(indice)) {
-                listaCanciones.remove(indice);
-                this.indice = listaCanciones.indexOf(cancionAnterior);
+                this.indice = listaCanciones.indexOf(cancionActual);
                 this.siguienteIndice--;
                 this.indicesAnteriores = eliminarIndice(this.indicesAnteriores, indice);
                 this.indices = eliminarIndice(this.indices, indice);
@@ -736,6 +726,10 @@ public class Cola implements Serializable {
                     this.cancionAnterior = null;
                 else
                     this.cancionAnterior = listaCanciones.get(this.indicesAnteriores.pop());
+            }
+            // Si la canción no se ha reproducido aún
+            else {
+                this.indice = listaCanciones.indexOf(cancionActual);
             }
         }
 

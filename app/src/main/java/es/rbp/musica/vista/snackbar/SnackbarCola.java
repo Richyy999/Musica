@@ -168,6 +168,7 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         adaptador = new AdaptadorCola(cola.getListaCanciones(), this, ajustes, cola, activity);
         recyclerView.setAdapter(adaptador);
+        recyclerView.scrollToPosition(cola.getIndice());
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -221,6 +222,9 @@ public class SnackbarCola implements SnackbarMusica, View.OnClickListener, Adapt
             accion.realizarAccionCola(ACCION_ELIMINAR_COLA);
         else if (res == Cola.RESULTADO_COLA_TERMINADA)
             accion.realizarAccionCola(ACCION_OCULTAR);
+
+        AccesoFichero accesoFichero = AccesoFichero.getInstance(activity);
+        accesoFichero.guardarCola(cola);
         // Si se cambia la canción actual, es el servicio quen da el aviso para actualizar la vista
     }
 

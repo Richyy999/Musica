@@ -1,5 +1,7 @@
 package es.rbp.musica.vista.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -58,6 +60,9 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
 
     private List<Cancion> canciones;
 
+    private ActivityResultLauncher<Intent> anadirCanciones;
+    private ActivityResultLauncher<Intent> cambiarImagen;
+
     private Ajustes ajustes;
 
     private AccesoFichero accesoFichero;
@@ -79,6 +84,44 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         cargarAjustes();
         setContentView(R.layout.activity_playlist);
         cargarVista();
+
+        anadirCanciones = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        String accion = data.getAction();
+                        String[] nombreCanciones = data.getStringArrayExtra(EXTRA_CANCIONES_ANADIDAS);
+                        if (accion.equals(SeleccionaCancionesActivity.ACCION_ANADIR)) {
+                            List<String> listaNombreCanciones = new ArrayList<>();
+                            for (int i = 0; i < nombreCanciones.length; i++) {
+                                Log.i(TAG, "Añadido: " + nombreCanciones[i]);
+                                listaNombreCanciones.add(nombreCanciones[i]);
+                            }
+                            canciones.addAll(filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), listaNombreCanciones));
+                            playlist.getCanciones().addAll(listaNombreCanciones);
+                        } else if (accion.equals(SeleccionaCancionesActivity.ACCION_ELIMINAR)) {
+                            for (String cancion : nombreCanciones) {
+                                playlist.getCanciones().remove(cancion);
+                            }
+                            canciones = filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), playlist.getCanciones());
+                        }
+
+                        accesoFichero.guardarPlaylist(playlist);
+                        actualizarRecyclerView();
+                    } else {
+                        Log.i(TAG, "No se han añadido canciones");
+                    }
+                });
+        cambiarImagen = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    Intent data = result.getData();
+                    if (result.getResultCode() == RESULT_OK && data != null) {
+                        Uri uriImagen = data.getData();
+                        accesoFichero.guardarImagenPlaylist(playlist, uriImagen);
+
+                        actualizarImagenPlaylist();
+                    }
+                });
     }
 
     @Override
@@ -87,7 +130,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btnAnadirCancionPlaylist:
                 Intent intent = new Intent(this, SeleccionaCancionesActivity.class);
                 intent.putExtra(SeleccionaCancionesActivity.EXTRA_MODO_SELECCION, SeleccionaCancionesActivity.ACCION_ANADIR);
-                startActivityForResult(intent, CODIGO_REQUEST_PLAYLIST);
+                anadirCanciones.launch(intent);
                 break;
             case R.id.btnAtrasPlaylist:
                 finish();
@@ -105,7 +148,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
                 Intent intent1 = new Intent(this, SeleccionaCancionesActivity.class);
                 intent1.putExtra(SeleccionaCancionesActivity.EXTRA_MODO_SELECCION, SeleccionaCancionesActivity.ACCION_ELIMINAR);
                 intent1.putExtra(EXTRA_PLAYLIST, indicePlaylist);
-                startActivityForResult(intent1, CODIGO_REQUEST_PLAYLIST);
+                anadirCanciones.launch(intent1);
                 break;
         }
     }
@@ -200,43 +243,6 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CODIGO_REQUEST_PLAYLIST) {
-            if (resultCode == RESULT_OK) {
-                String accion = data.getAction();
-                String[] nombreCanciones = data.getStringArrayExtra(EXTRA_CANCIONES_ANADIDAS);
-                if (accion.equals(SeleccionaCancionesActivity.ACCION_ANADIR)) {
-                    List<String> listaNombreCanciones = new ArrayList<>();
-                    for (int i = 0; i < nombreCanciones.length; i++) {
-                        Log.i(TAG, "Añadido: " + nombreCanciones[i]);
-                        listaNombreCanciones.add(nombreCanciones[i]);
-                    }
-                    canciones.addAll(filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), listaNombreCanciones));
-                    playlist.getCanciones().addAll(listaNombreCanciones);
-                } else if (accion.equals(SeleccionaCancionesActivity.ACCION_ELIMINAR)) {
-                    for (String cancion : nombreCanciones) {
-                        playlist.getCanciones().remove(cancion);
-                    }
-                    canciones = filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), playlist.getCanciones());
-                }
-
-                accesoFichero.guardarPlaylist(playlist);
-                actualizarRecyclerView();
-            } else {
-                Log.i(TAG, "No se han añadido canciones");
-            }
-        } else if (requestCode == CODIGO_REQUEST_CAMBIAR_IMAGEN) {
-            if (resultCode == RESULT_OK && data != null) {
-                Uri uriImagen = data.getData();
-                accesoFichero.guardarImagenPlaylist(playlist, uriImagen);
-
-                actualizarImagenPlaylist();
-            }
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         if (snackbarMusica != null) {
             snackbarMusica.ocultar();
@@ -263,7 +269,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Elige una imagen"), CODIGO_REQUEST_CAMBIAR_IMAGEN);
+        cambiarImagen.launch(intent);
     }
 
     private void cambiarNombrePlaylist() {

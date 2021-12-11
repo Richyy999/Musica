@@ -108,6 +108,7 @@ public class FragmentCola extends Fragment implements View.OnClickListener, Snac
                                 listaNombreCanciones.add(nombreCancione);
                             }
                             cola.anadirALaCola(filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), listaNombreCanciones));
+                            accesoFichero.guardarCola(cola);
                         } else {
                             Log.i(TAG, "No se han añadido canciones");
                         }
