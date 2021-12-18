@@ -193,6 +193,7 @@ public class AccesoFichero {
 
         FileOutputStream fos = new FileOutputStream(ficheroCarpetas);
         fos.write(carpetasOcultas.getBytes());
+        fos.flush();
         fos.close();
         Log.i(TAG, "Ajustes guardados");
     }
