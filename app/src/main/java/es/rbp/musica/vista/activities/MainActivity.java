@@ -17,8 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -50,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private View btnBuscar;
 
     private boolean carpetaAbierta;
+    private boolean activityAbierta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +81,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        activityAbierta = false;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        AccesoFichero.getInstance(this).logout();
-        Ajustes.getInstance(this).logout(this);
+        if (!activityAbierta) {
+            AccesoFichero.getInstance(this).logout();
+            Ajustes.getInstance(this).logout(this);
+        }
     }
 
     @Override
@@ -138,7 +145,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             cargarPlaylists();
     }
 
+    public void avisarAbrirActivity() {
+        activityAbierta = true;
+    }
+
     private void abrirBuscar() {
+        avisarAbrirActivity();
         Intent intent = new Intent(this, BuscarActivity.class);
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
                 btnBuscar, ViewCompat.getTransitionName(btnBuscar));
@@ -146,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void abrirAjustes() {
+        avisarAbrirActivity();
         Intent intent = new Intent(this, AjustesActivity.class);
         startActivity(intent);
         finish();

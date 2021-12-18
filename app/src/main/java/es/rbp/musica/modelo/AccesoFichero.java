@@ -274,7 +274,7 @@ public class AccesoFichero {
         if (this.favoritos == null)
             leerFavoritos();
 
-        if (todasCanciones == null)
+        if (this.todasCanciones == null)
             leerCanciones();
 
         List<Cancion> favoritos = new ArrayList<>();

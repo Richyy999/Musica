@@ -543,12 +543,24 @@ public class Cola implements Serializable {
             if (listaCanciones.size() == 1)
                 cancionActual = listaCanciones.get(indice);
         } else if (modoReproduccion == REPRODUCCION_ALEATORIA) {
+            int indiceActual = SIN_INDICE;
+            if (listaCanciones.contains(cancion))
+                indiceActual = this.indice;
             do {
                 indice = r.nextInt(listaCanciones.size() + 1);
             } while (indices.contains(indice));
+
             this.listaCanciones.add(indice, cancion);
             if (listaCanciones.size() == 1)
                 cancionActual = listaCanciones.get(indice);
+
+            if (indiceActual != SIN_INDICE) {
+                if (siguienteIndice < this.indice)
+                    this.indice = indiceActual++;
+                else
+                    this.indice++;
+
+            }
         }
 
         Log.d(TAG, "Canción añadida " + cancion.toString());
@@ -571,13 +583,22 @@ public class Cola implements Serializable {
      * @param cancion {@link Cancion} a añadir
      */
     public void reproducirSiguiente(Cancion cancion) {
+        int indiceActual = SIN_INDICE;
+        if (listaCanciones.contains(cancion)) {
+            indiceActual = indice;
+        }
         if (modoReproduccion == REPRODUCCION_LINEAL)
             listaCanciones.add(indice + 1, cancion);
-        else if (modoReproduccion == REPRODUCCION_ALEATORIA) {
+        else if (modoReproduccion == REPRODUCCION_ALEATORIA)
             listaCanciones.add(siguienteIndice, cancion);
-            siguienteCancion = cancion;
-        }
+
         this.siguienteCancion = cancion;
+        if (indiceActual == SIN_INDICE)
+            indice = listaCanciones.indexOf(cancionActual);
+        else if (modoReproduccion == REPRODUCCION_ALEATORIA && siguienteIndice < indice)
+            indice = indiceActual++;
+        else
+            indice++;
     }
 
     /**

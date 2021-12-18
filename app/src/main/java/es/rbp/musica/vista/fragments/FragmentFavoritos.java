@@ -18,6 +18,7 @@ import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
 import es.rbp.musica.modelo.entidad.Cancion;
+import es.rbp.musica.modelo.entidad.Cola;
 import es.rbp.musica.modelo.entidad.Playlist;
 import es.rbp.musica.vista.activities.AnadirSnackbarMusica;
 import es.rbp.musica.vista.adaptadores.AdaptadorCanciones;
@@ -63,6 +64,7 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("FAV", "On resume " + muestraFavoritos);
         if (muestraFavoritos) {
             canciones = accesoFichero.getFavoritos();
             actualizarRecyclerView();
@@ -87,23 +89,29 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
         switch (accion) {
             case SnackbarCancion.ACCION_ANADIR_A_FAVORITOS:
                 accesoFichero.anadirFavorito(cancionSeleccionada.getDatos());
-                ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(null);
+                ((AnadirSnackbarMusica) getActivity()).cerrar();
                 break;
             case SnackbarCancion.ACCION_ELIMINAR_DE_FAVORITOS:
                 accesoFichero.eliminarFavorito(cancionSeleccionada.getDatos());
-                ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(null);
+                ((AnadirSnackbarMusica) getActivity()).cerrar();
                 break;
             case SnackbarCancion.ACCION_OCULTAR:
-                ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(null);
+                ((AnadirSnackbarMusica) getActivity()).cerrar();
                 break;
             case SnackbarCancion.ACCION_ANADIR_A_LA_PLAYLIST:
-                Log.d("FragmentPLaylists", "añadir playlist");
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mostrarPlaylists();
-                    }
-                }, 400);
+                new Handler().postDelayed(() -> mostrarPlaylists(), 400);
+                break;
+            case SnackbarCancion.ACCION_ANADIR_A_LA_COLA:
+                Cola cola = accesoFichero.getCola();
+                cola.anadirALaCola(cancionSeleccionada);
+                accesoFichero.guardarCola(cola);
+                ((AnadirSnackbarMusica) getActivity()).cerrar();
+                break;
+            case SnackbarCancion.ACCION_REPRODUCIR_SIGUIENTE:
+                Cola cola1 = accesoFichero.getCola();
+                cola1.reproducirSiguiente(cancionSeleccionada);
+                accesoFichero.guardarCola(cola1);
+                ((AnadirSnackbarMusica) getActivity()).cerrar();
                 break;
         }
 
@@ -121,7 +129,7 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
             accesoFichero.guardarPlaylist(playlist);
         }
 
-        ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(null);
+        ((AnadirSnackbarMusica) getActivity()).cerrar();
     }
 
     private void mostrarPlaylists() {
@@ -140,17 +148,21 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
             recyclerView.setIndexBarTextColor(R.color.subtituloClaro);
             recyclerView.setIndexBarColor(R.color.fondoAppClaro);
         }
-        recyclerView.setPreviewTransparentValue((float) 0.5);
+        recyclerView.setPreviewTransparentValue(0.5F);
         recyclerView.setIndexTextSize(10);
         recyclerView.setIndexBarStrokeVisibility(false);
 
         if (canciones.size() < 100)
             recyclerView.setIndexBarVisibility(false);
+        else
+            recyclerView.setIndexBarVisibility(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         AdaptadorCanciones adaptador = new AdaptadorCanciones(canciones, this);
         recyclerView.setAdapter(adaptador);
         if (canciones.size() == 0)
             recyclerView.setVisibility(View.INVISIBLE);
+        else
+            recyclerView.setVisibility(View.VISIBLE);
     }
 }

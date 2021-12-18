@@ -37,6 +37,7 @@ import es.rbp.musica.modelo.entidad.Cancion;
 import es.rbp.musica.modelo.entidad.Cola;
 import es.rbp.musica.modelo.entidad.Playlist;
 import es.rbp.musica.vista.activities.AnadirSnackbarMusica;
+import es.rbp.musica.vista.activities.MainActivity;
 import es.rbp.musica.vista.activities.ReproductorActivity;
 import es.rbp.musica.vista.activities.SeleccionaCancionesActivity;
 import es.rbp.musica.vista.snackbar.SnackbarCola;
@@ -135,6 +136,9 @@ public class FragmentCola extends Fragment implements View.OnClickListener, Snac
             if (cola.getListaCanciones().size() > 0) {
                 Intent intent = new Intent(context, ReproductorActivity.class);
                 startActivity(intent);
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).avisarAbrirActivity();
+                }
             }
         } else if (id == R.id.btnMostrarColaFragment) {
             if (cola.getListaCanciones().size() > 0) {
