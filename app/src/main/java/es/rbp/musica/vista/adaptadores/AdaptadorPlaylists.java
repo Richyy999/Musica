@@ -96,10 +96,10 @@ public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.
         holder.lblNombre.setSelected(true);
 
         String texto;
-        if (playlist.getCanciones().size() == 1)
+        if (playlist.getCancionesFiltradas(context).size() == 1)
             texto = context.getString(R.string.unaCancion);
         else
-            texto = playlist.getCanciones().size() + " " + context.getString(R.string.canciones);
+            texto = playlist.getCancionesFiltradas(context).size() + " " + context.getString(R.string.canciones);
 
         holder.lblNumCanciones.setText(texto);
 

@@ -32,6 +32,7 @@ import java.util.List;
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
+import es.rbp.musica.modelo.AudioUtils;
 import es.rbp.musica.modelo.entidad.Cancion;
 import es.rbp.musica.modelo.entidad.Cola;
 import es.rbp.musica.modelo.entidad.Playlist;
@@ -103,7 +104,8 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
                             for (String cancion : nombreCanciones) {
                                 playlist.getCanciones().remove(cancion);
                             }
-                            canciones = filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), playlist.getCanciones());
+                            List<Cancion> todasCanciones = filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), playlist.getCanciones());
+                            canciones = AudioUtils.filtrarCanciones(todasCanciones, ajustes);
                         }
 
                         accesoFichero.guardarPlaylist(playlist);
@@ -308,7 +310,8 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
         ImageView btnMenuPlaylist = findViewById(R.id.btnMenuPuntosPlaylist);
         btnMenuPlaylist.setOnClickListener(this);
 
-        canciones = filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), playlist.getCanciones());
+        List<Cancion> canciones = filtrarCancionesPorNombres(accesoFichero.getTodasCanciones(), playlist.getCanciones());
+        this.canciones = AudioUtils.filtrarCanciones(canciones, ajustes);
 
         actualizarRecyclerView();
 
@@ -319,10 +322,10 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
 
     private void actualizarRecyclerView() {
         String texto;
-        if (playlist.getCanciones().size() == 1)
+        if (playlist.getCancionesFiltradas(this).size() == 1)
             texto = getString(R.string.unaCancion);
         else
-            texto = playlist.getCanciones().size() + " " + getString(R.string.canciones);
+            texto = playlist.getCancionesFiltradas(this).size() + " " + getString(R.string.canciones);
         TextView lblNumCanciones = findViewById(R.id.lblNumCancionesPlaylist);
         lblNumCanciones.setText(texto);
 

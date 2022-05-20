@@ -277,8 +277,9 @@ public class AccesoFichero {
         if (this.todasCanciones == null)
             leerCanciones();
 
+        List<Cancion> cancionesFiltradas = AudioUtils.filtrarCanciones(todasCanciones, Ajustes.getInstance(context));
         List<Cancion> favoritos = new ArrayList<>();
-        for (Cancion cancion : todasCanciones) {
+        for (Cancion cancion : cancionesFiltradas) {
             if (this.favoritos.contains(cancion.getDatos()))
                 favoritos.add(cancion);
         }
@@ -667,6 +668,7 @@ public class AccesoFichero {
             leerCanciones();
 
         List<Cancion> listaCanciones = filtrarCancionesPorNombres(todasCanciones, listaCancionesStr);
+        List<Cancion> listaCancionesFiltradas = AudioUtils.filtrarCanciones(listaCanciones, Ajustes.getInstance(context));
 
         Set<Integer> indices = new HashSet<>();
         for (String indice : listaIndices) {
@@ -693,7 +695,7 @@ public class AccesoFichero {
 
         int progresoActual = Integer.parseInt(progresoActualStr);
 
-        Cola cola = new Cola(listaCanciones, indices, siguientesIndices, indicesAnteriores, cancionAnterior, cancionActual, siguienteCancion, indice, siguienteIndice,
+        Cola cola = new Cola(listaCancionesFiltradas, indices, siguientesIndices, indicesAnteriores, cancionAnterior, cancionActual, siguienteCancion, indice, siguienteIndice,
                 modoReproduccion, modoRepeticion, progresoActual);
 
         Log.i(TAG, cola.toString());

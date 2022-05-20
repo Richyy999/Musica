@@ -25,7 +25,8 @@ public class AudioUtils {
     private static final String TAG = "AUDIO_UTILS";
 
     /**
-     * Filtra las canciones según los filtros de {@link Ajustes}
+     * Filtra las canciones según los filtros de {@link Ajustes}.
+     * Siempre que se soliciten las canciones en cualquier proceso, se deben filtrar con este método
      *
      * @param canciones Todas las {@link Cancion} del dispositivo
      * @param ajustes   Instancia de {@link Ajustes}
