@@ -55,7 +55,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
     public static final int CODIGO_REQUEST_PLAYLIST = 10;
     public static final int CODIGO_REQUEST_CAMBIAR_IMAGEN = 11;
 
-    private static final String TAG = "ACTIVITY PLAYLIST";
+    private static final String TAG = "ACTIVITY_PLAYLIST";
 
     private SnackbarMusica snackbarMusica;
 
@@ -157,9 +157,7 @@ public class PlaylistActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public boolean onLongClick(View v) {
-        Vibrator vibrador = getSystemService(Vibrator.class);
-        vibrador.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
-
+        AudioUtils.vibrar(this);
         if (v.getId() == R.id.lblNombrePlaylist)
             cambiarNombrePlaylist();
         else if (v.getId() == R.id.imgPlaylist)

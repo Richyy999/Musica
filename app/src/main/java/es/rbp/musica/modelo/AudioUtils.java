@@ -1,6 +1,9 @@
 package es.rbp.musica.modelo;
 
 import android.content.Context;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -185,5 +188,15 @@ public class AudioUtils {
             listaCanciones.add(cancion.getDatos());
         }
         return listaCanciones;
+    }
+
+    /**
+     * Hace vibrar ligeramente el dispositivo
+     *
+     * @param context Contexto de la aplicación
+     */
+    public static void vibrar(Context context) {
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
     }
 }

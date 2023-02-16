@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
+import es.rbp.musica.modelo.AudioUtils;
 import es.rbp.musica.modelo.entidad.Cancion;
 import es.rbp.musica.modelo.entidad.Cola;
 import es.rbp.musica.modelo.entidad.Playlist;
@@ -25,9 +27,12 @@ import es.rbp.musica.vista.adaptadores.AdaptadorCanciones;
 import es.rbp.musica.vista.snackbar.SnackbarCancion;
 import es.rbp.musica.vista.snackbar.SnackbarMusica;
 import es.rbp.musica.vista.snackbar.SnackbarPlaylists;
+import es.rbp.musica.vista.snackbar.SnackbarTexto;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 
-public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.OnCancionClick, SnackbarCancion.Accion, SnackbarPlaylists.Accion {
+public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.OnCancionClick, SnackbarCancion.Accion, SnackbarPlaylists.Accion, SnackbarTexto.Accion {
+
+    private static final String TAG = "FRAGMENT_FAVORITOS";
 
     private List<Cancion> canciones;
 
@@ -64,7 +69,6 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("FAV", "On resume " + muestraFavoritos);
         if (muestraFavoritos) {
             canciones = accesoFichero.getFavoritos();
             actualizarRecyclerView();
@@ -99,7 +103,11 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
                 ((AnadirSnackbarMusica) getActivity()).cerrar();
                 break;
             case SnackbarCancion.ACCION_ANADIR_A_LA_PLAYLIST:
-                new Handler().postDelayed(() -> mostrarPlaylists(), 400);
+                List<Playlist> playlists = accesoFichero.getPlaylists();
+                if (playlists.size() == 0)
+                    crearPlaylist();
+                else
+                    new Handler().postDelayed(() -> mostrarPlaylists(), 400);
                 break;
             case SnackbarCancion.ACCION_ANADIR_A_LA_COLA:
                 Cola cola = accesoFichero.getCola();
@@ -130,6 +138,26 @@ public class FragmentFavoritos extends Fragment implements AdaptadorCanciones.On
         }
 
         ((AnadirSnackbarMusica) getActivity()).cerrar();
+    }
+
+    @Override
+    public void realizarAccion(String texto) {
+        if (texto == null)
+            return;
+
+        try {
+            accesoFichero.crearPlaylist(texto, ajustes);
+            Playlist playlist = accesoFichero.getPlaylists().get(0);
+            playlist.getCanciones().add(cancionSeleccionada.getDatos());
+            accesoFichero.guardarPlaylist(playlist);
+        } catch (IOException e) {
+            Log.e(TAG, "Exception", e);
+        }
+    }
+
+    private void crearPlaylist() {
+        ((AnadirSnackbarMusica) getActivity()).cerrar();
+        new SnackbarTexto(this, getActivity(), R.string.nombreDeLaPlaylist, R.string.introduceNombrePlaylist).show();
     }
 
     private void mostrarPlaylists() {

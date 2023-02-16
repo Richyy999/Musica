@@ -24,18 +24,24 @@ import java.util.List;
 import es.rbp.musica.R;
 import es.rbp.musica.modelo.AccesoFichero;
 import es.rbp.musica.modelo.Ajustes;
+import es.rbp.musica.modelo.AudioUtils;
 import es.rbp.musica.modelo.entidad.Playlist;
+import es.rbp.musica.vista.activities.AnadirSnackbarMusica;
 import es.rbp.musica.vista.activities.PlaylistActivity;
 import es.rbp.musica.vista.adaptadores.AdaptadorPlaylists;
+import es.rbp.musica.vista.snackbar.SnackbarMusica;
+import es.rbp.musica.vista.snackbar.SnackbarOkCancelar;
 import es.rbp.musica.vista.snackbar.SnackbarTexto;
 
 import static es.rbp.musica.modelo.entidad.Playlist.EXTRA_PLAYLIST;
 
-public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, AdaptadorPlaylists.OnPlaylistClick, View.OnClickListener {
+public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, SnackbarOkCancelar.Accion, AdaptadorPlaylists.OnPlaylistClick, View.OnClickListener {
 
     public static final String FRAGMENT_TAG = "FRAGMENT_PLAYLISTS_TAG";
 
     private static final String TAG = "FRAGMENT_PLAYLISTS";
+
+    private View root;
 
     private List<Playlist> playlists;
 
@@ -44,6 +50,10 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
     private RecyclerView recyclerView;
 
     private final AccesoFichero accesoFichero;
+
+    private int numPlaylists;
+
+    private int indicePlaylist;
 
     public FragmentPlaylist() {
         accesoFichero = AccesoFichero.getInstance(getContext());
@@ -55,13 +65,9 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_playlist, container, false);
+        root = inflater.inflate(R.layout.fragment_playlist, container, false);
         Collections.sort(playlists);
-        recyclerView = root.findViewById(R.id.recyclerViewPlaylist);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        adaptador = new AdaptadorPlaylists(playlists, this, getContext());
-        recyclerView.setHasFixedSize(false);
-        recyclerView.setAdapter(adaptador);
+        cargarPlaylists();
 
         if (playlists.size() == 0)
             recyclerView.setVisibility(View.INVISIBLE);
@@ -75,6 +81,8 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
     public void onResume() {
         super.onResume();
         adaptador.notifyDataSetChanged();
+        if (numPlaylists != accesoFichero.getPlaylists().size())
+            cargarPlaylists();
     }
 
     @Override
@@ -101,6 +109,14 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
     }
 
     @Override
+    public void realizarAccion(int accion) {
+        if (accion == SnackbarOkCancelar.ACCION_OK)
+            eliminarPlaylist();
+
+        ((AnadirSnackbarMusica) getActivity()).cerrar();
+    }
+
+    @Override
     public void onPlaylistClick(int indice, AdaptadorPlaylists.MyHolder holder) {
         Intent intent = new Intent(getContext(), PlaylistActivity.class);
         intent.putExtra(EXTRA_PLAYLIST, indice);
@@ -109,5 +125,39 @@ public class FragmentPlaylist extends Fragment implements SnackbarTexto.Accion, 
         Pair<View, String> parNumCanciones = Pair.create((View) holder.lblNumCanciones, ViewCompat.getTransitionName(holder.lblNumCanciones));
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), parImagen, parNombre, parNumCanciones);
         startActivity(intent, options.toBundle());
+    }
+
+    @Override
+    public void onPlaylistLongClick(int indice, AdaptadorPlaylists.MyHolder holder) {
+        AudioUtils.vibrar(getContext());
+        indicePlaylist = indice;
+        SnackbarOkCancelar snackbarOkCancelar = new SnackbarOkCancelar(getActivity(), getActivity().findViewById(android.R.id.content),
+                this, R.string.eliminarPlaylist, R.string.mensajeEliminarPlaylist);
+        ((AnadirSnackbarMusica) getActivity()).anadirSnackbarMusica(snackbarOkCancelar);
+    }
+
+    private void eliminarPlaylist() {
+        Playlist playlist = accesoFichero.buscarPlaylistPorIndice(indicePlaylist);
+        accesoFichero.eliminarPlaylist(playlist);
+        adaptador.notifyItemRemoved(indicePlaylist);
+        numPlaylists = accesoFichero.getPlaylists().size();
+    }
+
+    private void cargarPlaylists() {
+        playlists = accesoFichero.getPlaylists();
+
+        recyclerView = root.findViewById(R.id.recyclerViewPlaylist);
+
+        if (playlists.size() == 0)
+            recyclerView.setVisibility(View.INVISIBLE);
+        else
+            recyclerView.setVisibility(View.VISIBLE);
+
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        adaptador = new AdaptadorPlaylists(playlists, this, getContext());
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setAdapter(adaptador);
+
+        numPlaylists = playlists.size();
     }
 }

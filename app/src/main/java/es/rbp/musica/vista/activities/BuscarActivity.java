@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,13 +36,14 @@ import es.rbp.musica.vista.adaptadores.AdaptadorHistorial;
 import es.rbp.musica.vista.snackbar.SnackbarCancion;
 import es.rbp.musica.vista.snackbar.SnackbarMusica;
 import es.rbp.musica.vista.snackbar.SnackbarPlaylists;
+import es.rbp.musica.vista.snackbar.SnackbarTexto;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 
 import static es.rbp.musica.modelo.AudioUtils.filtrarCanciones;
 import static es.rbp.musica.modelo.AudioUtils.filtrarCancionesPorQuery;
 
 public class BuscarActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher, AdaptadorCanciones.OnCancionClick,
-        SnackbarCancion.Accion, SnackbarPlaylists.Accion, AdaptadorHistorial.OnHistorialClicked {
+        SnackbarCancion.Accion, SnackbarPlaylists.Accion, SnackbarTexto.Accion, AdaptadorHistorial.OnHistorialClicked {
 
     private static final String TAG = "BUSCAR_ACTIVITY";
 
@@ -142,21 +144,16 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
         switch (accion) {
             case SnackbarCancion.ACCION_ANADIR_A_FAVORITOS:
                 accesoFichero.anadirFavorito(cancionSeleccionada.getDatos());
-                snackbar.ocultar();
-                snackbar = null;
                 break;
             case SnackbarCancion.ACCION_ELIMINAR_DE_FAVORITOS:
                 accesoFichero.eliminarFavorito(cancionSeleccionada.getDatos());
-                snackbar.ocultar();
-                snackbar = null;
-                break;
-            case SnackbarCancion.ACCION_OCULTAR:
-                snackbar.ocultar();
-                snackbar = null;
                 break;
             case SnackbarCancion.ACCION_ANADIR_A_LA_PLAYLIST:
-                Log.d("FragmentPLaylists", "añadir playlist");
-                new Handler().postDelayed(this::mostrarPlaylists, 400);
+                List<Playlist> playlists = accesoFichero.getPlaylists();
+                if (playlists.size() == 0)
+                    crearPlaylist();
+                else
+                    new Handler().postDelayed(() -> mostrarPlaylists(), 400);
                 break;
             case SnackbarCancion.ACCION_ANADIR_A_LA_COLA:
                 Cola cola = accesoFichero.getCola();
@@ -165,8 +162,6 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
                 else
                     cola.anadirALaCola(cancionSeleccionada);
                 accesoFichero.guardarCola(cola);
-                snackbar.ocultar();
-                snackbar = null;
                 break;
             case SnackbarCancion.ACCION_REPRODUCIR_SIGUIENTE:
                 Cola cola1 = accesoFichero.getCola();
@@ -175,10 +170,10 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
                 else
                     cola1.reproducirSiguiente(cancionSeleccionada);
                 accesoFichero.guardarCola(cola1);
-                snackbar.ocultar();
-                snackbar = null;
                 break;
         }
+        snackbar.ocultar();
+        snackbar = null;
     }
 
     @Override
@@ -188,8 +183,23 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
             playlist.getCanciones().add(cancionSeleccionada.getDatos());
             accesoFichero.guardarPlaylist(playlist);
         }
-        snackbar.ocultar();
+
         snackbar = null;
+    }
+
+    @Override
+    public void realizarAccion(String texto) {
+        if (texto == null)
+            return;
+
+        try {
+            accesoFichero.crearPlaylist(texto, ajustes);
+            Playlist playlist = accesoFichero.getPlaylists().get(0);
+            playlist.getCanciones().add(cancionSeleccionada.getDatos());
+            accesoFichero.guardarPlaylist(playlist);
+        } catch (IOException e) {
+            Log.e(TAG, "Exception", e);
+        }
     }
 
     @Override
@@ -198,8 +208,11 @@ public class BuscarActivity extends AppCompatActivity implements View.OnClickLis
         txtBuscar.setText(texto);
     }
 
+    private void crearPlaylist() {
+        new SnackbarTexto(this, this, R.string.nombreDeLaPlaylist, R.string.introduceNombrePlaylist).show();
+    }
+
     private void mostrarPlaylists() {
-        snackbar.ocultar();
         List<Playlist> playlists = accesoFichero.getPlaylists();
         snackbar = new SnackbarPlaylists(this, findViewById(android.R.id.content), this, playlists);
     }

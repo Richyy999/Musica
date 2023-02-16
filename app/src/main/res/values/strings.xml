@@ -95,4 +95,5 @@
     <string name="restablecerAplicacion">Restablecer aplicación</string>
     <string name="subtituloRestablecerAplicacion">Restablecer todos los datos de la aplicación a sus valores de fábrica</string>
     <string name="mensajeDialogRestablecerAplicacion">¿Desea restablecer todos los datos de la aplicación a sus valores de fábrica?</string>
+    <string name="mensajeEliminarPlaylist">¿Deseas eliminar la playlist?</string>
 </resources>

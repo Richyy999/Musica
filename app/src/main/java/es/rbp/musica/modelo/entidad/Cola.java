@@ -536,7 +536,7 @@ public class Cola implements Serializable {
         Random r = new Random();
         int indice;
         if (modoReproduccion == REPRODUCCION_LINEAL) {
-            indice = r.nextInt((this.listaCanciones.size() + 1) - (this.indice + 1)) + (this.indice + 1);
+            indice = this.listaCanciones.size() == 0 ? 0 : r.nextInt((this.listaCanciones.size() + 1) - (this.indice + 1)) + (this.indice + 1);
             if (indice == 0)
                 indice++;
             this.listaCanciones.add(indice, cancion);

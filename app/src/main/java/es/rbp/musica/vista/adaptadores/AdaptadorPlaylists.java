@@ -26,7 +26,7 @@ import es.rbp.musica.modelo.entidad.Playlist;
 
 public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.MyHolder> {
 
-    public static class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private OnPlaylistClick onPlaylistClick;
 
@@ -39,6 +39,7 @@ public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.
         public MyHolder(@NonNull View itemView, OnPlaylistClick onPlaylistClick) {
             super(itemView);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
             this.onPlaylistClick = onPlaylistClick;
 
@@ -53,6 +54,12 @@ public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.
         @Override
         public void onClick(View v) {
             onPlaylistClick.onPlaylistClick(getBindingAdapterPosition(), this);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            onPlaylistClick.onPlaylistLongClick(getBindingAdapterPosition(), this);
+            return true;
         }
     }
 
@@ -118,5 +125,7 @@ public class AdaptadorPlaylists extends RecyclerView.Adapter<AdaptadorPlaylists.
     public interface OnPlaylistClick {
 
         void onPlaylistClick(int indice, MyHolder holder);
+
+        void onPlaylistLongClick(int indice, MyHolder holder);
     }
 }
